@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Navegar - Music Hub</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#ec1337",
+            "background-light": "#f8f6f6",
+            "background-dark": "#0a0a0a",
+            "neutral-dark": "#1a1a1a",
+            "card-dark": "#121212"
+          },
+          fontFamily: { "display": ["Spline Sans", "sans-serif"] },
+          borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="navegar.css"/>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+
+<div class="flex h-screen overflow-hidden">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="w-64 flex-shrink-0 bg-white dark:bg-neutral-dark border-r border-slate-200 dark:border-white/5 flex flex-col justify-between py-6 px-4">
+    <div class="space-y-8">
+      <div class="flex items-center gap-3 px-3">
+        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">
+          <span class="material-symbols-outlined text-2xl font-bold">graphic_eq</span>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold leading-none">Davi Vibe</h1>
+          <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">PREMIUM</span>
+        </div>
+      </div>
+      <nav class="space-y-1">
+        <a class="flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors" href="index.html">
+          <span class="material-symbols-outlined">home</span>
+          <span class="font-medium text-sm">Home</span>
+        </a>
+        <a class="flex items-center gap-4 px-3 py-2.5 rounded-lg bg-primary/10 text-primary" href="navegar.html">
+          <span class="material-symbols-outlined fill-1">explore</span>
+          <span class="font-medium text-sm">Navegar</span>
+        </a>
+        <a class="flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors" href="#">
+          <span class="material-symbols-outlined">radio</span>
+          <span class="font-medium text-sm">Radio</span>
+        </a>
+      </nav>
+      <div class="pt-4">
+        <h3 class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Library</h3>
+        <nav class="space-y-1">
+          <a class="flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors" href="#">
+            <span class="material-symbols-outlined">history</span>
+            <span class="font-medium text-sm">Recently Played</span>
+          </a>
+          <a class="flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors" href="#">
+            <span class="material-symbols-outlined">favorite</span>
+            <span class="font-medium text-sm">Musicas Favoritas</span>
+          </a>
+          <a class="flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors" href="#">
+            <span class="material-symbols-outlined">album</span>
+            <span class="font-medium text-sm">Albums</span>
+          </a>
+          <a class="flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors" href="#">
+            <span class="material-symbols-outlined">artist</span>
+            <span class="font-medium text-sm">Artistas</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+    <div class="px-3">
+      <div class="p-4 bg-primary/5 rounded-xl border border-primary/20">
+        <p class="text-xs font-bold text-primary mb-1">ATIVE O PLANO PREMIUM</p>
+        <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed mb-3">Tenha acesso a áudio sem perdas e lançamentos exclusivos.</p>
+        <button class="w-full py-2 bg-primary text-white text-xs font-bold rounded-lg hover:brightness-110 transition-all">Gerenciar conta</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="flex-1 overflow-y-auto no-scrollbar pb-32">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-30 flex flex-col gap-4 px-8 py-6 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-white/5">
+      <div class="flex items-center justify-between">
+        <div class="flex gap-4">
+          <button class="w-8 h-8 rounded-full bg-slate-200 dark:bg-white/5 flex items-center justify-center">
+            <span class="material-symbols-outlined text-sm">chevron_left</span>
+          </button>
+          <button class="w-8 h-8 rounded-full bg-slate-200 dark:bg-white/5 flex items-center justify-center">
+            <span class="material-symbols-outlined text-sm">chevron_right</span>
+          </button>
+        </div>
+        <div class="flex-1 max-w-xl mx-8">
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+            <input class="w-full bg-slate-100 dark:bg-white/5 border-none rounded-full py-2.5 pl-12 pr-4 text-sm focus:ring-2 focus:ring-primary/50 transition-all" placeholder="O que você quer ouvir?" type="text"/>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="relative flex items-center">
+            <button id="avatar-btn" class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary focus:outline-none">
+              <img id="user-avatar" class="w-full h-full object-cover" src="images/avatar.jpg" alt="User profile"/>
+            </button>
+            <div id="avatar-menu" class="hidden absolute right-0 top-12 w-44 bg-neutral-900 border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden">
+              <div class="px-4 py-3 border-b border-white/10">
+                <p id="user-name" class="text-sm font-bold text-white truncate">Usuário</p>
+                <p id="user-email" class="text-[11px] text-slate-400 truncate"></p>
+              </div>
+              <button id="btn-logout" class="w-full flex items-center gap-2 px-4 py-3 text-sm text-red-400 hover:bg-white/5 transition-colors">
+                <span class="material-symbols-outlined text-base">logout</span>
+                Sair
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter pills -->
+      <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
+        <button class="filter-pill active flex-shrink-0 px-4 py-1.5 rounded-full bg-primary text-white text-xs font-bold">Tudo</button>
+        <button class="filter-pill flex-shrink-0 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 text-xs font-bold hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">Pop</button>
+        <button class="filter-pill flex-shrink-0 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 text-xs font-bold hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">Electronic</button>
+        <button class="filter-pill flex-shrink-0 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 text-xs font-bold hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">Jazz</button>
+        <button class="filter-pill flex-shrink-0 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 text-xs font-bold hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">Lo-Fi</button>
+        <button class="filter-pill flex-shrink-0 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 text-xs font-bold hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">Rock</button>
+        <button class="filter-pill flex-shrink-0 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 text-xs font-bold hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">Hip-Hop</button>
+        <button class="filter-pill flex-shrink-0 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 text-xs font-bold hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">Chill</button>
+        <button class="filter-pill flex-shrink-0 px-4 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 text-xs font-bold hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">Workout</button>
+      </div>
+    </header>
+
+    <!-- Genre Grid -->
+    <section class="px-8 mt-8">
+      <div class="flex items-end justify-between mb-8">
+        <div>
+          <h2 class="text-3xl font-black tracking-tight text-slate-900 dark:text-white uppercase">Explorar Categorias</h2>
+          <p class="text-slate-500 dark:text-slate-400 mt-1">Explore músicas por humor, gênero e atividade.</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+        <div class="genre-card relative aspect-[16/10] rounded-2xl overflow-hidden cursor-pointer group shadow-xl">
+          <img alt="Focus" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAOh_1QxptL1BMFexPkzurUKDIHL1l61xSJnFGGNMEEvx83kBPtZXKIn5zqUe0RNBT8UEffyiO1ZNlAp1mvOh0SLxyURpUwgPnZuTLMk2lKa9eGzK29lJHu7z1A070r559uQR5VJrAlRc9ZK-mI3d16f6pSwPb4XnfNUXZ__V5prZhSvj5NrtpEEbMQb8l1A9hS3BobgmOVIqwWTE1-Escy3yYAWZ_NbtNnmUwN9pat6Cwep6LhOwE3aWWAna2MBnl0pflNb7vDw"/>
+          <div class="genre-overlay absolute inset-0 bg-gradient-to-br from-blue-900/80 to-transparent transition-colors duration-300"></div>
+          <div class="absolute inset-0 p-6 flex flex-col justify-between">
+            <span class="material-symbols-outlined text-white/60 text-4xl">psychology</span>
+            <h3 class="text-2xl font-bold text-white tracking-tight">Focus</h3>
+          </div>
+        </div>
+
+        <div class="genre-card relative aspect-[16/10] rounded-2xl overflow-hidden cursor-pointer group shadow-xl">
+          <img alt="Workout" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKG7Bw7sx-WXB0efG9LrsH78AaIxOHjVYwybDkGMVjkTPb3RLP2XtviZFcqHWgP-DAigofrxUAl1rcSkmlAtaxnzhD65wK5D1QnrVGaiHWgu1yHZpMyonvUdabKqEg9s6B_PUVgrG7gu1rzOKvXQEWy6rQjMy-R_9_xcdxpSW0WpIlcopHnzq2B8C3zTxJpDuC9cSyQlEnBhKvxCLAeggLXvVg9_ALRZ3jNSwsukvWwp3e--HdfMVzVTEYQhW4w6duS2SRyPQO6A"/>
+          <div class="genre-overlay absolute inset-0 bg-gradient-to-br from-red-900/80 to-transparent transition-colors duration-300"></div>
+          <div class="absolute inset-0 p-6 flex flex-col justify-between">
+            <span class="material-symbols-outlined text-white/60 text-4xl">fitness_center</span>
+            <h3 class="text-2xl font-bold text-white tracking-tight">Workout</h3>
+          </div>
+        </div>
+
+        <div class="genre-card relative aspect-[16/10] rounded-2xl overflow-hidden cursor-pointer group shadow-xl">
+          <img alt="Chill" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGPAaEMiUV2dn5SKzdyKyJccTOGJmeE7HUMOtsnAuyrY1dT4Md7ZJZeabgrYPOrrs69wtQWW4GW2luoUKmzkQGlnVpAqS5RRImrxXw-VCxORsgxynlpLJFY-85Otv-HcsJ7YLNre-KbiMtXZNy0DHDO8-oZSdNlUgamH5rru3XQcN05AbXYBlLCW73fiM0QOWv6nfsKgr3MpFy9L-1CMmNtwIFTdtBSOCCnG2-BsqBoGFEBln6R1OyOjdpwV57xDdhsQXwbjUeag"/>
+          <div class="genre-overlay absolute inset-0 bg-gradient-to-br from-amber-900/80 to-transparent transition-colors duration-300"></div>
+          <div class="absolute inset-0 p-6 flex flex-col justify-between">
+            <span class="material-symbols-outlined text-white/60 text-4xl">wb_sunny</span>
+            <h3 class="text-2xl font-bold text-white tracking-tight">Chill</h3>
+          </div>
+        </div>
+
+        <div class="genre-card relative aspect-[16/10] rounded-2xl overflow-hidden cursor-pointer group shadow-xl">
+          <img alt="Electronic" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAEEbfzVbR4j-AUfWC0jrbQNGovb_ZQBnH9wZN9Z_ayxsODPGgm9GknIMZkWAl65Qsda9JyaGYk2R6N8-97GnRkBhH9mv-CwAlqIqczeAhUikBqQfJHIpjYzWmq0-C5qodZ55CS9mdtozb18ta6bbCi0jdCPWjkZCVwNMj-e3DMx__TPwKALD_K0wTsZxH-z8tHxKVbikG3gDZ8XzbwHed0ALN6ZBbotZRyMAjjF_6-fzB6IE9x2P1QN6vUwqzg7x51rV2FcM42A"/>
+          <div class="genre-overlay absolute inset-0 bg-gradient-to-br from-purple-900/80 to-transparent transition-colors duration-300"></div>
+          <div class="absolute inset-0 p-6 flex flex-col justify-between">
+            <span class="material-symbols-outlined text-white/60 text-4xl">bolt</span>
+            <h3 class="text-2xl font-bold text-white tracking-tight">Electronic</h3>
+          </div>
+        </div>
+
+        <div class="genre-card relative aspect-[16/10] rounded-2xl overflow-hidden cursor-pointer group shadow-xl">
+          <img alt="Jazz" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRK4wDSs0khaOZrC7z5Zkl-jq6VKRdzJ7vcJKQQV4YqjR0dTnEaiTUurwuMO3u5NyzvKYH5Ej_DpFpga3ZeturuqR3N4Jbc8X4L3oADpodUyy8rEopVbgh_w1h9cwJdWUPpBUnRLFdVNAmU1_2kdlw78iuX63MvNoHmpjS3604bjed4f5gt7stSK4EVi3oVRdG8nQSbqqyKFp-LC-f0LOJp8S331aaY6fJ_SnWa_Z5NqFZ-A54PfgcrmpEt28t3z1k9yo_zrtkXw"/>
+          <div class="genre-overlay absolute inset-0 bg-gradient-to-br from-indigo-900/80 to-transparent transition-colors duration-300"></div>
+          <div class="absolute inset-0 p-6 flex flex-col justify-between">
+            <span class="material-symbols-outlined text-white/60 text-4xl">piano</span>
+            <h3 class="text-2xl font-bold text-white tracking-tight">Jazz</h3>
+          </div>
+        </div>
+
+        <div class="genre-card relative aspect-[16/10] rounded-2xl overflow-hidden cursor-pointer group shadow-xl">
+          <img alt="Synthwave" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCR45VkIOEi7HVuyWxbg-URzSCkrQAZszg8fb3PIUk8E85xi1E_0X1IgA2KLXmijj7OdKHi3FNZlQudJjR1-qMHNOBJqK5R6PqbKS-0Psp3nVeZlfXC3f_Y-fOTOzOLetBG-YFD3yXdjb1G0tHM1AVeNuISOxngQAfhGPe0UeFgawn_mzogZ5OHKEJacAfQmUChTK49ueJoQUiuHGGLbaawZgdztKRRPiXJ_KLnc6c4USSi6-Rz2amd1OaliN5fygOAloI4_TDPMA"/>
+          <div class="genre-overlay absolute inset-0 bg-gradient-to-br from-pink-900/80 to-transparent transition-colors duration-300"></div>
+          <div class="absolute inset-0 p-6 flex flex-col justify-between">
+            <span class="material-symbols-outlined text-white/60 text-4xl">nightlight</span>
+            <h3 class="text-2xl font-bold text-white tracking-tight">Synthwave</h3>
+          </div>
+        </div>
+
+        <div class="genre-card relative aspect-[16/10] rounded-2xl overflow-hidden cursor-pointer group shadow-xl">
+          <img alt="New Releases" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLLDCNUL4ru8tjlcNr6KXOngPaYPOk5kuTOisAugOGb1ZMzJLyhYvI24kkIxfm18mgL6YmW_YLoQFV2Rd8xJtTi8mPp3StfjUPfgYD8ROgwr5Tq_ieUWQfFf5dIziE4CDS4CRaR-RxucCteGLn26xCgEyJZCo5uTxDD1KSTgtx_vJTVqYFBKvrosqslZlgDHq6OPAHCFn8NlXFelb6QMKH3weTXgs0DJ2EzsXH1hUS2LMfeX6KbkATYNLpgJUOGtanf6AharrmKw"/>
+          <div class="genre-overlay absolute inset-0 bg-gradient-to-br from-green-900/80 to-transparent transition-colors duration-300"></div>
+          <div class="absolute inset-0 p-6 flex flex-col justify-between">
+            <span class="material-symbols-outlined text-white/60 text-4xl">new_releases</span>
+            <h3 class="text-2xl font-bold text-white tracking-tight">New Releases</h3>
+          </div>
+        </div>
+
+        <div class="genre-card relative aspect-[16/10] rounded-2xl overflow-hidden cursor-pointer group shadow-xl">
+          <img alt="Party" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrM1kOQL7No2RBtvphQ_FRFR_CYWw-e6QOeLzMwZtWkHFF3q_n6-6GOsKbImmRTIpX6MP_v05cHhz8CFyeQTgKY8_aV0YwpgrXIYSAtZ6il-NUOpJucgcdc7g1y1QubCHA5YcZAmPEl1M5tkIrUPIt-RhD-A04TzKfkZDe_QcTTk9cb6hKqoymY7jhnXe3R5yZR6YME7Dq9dwf7iwgPvOkpXsr0vKIqjAkB0iGZy2dYW82LTv4lJaUtA0iDPsyqNBNJrJ0lx_g6A"/>
+          <div class="genre-overlay absolute inset-0 bg-gradient-to-br from-orange-900/80 to-transparent transition-colors duration-300"></div>
+          <div class="absolute inset-0 p-6 flex flex-col justify-between">
+            <span class="material-symbols-outlined text-white/60 text-4xl">celebration</span>
+            <h3 class="text-2xl font-bold text-white tracking-tight">Party</h3>
+          </div>
+        </div>
+
+        <div class="genre-card relative aspect-[16/10] rounded-2xl overflow-hidden cursor-pointer group shadow-xl">
+          <img alt="Study" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCn-w_Rk119fHwDXWuBpyS5rz_UjbGKRfKs72ChpMDwcxWo_59_hB5ZC6NDS35wYU-8Tm_fgv5PNbt276dlpdfsQi_sW_O480nWsWTzJQREmGjUBnpBR_ZBC4PJ-lmMjC1xaNxpbXifCRFEA5XkKlqURleez_P-pJsozgqnNgVVGASWeq287kXLO3yoI2UyfVDDMJ8XzJ_e-gMwIIuslOaz5SYd7ZC4ql6YuzXJt6d7zARyenQ-mBm794l5ZER7-BgnHTAjg2jzdw"/>
+          <div class="genre-overlay absolute inset-0 bg-gradient-to-br from-cyan-900/80 to-transparent transition-colors duration-300"></div>
+          <div class="absolute inset-0 p-6 flex flex-col justify-between">
+            <span class="material-symbols-outlined text-white/60 text-4xl">menu_book</span>
+            <h3 class="text-2xl font-bold text-white tracking-tight">Study</h3>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== NAVBAR MOBILE ===== -->
+  <nav class="mobile-nav">
+    <a href="index.html">
+      <span class="material-symbols-outlined" style="font-size:22px">home</span>
+      Home
+    </a>
+    <a href="navegar.html" class="active">
+      <span class="material-symbols-outlined" style="font-size:22px">explore</span>
+      Navegar
+    </a>
+    <a href="#">
+      <span class="material-symbols-outlined" style="font-size:22px">favorite</span>
+      Favoritas
+    </a>
+    <a href="#">
+      <span class="material-symbols-outlined" style="font-size:22px">album</span>
+      Biblioteca
+    </a>
+  </nav>
+
+  <!-- ===== FLOATING PLAYER ===== -->
+  <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-4rem)] max-w-5xl z-50">
+    <div class="glass-player px-6 py-4 rounded-2xl flex items-center justify-between shadow-2xl">
+      <div class="flex items-center gap-4 w-1/4">
+        <div class="w-12 h-12 rounded-lg overflow-hidden shadow-md">
+          <img class="w-full h-full object-cover" src="images/album-travisscot.jpg" alt="Now Playing"/>
+        </div>
+        <div class="flex flex-col">
+          <h5 class="text-sm font-bold text-white">Shadows</h5>
+          <p class="text-xs text-slate-400 font-medium">The Midnight</p>
+        </div>
+        <button class="material-symbols-outlined text-slate-400 hover:text-primary transition-colors text-xl">favorite</button>
+      </div>
+      <div class="flex flex-col items-center gap-2 flex-1">
+        <div class="flex items-center gap-6">
+          <button class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">shuffle</button>
+          <button class="material-symbols-outlined text-white hover:text-primary transition-colors">skip_previous</button>
+          <button class="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-black fill-1">play_arrow</span>
+          </button>
+          <button class="material-symbols-outlined text-white hover:text-primary transition-colors">skip_next</button>
+          <button class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">repeat</button>
+        </div>
+        <div class="flex items-center gap-3 w-full max-w-lg">
+          <span class="text-[10px] font-bold text-slate-400 w-8">0:00</span>
+          <div class="flex-1 h-1.5 bg-white/10 rounded-full relative group cursor-pointer">
+            <div class="absolute inset-y-0 left-0 w-1/3 bg-primary rounded-full"></div>
+            <div class="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-lg scale-0 group-hover:scale-100 transition-transform"></div>
+          </div>
+          <span class="text-[10px] font-bold text-slate-400 w-8">4:05</span>
+        </div>
+      </div>
+      <div class="flex items-center justify-end gap-4 w-1/4">
+        <button class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">lyrics</button>
+        <button class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">queue_music</button>
+        <div class="flex items-center gap-2 group">
+          <button class="material-symbols-outlined text-slate-400 group-hover:text-white transition-colors">volume_up</button>
+          <div class="w-20 h-1 bg-white/10 rounded-full overflow-hidden cursor-pointer">
+            <div class="w-2/3 h-full bg-slate-300"></div>
+          </div>
+        </div>
+        <button class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">fullscreen</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Firebase Auth Guard + Avatar -->
+<script type="module">
+  import { initializeApp }  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  const app  = initializeApp({
+    apiKey:            "AIzaSyDpkeu4920YRA4pc5HOAaEuP7-KMevUNno",
+    authDomain:        "davi-vibes.firebaseapp.com",
+    projectId:         "davi-vibes",
+    storageBucket:     "davi-vibes.firebasestorage.app",
+    messagingSenderId: "198203679502",
+    appId:             "1:198203679502:web:cfc71ee1dcd2a537412d5f"
+  });
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, user => {
+    if (!user) { window.location.href = "login.html"; return; }
+
+    const avatarEl = document.getElementById("user-avatar");
+    if (user.photoURL) {
+      avatarEl.src = user.photoURL;
+    } else {
+      const initials = (user.displayName || user.email || "U").charAt(0).toUpperCase();
+      const canvas = document.createElement("canvas");
+      canvas.width = canvas.height = 80;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ec1337";
+      ctx.fillRect(0, 0, 80, 80);
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 36px sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(initials, 40, 40);
+      avatarEl.src = canvas.toDataURL();
+    }
+    document.getElementById("user-name").textContent  = user.displayName || "Usuário";
+    document.getElementById("user-email").textContent = user.email || "";
+  });
+
+  document.getElementById("avatar-btn").addEventListener("click", (e) => {
+    e.stopPropagation();
+    document.getElementById("avatar-menu").classList.toggle("hidden");
+  });
+  document.addEventListener("click", () => {
+    document.getElementById("avatar-menu").classList.add("hidden");
+  });
+  document.getElementById("btn-logout").addEventListener("click", async () => {
+    await signOut(auth);
+    window.location.href = "login.html";
+  });
+</script>
+
+</body>
+</html>

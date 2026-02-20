@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Login - Music Hub</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: { "primary": "#ec1337", "background-dark": "#0a0a0a", "neutral-dark": "#1a1a1a" },
+          fontFamily: { "display": ["Spline Sans", "sans-serif"] },
+          borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "2xl": "2rem", "full": "9999px" },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="login.css"/>
+</head>
+<body class="bg-background-dark text-slate-100 font-display min-h-screen flex items-center justify-center relative overflow-hidden">
+
+    <!-- Background -->
+  <div class="fixed inset-0 z-0" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 30%, #2d0a0a 55%, #1a0505 75%, #0a0a0a 100%);">
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 20% 50%, rgba(236,19,55,0.18) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(180,10,40,0.12) 0%, transparent 50%), radial-gradient(ellipse at 60% 80%, rgba(100,5,20,0.15) 0%, transparent 55%);"></div>
+    <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 40%, rgba(0,0,0,0.6) 100%);"></div>
+  </div>
+
+  <!-- Main -->
+  <main class="relative z-10 w-full max-w-[440px] px-6">
+    <div class="glass-container p-10 rounded-2xl shadow-2xl">
+
+      <!-- Logo -->
+      <div class="flex flex-col items-center mb-10">
+        <div class="w-14 h-14 bg-primary rounded-xl flex items-center justify-center text-white mb-4 shadow-lg shadow-primary/20">
+          <span class="material-symbols-outlined text-3xl font-bold">graphic_eq</span>
+        </div>
+        <h1 class="text-2xl font-bold tracking-tight">Bem vindo</h1>
+        <p class="text-slate-400 text-sm mt-1">Entre na sua conta do Davi Vibe</p>
+      </div>
+
+      <!-- Social Buttons -->
+      <div class="grid grid-cols-2 gap-4 mb-8">
+        <button class="social-button flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Google
+        </button>
+        <button class="social-button flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.51 12.09 1.006 1.46 2.194 3.1 3.766 3.045 1.514-.06 2.086-.97 3.916-.97 1.83 0 2.35.97 3.945.938 1.63-.031 2.656-1.48 3.655-2.95 1.156-1.685 1.633-3.317 1.656-3.402-.036-.014-3.172-1.218-3.204-4.823-.028-3.003 2.455-4.444 2.568-4.512-1.403-2.053-3.56-2.285-4.322-2.336-1.808-.145-3.076.945-3.97.945zM15.42 4.414c.813-1 1.355-2.394 1.206-3.784-1.183.048-2.617.794-3.468 1.79-.763.877-1.43 2.306-1.25 3.662 1.314.103 2.66-.653 3.512-1.668z"/>
+          </svg>
+          Apple
+        </button>
+      </div>
+
+      <!-- Divider -->
+      <div class="relative flex items-center gap-4 mb-8">
+        <div class="h-[1px] flex-1 bg-white/10"></div>
+        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">ou email</span>
+        <div class="h-[1px] flex-1 bg-white/10"></div>
+      </div>
+
+      <!-- Form -->
+      <form class="space-y-5" onsubmit="event.preventDefault();">
+        <div>
+          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-1">Email</label>
+          <input class="w-full input-glass rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-0 text-white placeholder:text-slate-600" placeholder="name@example.com" type="email"/>
+        </div>
+        <div>
+          <div class="flex justify-between mb-2 px-1">
+            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Senha</label>
+            <a class="text-[10px] font-bold text-primary hover:underline uppercase tracking-wider" href="forgot.html">Esqueci a Senha</a>
+          </div>
+          <div class="relative">
+            <input id="passwordInput" class="w-full input-glass rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-0 text-white placeholder:text-slate-600" placeholder="••••••••" type="password"/>
+            <button class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors" type="button" onclick="togglePassword()">
+              <span id="eyeIcon" class="material-symbols-outlined text-xl">visibility</span>
+            </button>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 px-1 pt-1">
+          <input class="w-4 h-4 rounded border-white/10 bg-white/5 text-primary focus:ring-offset-0 focus:ring-1 focus:ring-primary" id="remember" type="checkbox"/>
+          <label class="text-xs text-slate-400 font-medium cursor-pointer" for="remember">Permaneça conectado por 30 dias</label>
+        </div>
+        <button class="w-full py-4 bg-primary text-white text-sm font-bold rounded-xl hover:brightness-110 active:scale-[0.98] transition-all shadow-lg shadow-primary/25 mt-4">
+          Entrar
+        </button>
+      </form>
+
+      <p class="text-center text-sm text-slate-400 mt-10">
+        Não tem uma conta?
+        <a class="text-white font-bold hover:text-primary transition-colors" href="register.html">Criar Conta</a>
+      </p>
+    </div>
+
+    <!-- Footer Links -->
+    <div class="mt-8 flex justify-center gap-6 text-[11px] font-bold text-white/40 uppercase tracking-widest">
+      <a class="hover:text-white transition-colors" href="#">Ajuda</a>
+      <a class="hover:text-white transition-colors" href="#">Privacidade</a>
+      <a class="hover:text-white transition-colors" href="#">Termos</a>
+    </div>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+    import { getAnalytics }  from "https://www.gstatic.com/firebasejs/10.0.0/firebase-analytics.js";
+    import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, OAuthProvider }
+      from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+
+    const app = initializeApp({
+      apiKey:            "AIzaSyDpkeu4920YRA4pc5HOAaEuP7-KMevUNno",
+      authDomain:        "davi-vibes.firebaseapp.com",
+      projectId:         "davi-vibes",
+      storageBucket:     "davi-vibes.firebasestorage.app",
+      messagingSenderId: "198203679502",
+      appId:             "1:198203679502:web:cfc71ee1dcd2a537412d5f",
+      measurementId:     "G-YHNRLPCH08"
+    });
+    getAnalytics(app);
+    const auth = getAuth(app);
+
+    function showError(msg) {
+      let el = document.getElementById("login-error");
+      if (!el) {
+        el = document.createElement("p");
+        el.id = "login-error";
+        el.className = "text-red-400 text-xs text-center mt-2";
+        document.querySelector("form").appendChild(el);
+      }
+      el.textContent = msg;
+    }
+
+    function redirect() {
+      window.location.href = "/index.html";
+    }
+
+    // Fix autofill background branco do browser
+    function fixAutofill() {
+      document.querySelectorAll('.input-glass').forEach(input => {
+        input.addEventListener('animationstart', (e) => {
+          if (e.animationName === 'onAutoFillStart') {
+            input.style.background = 'transparent';
+            input.style.color = '#ffffff';
+          }
+        });
+        // Polling fallback para Chrome
+        setInterval(() => {
+          try {
+            if (window.getComputedStyle(input).backgroundColor !== 'rgba(0, 0, 0, 0)') {
+              input.style.setProperty('background', 'transparent', 'important');
+              input.style.setProperty('color', '#ffffff', 'important');
+              input.style.setProperty('-webkit-text-fill-color', '#ffffff', 'important');
+            }
+          } catch(e) {}
+        }, 500);
+      });
+    }
+    document.addEventListener('DOMContentLoaded', fixAutofill);
+
+    window.togglePassword = function () {
+      const input = document.getElementById("passwordInput");
+      const icon  = document.getElementById("eyeIcon");
+      const hidden = input.type === "password";
+      input.type       = hidden ? "text" : "password";
+      icon.textContent = hidden ? "visibility_off" : "visibility";
+    };
+
+    document.querySelector("form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email    = document.querySelector('input[type="email"]').value.trim();
+      const password = document.getElementById("passwordInput").value;
+      if (!email || !password) return showError("Preencha e-mail e senha.");
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        redirect();
+      } catch (err) {
+        const msgs = {
+          "auth/user-not-found":    "Usuário não encontrado.",
+          "auth/wrong-password":    "Senha incorreta.",
+          "auth/invalid-email":     "E-mail inválido.",
+          "auth/too-many-requests": "Muitas tentativas. Tente mais tarde.",
+          "auth/invalid-credential":"E-mail ou senha incorretos.",
+        };
+        showError(msgs[err.code] || "Erro ao entrar. Tente novamente.");
+      }
+    });
+
+    document.querySelectorAll(".social-button")[0].addEventListener("click", async () => {
+      try {
+        await signInWithPopup(auth, new GoogleAuthProvider());
+        redirect();
+      } catch { showError("Erro ao entrar com Google."); }
+    });
+
+    document.querySelectorAll(".social-button")[1].addEventListener("click", async () => {
+      try {
+        await signInWithPopup(auth, new OAuthProvider("apple.com"));
+        redirect();
+      } catch { showError("Erro ao entrar com Apple."); }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+body {
+  font-family: 'Spline Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.glass-player {
+  background: rgba(26, 26, 26, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.genre-card:hover .genre-overlay {
+  background-color: rgba(236, 19, 55, 0.2);
+}
+
+/* Filter pills active state */
+.filter-pill.active {
+  background: #ec1337;
+  color: #ffffff;
+}
+
+/* Mobile nav */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  background: rgba(26, 26, 26, 0.95);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 8px 0 env(safe-area-inset-bottom);
+  justify-content: space-around;
+}
+
+.mobile-nav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.4);
+  text-decoration: none;
+  padding: 6px 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mobile-nav a.active {
+  color: #ec1337;
+}
+
+@media (max-width: 768px) {
+  .mobile-nav { display: flex; }
+  aside { display: none; }
+}

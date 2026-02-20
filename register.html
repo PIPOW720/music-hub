@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>Create Account - Music Hub</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: { "primary": "#ec1337", "background-dark": "#0a0a0a", "neutral-dark": "#1a1a1a" },
+          fontFamily: { "display": ["Spline Sans", "sans-serif"] },
+          borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "2xl": "2rem", "full": "9999px" },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="register.css"/>
+</head>
+<body class="bg-background-dark text-slate-100 font-display min-h-screen flex items-start justify-center relative overflow-x-hidden">
+    <!-- Background -->
+  <div class="fixed inset-0 z-0" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 30%, #2d0a0a 55%, #1a0505 75%, #0a0a0a 100%);">
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at 20% 50%, rgba(236,19,55,0.18) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(180,10,40,0.12) 0%, transparent 50%), radial-gradient(ellipse at 60% 80%, rgba(100,5,20,0.15) 0%, transparent 55%);"></div>
+    <div class="absolute inset-0" style="background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 40%, rgba(0,0,0,0.6) 100%);"></div>
+  </div>
+
+  <!-- Main -->
+  <main class="relative z-10 w-full max-w-[480px] px-6 py-8 min-h-screen flex flex-col justify-center">
+    <div class="glass-container p-8 md:p-10 rounded-3xl shadow-2xl">
+
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold tracking-tight mb-2">Crie sua conta</h1>
+        <p class="text-slate-400 text-sm max-w-[280px] mx-auto leading-relaxed">Personalize seu perfil e comece a construir sua jornada musical única hoje mesmo.</p>
+      </div>
+
+      <!-- Avatar Upload -->
+      <div class="flex flex-col items-center mb-8">
+        <div class="profile-upload group cursor-pointer" onclick="document.getElementById('avatarInput').click()">
+          <div class="avatar-ring w-28 h-28 rounded-full flex items-center justify-center overflow-hidden relative">
+            <img id="avatarPreview" class="w-full h-full object-cover hidden rounded-full"/>
+            <span id="avatarIcon" class="material-symbols-outlined text-4xl text-slate-500 group-hover:scale-110 transition-transform">person_add</span>
+            <div class="upload-overlay absolute inset-0 bg-black/50 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+              <span class="material-symbols-outlined text-white text-2xl">photo_camera</span>
+            </div>
+          </div>
+          <label class="block mt-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest text-center cursor-pointer">Add foto de perfil</label>
+          <input id="avatarInput" type="file" accept="image/*" class="hidden" onchange="previewAvatar(event)"/>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form id="registerForm" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-1">Nome do Usuário</label>
+          <input id="username" class="w-full input-glass rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-0" placeholder="@seunome" type="text"/>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-1">Email</label>
+          <input id="email" class="w-full input-glass rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-0" placeholder="name@example.com" type="email"/>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-1">Senha</label>
+            <div class="relative">
+              <input id="password" class="w-full input-glass rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-0 pr-11" placeholder="••••••••" type="password"/>
+              <button type="button" onclick="togglePass('password','eye1')" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors">
+                <span id="eye1" class="material-symbols-outlined text-xl">visibility</span>
+              </button>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-1">Confirmar Senha</label>
+            <div class="relative">
+              <input id="confirmPassword" class="w-full input-glass rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-0 pr-11" placeholder="••••••••" type="password"/>
+              <button type="button" onclick="togglePass('confirmPassword','eye2')" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors">
+                <span id="eye2" class="material-symbols-outlined text-xl">visibility</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-start gap-2 px-1 pt-2">
+          <input class="mt-0.5 w-4 h-4 rounded border-white/10 bg-white/5 text-primary focus:ring-offset-0 focus:ring-1 focus:ring-primary" id="terms" type="checkbox"/>
+          <label class="text-[11px] text-slate-400 leading-tight cursor-pointer" for="terms">
+            Concordo com os <a class="text-slate-200 hover:text-primary underline" href="#">Termos de Serviço</a> e <a class="text-slate-200 hover:text-primary underline" href="#">Política de Privacidade</a>.
+          </label>
+        </div>
+
+        <!-- Error message -->
+        <p id="register-error" class="text-red-400 text-xs text-center hidden"></p>
+
+        <button type="submit" class="w-full py-4 bg-primary text-white text-sm font-bold rounded-xl hover:brightness-110 active:scale-[0.98] transition-all shadow-lg shadow-primary/25 mt-2">
+          Criar Conta
+        </button>
+      </form>
+
+      <p class="text-center text-sm text-slate-400 mt-8">
+        Já tem uma conta?
+        <a class="text-white font-bold hover:text-primary transition-colors" href="login.html">Entrar</a>
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-8 flex justify-center gap-6 text-[11px] font-bold text-white/40 uppercase tracking-widest">
+      <a class="hover:text-white transition-colors" href="#">Suporte</a>
+      <a class="hover:text-white transition-colors" href="#">Privacidade</a>
+      <a class="hover:text-white transition-colors" href="#">Termos</a>
+    </div>
+  </main>
+
+  <script type="module" src="register.js"></script>
+</body>
+</html>

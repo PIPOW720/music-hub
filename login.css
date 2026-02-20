@@ -1,0 +1,64 @@
+body {
+  font-family: 'Spline Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.glass-container {
+  background: rgba(10, 10, 10, 0.4);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.input-glass {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  color: #ffffff;
+}
+
+.input-glass::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.input-glass:focus {
+  background: transparent;
+  border-color: rgba(236, 19, 55, 0.6);
+  box-shadow: 0 0 0 4px rgba(236, 19, 55, 0.1);
+  color: #ffffff;
+}
+
+.input-glass:-webkit-autofill,
+.input-glass:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset;
+  -webkit-text-fill-color: #ffffff;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+.social-button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+}
+
+.social-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Detecta autofill via animação */
+@keyframes onAutoFillStart { from {} to {} }
+
+.input-glass:-webkit-autofill {
+  animation-name: onAutoFillStart;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  caret-color: #ffffff;
+  transition: background-color 9999s ease-in-out 0s;
+  background-clip: text;
+}
+
+.input-glass:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+}

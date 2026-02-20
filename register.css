@@ -1,0 +1,61 @@
+body {
+  font-family: 'Spline Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.glass-container {
+  background: rgba(10, 10, 10, 0.45);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ── Inputs transparentes ───────────────────────────── */
+.input-glass {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.input-glass::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.input-glass:focus {
+  background: transparent;
+  border-color: rgba(236, 19, 55, 0.6);
+  box-shadow: 0 0 0 4px rgba(236, 19, 55, 0.1);
+  color: #ffffff;
+}
+
+/* Fix autofill browser */
+.input-glass:-webkit-autofill,
+.input-glass:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+@keyframes onAutoFillStart { from {} to {} }
+
+.input-glass:-webkit-autofill {
+  animation-name: onAutoFillStart;
+  caret-color: #ffffff;
+}
+
+/* ── Avatar ─────────────────────────────────────────── */
+.avatar-ring {
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.profile-upload:hover .avatar-ring {
+  border-color: rgba(236, 19, 55, 0.5);
+  background: rgba(236, 19, 55, 0.05);
+}
+
+.profile-upload:hover .upload-overlay {
+  opacity: 1;
+}
