@@ -1,0 +1,225 @@
+/* style.css */
+
+/* ===== BASE ===== */
+body {
+  font-family: 'Spline Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background-color: #0a0a0a !important;
+  color: #f1f5f9;
+}
+
+aside {
+  background-color: #1a1a1a !important;
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+
+main {
+  background-color: #0a0a0a;
+}
+
+header {
+  background-color: rgba(10,10,10,0.85) !important;
+}
+
+/* ===== SEARCH INPUT ===== */
+header input {
+  background-color: rgba(255,255,255,0.07) !important;
+  color: #f1f5f9;
+}
+header input::placeholder {
+  color: #94a3b8;
+}
+
+/* ===== GLASSMORPHISM PLAYER ===== */
+.glass-player {
+  background: rgba(26, 26, 26, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ===== HIDE SCROLLBAR ===== */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ===== PLAYER ACTIVE STATE ===== */
+#btn-play.is-playing .material-symbols-outlined {
+  content: 'pause';
+}
+
+/* ===== VOLUME BAR HOVER ===== */
+#volume-bar:hover #volume-fill {
+  background-color: #ec1337;
+}
+
+/* ===== SHUFFLE / REPEAT ACTIVE ===== */
+.btn-active {
+  color: #ec1337 !important;
+}
+
+/* ===== SIDEBAR TEXTOS ===== */
+aside a {
+  color: #cbd5e1;
+}
+
+/* ===== PRO PLAN ===== */
+aside .p-4 {
+  background-color: rgba(236,19,55,0.07) !important;
+  border-color: rgba(236,19,55,0.2) !important;
+}
+
+/* ===== RESPONSIVO MOBILE ===== */
+@media (max-width: 768px) {
+
+  /* Esconde sidebar no mobile */
+  aside {
+    display: none !important;
+  }
+
+  /* Main ocupa tela toda */
+  .flex.h-screen {
+    flex-direction: column;
+  }
+
+  main {
+    width: 100% !important;
+    padding-bottom: 8rem;
+  }
+
+  /* Header menor */
+  header {
+    padding: 0.75rem 1rem !important;
+    gap: 0.5rem;
+  }
+
+  header .flex-1 {
+    margin: 0 0.5rem !important;
+  }
+
+  /* Hero menor */
+  main section:first-of-type {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    margin-top: 0.5rem !important;
+  }
+
+  main section:first-of-type .h-\[480px\] {
+    height: 280px !important;
+  }
+
+  /* Título hero menor */
+  main section:first-of-type h1 {
+    font-size: 2rem !important;
+    line-height: 1 !important;
+  }
+
+  main section:first-of-type p {
+    font-size: 0.85rem !important;
+    display: none;
+  }
+
+  main section:first-of-type .p-12 {
+    padding: 1.5rem !important;
+  }
+
+  main section:first-of-type .mt-4 {
+    margin-top: 0.75rem !important;
+  }
+
+  main section:first-of-type button {
+    padding: 0.5rem 1.25rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* Seções com padding menor */
+  section[style*="padding-left:2rem"] {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Cards menores */
+  .track-card, .flex-shrink-0.w-48 {
+    width: 8rem !important;
+  }
+
+  /* Made for You em coluna */
+  .grid.grid-cols-1 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Player fixo adaptado para mobile */
+  .fixed.bottom-6 {
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    transform: none !important;
+    border-radius: 1rem 1rem 0 0 !important;
+    padding: 0.75rem 1rem !important;
+  }
+
+  .glass-player {
+    flex-direction: column !important;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem !important;
+    border-radius: 1rem 1rem 0 0 !important;
+  }
+
+  /* Player - info da música ocupa largura toda */
+  .glass-player > div:first-child {
+    width: 100% !important;
+  }
+
+  /* Player - controles centralizados */
+  .glass-player > div:nth-child(2) {
+    width: 100% !important;
+  }
+
+  /* Esconde volume e extras no mobile */
+  .glass-player > div:last-child {
+    display: none !important;
+  }
+
+  /* Navbar mobile no rodapé da sidebar (escondida) */
+}
+
+/* ===== NAVBAR MOBILE ===== */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  background: #1a1a1a;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 0.5rem 0;
+  justify-content: space-around;
+}
+
+.mobile-nav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: #94a3b8;
+  font-size: 10px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.mobile-nav a.active {
+  color: #ec1337;
+}
+
+@media (max-width: 768px) {
+  .mobile-nav {
+    display: flex !important;
+  }
+}
