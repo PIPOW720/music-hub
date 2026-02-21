@@ -1,15 +1,58 @@
 // script.js — Music Hub Dashboard
 
+// ===== SUPABASE STORAGE =====
+const STORAGE = 'https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe';
+
 // ===== DADOS DAS MÚSICAS =====
 const tracks = [
-  { title: "MY EYES", artist: "Travis Scott", img: "images/album-travisscot.jpg", src: "musicas/My Eyes.mp3" },
-  { title: "Champagne Coast", artist: "Blood Orange", img: "images/Champagnecoast.jpg", src: "musicas/champagne Coast.mp3" },
-  { title: "Iris", artist: "Goo Goo Dolls", img: "images/TheGooGooDolls.jpg", src: "musicas/GooGooDolls-Iris.mp3" },
-  { title: "O Vovô Não Ta Casado", artist: "SO Vovô Não Ta Casado", img: "images/O Vovô Não Ta Casado.jpg", src: "musicas/AITODOMUNDO.mp3" },
-  { title: "Sunsets", artist: "Dayglo", img: "images/album-sunsets.jpg", src: "musicas/sunsets.mp3" },
-  { title: "Sidewalks and Skeletons", artist: "Sidewalks and Skeletons", img: "images/sidewalks.jpg", src: "musicas/sidewalks.mp3" },
-  { title: "PISOU NA MINHA CARA", artist: "DJ GBR", img: "images/automotivo.jpg", src: "musicas/AUTOMOTIVO VEM PREPARADA - PISOU NA MINHA CARA.mp3" },
-  { title: "Sunflower", artist: "Post Malone", img: "images/sunflower.jpg", src: "musicas/sunflower.mp3" },
+  {
+    title: "MY EYES",
+    artist: "Travis Scott",
+    img: `${STORAGE}/images/album-travisscot.jpg`,
+    src: `${STORAGE}/musicas/My Eyes.mp3`
+  },
+  {
+    title: "Champagne Coast",
+    artist: "Blood Orange",
+    img: `https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg`,
+    src: `https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/musicas/Champagne%20Coast.mp3`
+  },
+  {
+    title: "Iris",
+    artist: "Goo Goo Dolls",
+    img: `https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/TheGooGooDolls.jpg`,
+    src: `https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/musicas/GooGooDolls-Iris.mp3`
+  },
+  {
+    title: "O Vovô Não Ta Casado",
+    artist: "O Vovô Não Ta Casado",
+    img: `https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/O Vovô Não Ta Casado.jpg`,
+    src: `https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/musicas/AITODOMUNDO.mp3`
+  },
+  {
+    title: "Sunsets",
+    artist: "Dayglow",
+    img: `https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-sunsets.jpg`,
+    src: `${STORAGE}/musicas/sunsets.mp3`
+  },
+  {
+    title: "Sidewalks and Skeletons",
+    artist: "Sidewalks and Skeletons",
+    img: `https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sidewalks.jpg`,
+    src: `https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/musicas/sidewalks.mp3`
+  },
+  {
+    title: "PISOU NA MINHA CARA",
+    artist: "DJ GBR",
+    img: `https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/automotivo.jpg`,
+    src: `https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/musicas/AUTOMOTIVO VEM PREPARADA - PISOU NA MINHA CARA.mp3`
+  },
+  {
+    title: "Sunflower",
+    artist: "Post Malone",
+    img: `https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg`,
+    src: `https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/musicas/Sunflower.mp3`
+  },
 ];
 
 // ===== AUDIO =====
@@ -178,7 +221,7 @@ btnShuffle.addEventListener('click', () => {
 // ===== REPEAT =====
 btnRepeat.addEventListener('click', () => {
   isRepeat = !isRepeat;
-  audio.loop = false; // controlamos manualmente via 'ended'
+  audio.loop = false;
   btnRepeat.style.color = isRepeat ? '#ec1337' : '';
   btnRepeat.textContent = isRepeat ? 'repeat_one' : 'repeat';
 });
@@ -200,7 +243,6 @@ document.querySelectorAll('.track-card').forEach((card) => {
 // ===== MÚSICAS DAS PÁGINAS DE CATEGORIA =====
 document.querySelectorAll('.track-row').forEach((row) => {
   row.addEventListener('click', (e) => {
-    // Ignora clique no botão de favorito
     if (e.target.closest('button')) return;
     loadTrack(parseInt(row.dataset.index), true);
   });

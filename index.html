@@ -32,7 +32,6 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Sidebar overlay mobile */
     #sidebar-overlay {
       display: none;
       position: fixed;
@@ -45,7 +44,6 @@
       display: block;
     }
 
-    /* Sidebar mobile */
     @media (max-width: 768px) {
       #sidebar {
         position: fixed !important;
@@ -65,7 +63,6 @@
       }
     }
 
-    /* Nav active */
     .nav-link.active {
       background: rgba(236, 19, 55, 0.1);
       color: #ec1337 !important;
@@ -75,7 +72,6 @@
       font-variation-settings: "FILL" 1;
     }
 
-    /* Pages */
     .page {
       display: none;
     }
@@ -84,7 +80,6 @@
       display: block;
     }
 
-    /* Mobile bottom nav */
     .mobile-nav {
       display: none;
       position: fixed;
@@ -156,12 +151,11 @@
 
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
 
-  <!-- Overlay mobile -->
   <div id="sidebar-overlay" onclick="closeSidebar()"></div>
 
   <div class="flex h-screen overflow-hidden">
 
-    <!-- ===== SIDEBAR (ESQUERDA) ===== -->
+    <!-- SIDEBAR -->
     <aside id="sidebar"
       class="w-64 flex-shrink-0 bg-white dark:bg-neutral-dark border-r border-slate-200 dark:border-white/5 flex flex-col justify-between py-6 px-4">
       <div class="space-y-8">
@@ -229,20 +223,18 @@
       </div>
     </aside>
 
-    <!-- ===== MAIN CONTENT ===== -->
+    <!-- MAIN CONTENT -->
     <main class="flex-1 overflow-y-auto no-scrollbar pb-32">
 
       <!-- Header -->
       <header
         class="sticky top-0 z-20 flex items-center justify-between px-4 md:px-8 py-4 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
         <div class="flex items-center gap-3">
-          <!-- Hamburguer mobile -->
           <button id="menu-btn"
             class="md:hidden w-9 h-9 rounded-full bg-slate-200 dark:bg-white/5 flex items-center justify-center"
             onclick="openSidebar()">
             <span class="material-symbols-outlined text-xl">menu</span>
           </button>
-          <!-- Nav desktop -->
           <div class="hidden md:flex gap-3">
             <button id="btn-back"
               class="w-8 h-8 rounded-full bg-slate-200 dark:bg-white/5 flex items-center justify-center opacity-40 cursor-not-allowed"
@@ -269,7 +261,9 @@
           <div class="relative flex items-center">
             <button id="avatar-btn"
               class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary focus:outline-none">
-              <img id="user-avatar" class="w-full h-full object-cover" src="images/avatar.jpg" alt="User profile" />
+              <img id="user-avatar" class="w-full h-full object-cover"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/avatar.jpg"
+                alt="User profile" />
             </button>
             <div id="avatar-menu"
               class="hidden absolute right-0 top-12 w-44 bg-neutral-900 border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden">
@@ -287,14 +281,14 @@
         </div>
       </header>
 
-      <!-- ===== PAGE: HOME ===== -->
+      <!-- PAGE: HOME -->
       <div id="page-home" class="page active">
-
         <section style="padding-left:2rem; padding-right:2rem; margin-top:1rem;">
           <div class="relative h-[480px] rounded-xl overflow-hidden group">
             <video autoplay loop muted playsinline
               class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-              <source src="images/hub.mp4" type="video/mp4">
+              <source src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/hub.mp4"
+                type="video/mp4">
             </video>
             <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
             <div class="absolute bottom-0 left-0 p-12 w-full flex flex-col items-start gap-4">
@@ -330,7 +324,8 @@
             <div class="track-card flex-shrink-0 w-48 group cursor-pointer" data-index="0">
               <div class="relative aspect-square rounded-xl overflow-hidden mb-3 shadow-lg">
                 <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  src="images/album-travisscot.jpg" alt="MY EYES" />
+                  src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
+                  alt="MY EYES" />
                 <div
                   class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <button
@@ -345,7 +340,8 @@
             <div class="track-card flex-shrink-0 w-48 group cursor-pointer" data-index="1">
               <div class="relative aspect-square rounded-xl overflow-hidden mb-3 shadow-lg">
                 <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  src="images/Champagnecoast.jpg" alt="Champagne Coast" />
+                  src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg"
+                  alt="Champagne Coast" />
                 <div
                   class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <button
@@ -360,7 +356,8 @@
             <div class="track-card flex-shrink-0 w-48 group cursor-pointer" data-index="2">
               <div class="relative aspect-square rounded-xl overflow-hidden mb-3 shadow-lg">
                 <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  src="images/TheGooGooDolls.jpg" alt="Iris" />
+                  src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/TheGooGooDolls.jpg"
+                  alt="Iris" />
                 <div
                   class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <button
@@ -375,7 +372,8 @@
             <div class="track-card flex-shrink-0 w-48 group cursor-pointer" data-index="3">
               <div class="relative aspect-square rounded-xl overflow-hidden mb-3 shadow-lg">
                 <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  src="images/O Vovô Não Ta Casado.jpg" alt="O Vovô Não Ta Casado" />
+                  src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/OVovoNaoTaCasado.jpg"
+                  alt="O Vovô Não Ta Casado" />
                 <div
                   class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <button
@@ -385,12 +383,13 @@
                 </div>
               </div>
               <h4 class="font-bold text-sm truncate">O Vovô Não Ta Casado</h4>
-              <p class="text-xs text-slate-500 dark:text-slate-400">SO Vovô Não Ta Casado</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400">O Vovô Não Ta Casado</p>
             </div>
             <div class="track-card flex-shrink-0 w-48 group cursor-pointer" data-index="7">
               <div class="relative aspect-square rounded-xl overflow-hidden mb-3 shadow-lg">
                 <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  src="images/sunflower.jpg" alt="Sunflower" />
+                  src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg"
+                  alt="Sunflower" />
                 <div
                   class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <button
@@ -410,7 +409,8 @@
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="relative h-44 rounded-xl overflow-hidden cursor-pointer group">
               <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                src="images/daily-mix-1.jpg" alt="Daily Mix 1" />
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-1.jpg"
+                alt="Daily Mix 1" />
               <div
                 class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent flex flex-col justify-center p-6">
                 <h3 class="text-xl font-bold text-white mb-1">Daily Mix 1</h3>
@@ -419,7 +419,8 @@
             </div>
             <div class="relative h-44 rounded-xl overflow-hidden cursor-pointer group">
               <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                src="images/daily-mix-2.jpg" alt="Daily Mix 2" />
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-2.jpg"
+                alt="Daily Mix 2" />
               <div
                 class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent flex flex-col justify-center p-6">
                 <h3 class="text-xl font-bold text-white mb-1">Daily Mix 2</h3>
@@ -428,7 +429,8 @@
             </div>
             <div class="relative h-44 rounded-xl overflow-hidden cursor-pointer group">
               <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                src="images/daily-mix-3.jpg" alt="Daily Mix 3" />
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-3.jpg"
+                alt="Daily Mix 3" />
               <div
                 class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent flex flex-col justify-center p-6">
                 <h3 class="text-xl font-bold text-white mb-1">Daily Mix 3</h3>
@@ -439,7 +441,7 @@
         </section>
       </div>
 
-      <!-- ===== PAGE: NAVEGAR ===== -->
+      <!-- PAGE: NAVEGAR -->
       <div id="page-navegar" class="page">
         <div class="px-4 md:px-8 py-6 border-b border-slate-200 dark:border-white/5">
           <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
@@ -535,9 +537,9 @@
             </div>
             <div class="genre-card relative aspect-[16/10] rounded-2xl overflow-hidden cursor-pointer group shadow-xl"
               onclick="navigate('synthwave')">
-              <img alt="Synthwave"
+              <img alt="Funk"
                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                src="images/funk.jpg" />
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/funk.jpg" />
               <div
                 class="genre-overlay absolute inset-0 bg-gradient-to-br from-pink-900/80 to-transparent transition-colors duration-300">
               </div>
@@ -589,13 +591,11 @@
         </section>
       </div>
 
-      <!-- ===== PAGE: FOCUS ===== -->
+      <!-- PAGE: FOCUS -->
       <div id="page-focus" class="page">
         <div class="px-4 md:px-8 mt-8">
           <div class="flex flex-col lg:flex-row gap-8">
             <div class="flex-1 space-y-10">
-
-              <!-- Hero -->
               <section>
                 <div class="relative w-full h-80 rounded-3xl overflow-hidden shadow-2xl group">
                   <img alt="Focus Radio Hero" class="absolute inset-0 w-full h-full object-cover"
@@ -615,30 +615,24 @@
                     <div class="flex items-center gap-4">
                       <button
                         class="px-8 py-3 bg-white text-black font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform">
-                        <span class="material-symbols-outlined fill-1">play_arrow</span>
-                        Listen Now
+                        <span class="material-symbols-outlined fill-1">play_arrow</span>Listen Now
                       </button>
                       <button
-                        class="p-3 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full hover:bg-white/20 transition-all">
-                        <span class="material-symbols-outlined">favorite</span>
-                      </button>
+                        class="p-3 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
+                          class="material-symbols-outlined">favorite</span></button>
                       <button
-                        class="p-3 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full hover:bg-white/20 transition-all">
-                        <span class="material-symbols-outlined">share</span>
-                      </button>
+                        class="p-3 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
+                          class="material-symbols-outlined">share</span></button>
                     </div>
                   </div>
                 </div>
               </section>
-
-              <!-- Back button + Top Artists -->
               <section>
                 <div class="flex items-center justify-between mb-6">
                   <h3 class="text-xl font-bold tracking-tight uppercase">Top Artists for Focus</h3>
                   <button onclick="navigate('navegar')"
                     class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors">
-                    <span class="material-symbols-outlined text-sm">arrow_back</span>
-                    Voltar
+                    <span class="material-symbols-outlined text-sm">arrow_back</span>Voltar
                   </button>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-6">
@@ -697,8 +691,6 @@
                 </div>
               </section>
             </div>
-
-            <!-- Sidebar direita -->
             <aside class="w-full lg:w-80 flex-shrink-0 space-y-8 pb-8">
               <div>
                 <h3 class="text-xs font-black text-slate-500 uppercase tracking-[0.2em] mb-6">Sub-Focus Themes</h3>
@@ -706,8 +698,8 @@
                   <div
                     class="group p-4 bg-white dark:bg-card-dark rounded-2xl border border-slate-200 dark:border-white/5 hover:border-primary/30 transition-all cursor-pointer">
                     <div class="flex items-center gap-4">
-                      <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
-                        <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0"><img
+                          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                           src="https://lh3.googleusercontent.com/aida-public/AB6AXuCn-w_Rk119fHwDXWuBpyS5rz_UjbGKRfKs72ChpMDwcxWo_59_hB5ZC6NDS35wYU-8Tm_fgv5PNbt276dlpdfsQi_sW_O480nWsWTzJQREmGjUBnpBR_ZBC4PJ-lmMjC1xaNxpbXifCRFEA5XkKlqURleez_P-pJsozgqnNgVVGASWeq287kXLO3yoI2UyfVDDMJ8XzJ_e-gMwIIuslOaz5SYd7ZC4ql6YuzXJt6d7zARyenQ-mBm794l5ZER7-BgnHTAjg2jzdw" />
                       </div>
                       <div>
@@ -719,8 +711,8 @@
                   <div
                     class="group p-4 bg-white dark:bg-card-dark rounded-2xl border border-slate-200 dark:border-white/5 hover:border-primary/30 transition-all cursor-pointer">
                     <div class="flex items-center gap-4">
-                      <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
-                        <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0"><img
+                          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                           src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGPAaEMiUV2dn5SKzdyKyJccTOGJmeE7HUMOtsnAuyrY1dT4Md7ZJZeabgrYPOrrs69wtQWW4GW2luoUKmzkQGlnVpAqS5RRImrxXw-VCxORsgxynlpLJFY-85Otv-HcsJ7YLNre-KbiMtXZNy0DHDO8-oZSdNlUgamH5rru3XQcN05AbXYBlLCW73fiM0QOWv6nfsKgr3MpFy9L-1CMmNtwIFTdtBSOCCnG2-BsqBoGFEBln6R1OyOjdpwV57xDdhsQXwbjUeag" />
                       </div>
                       <div>
@@ -733,8 +725,8 @@
                   <div
                     class="group p-4 bg-white dark:bg-card-dark rounded-2xl border border-slate-200 dark:border-white/5 hover:border-primary/30 transition-all cursor-pointer">
                     <div class="flex items-center gap-4">
-                      <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
-                        <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0"><img
+                          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                           src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAEEbfzVbR4j-AUfWC0jrbQNGovb_ZQBnH9wZN9Z_ayxsODPGgm9GknIMZkWAl65Qsda9JyaGYk2R6N8-97GnRkBhH9mv-CwAlqIqczeAhUikBqQfJHIpjYzWmq0-C5qodZ55CS9mdtozb18ta6bbCi0jdCPWjkZCVwNMj-e3DMx__TPwKALD_K0wTsZxH-z8tHxKVbikG3gDZ8XzbwHed0ALN6ZBbotZRyMAjjF_6-fzB6IE9x2P1QN6vUwqzg7x51rV2FcM42A" />
                       </div>
                       <div>
@@ -746,8 +738,8 @@
                   <div
                     class="group p-4 bg-white dark:bg-card-dark rounded-2xl border border-slate-200 dark:border-white/5 hover:border-primary/30 transition-all cursor-pointer">
                     <div class="flex items-center gap-4">
-                      <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
-                        <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      <div class="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0"><img
+                          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                           src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLLDCNUL4ru8tjlcNr6KXOngPaYPOk5kuTOisAugOGb1ZMzJLyhYvI24kkIxfm18mgL6YmW_YLoQFV2Rd8xJtTi8mPp3StfjUPfgYD8ROgwr5Tq_ieUWQfFf5dIziE4CDS4CRaR-RxucCteGLn26xCgEyJZCo5uTxDD1KSTgtx_vJTVqYFBKvrosqslZlgDHq6OPAHCFn8NlXFelb6QMKH3weTXgs0DJ2EzsXH1hUS2LMfeX6KbkATYNLpgJUOGtanf6AharrmKw" />
                       </div>
                       <div>
@@ -772,20 +764,20 @@
         </div>
       </div>
 
-      <!-- MACRO: genre page builder (used for all genres) -->
-      <!-- ===== PAGE: TRAP ===== -->
+      <!-- PAGE: TRAP -->
       <div id="page-trap" class="page">
         <div class="px-4 md:px-8 mt-8 pb-8">
           <div class="flex items-center gap-3 mb-6">
             <button onclick="navigate('navegar')"
-              class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors">
-              <span class="material-symbols-outlined text-sm">arrow_back</span> Voltar
-            </button>
+              class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors"><span
+                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button>
             <span class="text-slate-600 dark:text-slate-600">/</span>
             <span class="text-sm font-bold text-primary">Trap</span>
           </div>
           <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <img class="absolute inset-0 w-full h-full object-cover" src="images/album-travisscot.jpg" alt="Trap" />
+            <img class="absolute inset-0 w-full h-full object-cover"
+              src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
+              alt="Trap" />
             <div class="absolute inset-0"
               style="background:linear-gradient(135deg,rgba(0,0,0,0.7) 0%,rgba(20,0,0,0.5) 100%)"></div>
             <div class="absolute inset-0 p-10 flex flex-col justify-end">
@@ -795,25 +787,23 @@
               <p class="text-slate-300 text-sm mb-6">Os maiores hits do trap para você arrasar.</p>
               <div class="flex gap-3">
                 <button
-                  class="px-8 py-3 bg-primary text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform">
-                  <span class="material-symbols-outlined fill-1">play_arrow</span> Play
-                </button>
+                  class="px-8 py-3 bg-primary text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform"><span
+                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button>
                 <button
-                  class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all">
-                  <span class="material-symbols-outlined">favorite</span>
-                </button>
+                  class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
+                    class="material-symbols-outlined">favorite</span></button>
               </div>
             </div>
           </div>
-          <!-- Track List -->
           <h3 class="text-xl font-bold uppercase tracking-tight mb-4">Músicas</h3>
           <div class="space-y-2">
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="0">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/album-travisscot.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
                 alt="MY EYES" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">MY EYES</p>
@@ -826,9 +816,10 @@
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="0">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/album-travisscot.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
                 alt="SICKO MODE" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">SICKO MODE</p>
@@ -841,9 +832,10 @@
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="0">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/album-travisscot.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
                 alt="GOOSEBUMPS" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">GOOSEBUMPS</p>
@@ -856,9 +848,10 @@
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="0">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/album-travisscot.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
                 alt="ANTIDOTE" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">ANTIDOTE</p>
@@ -871,9 +864,10 @@
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="0">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/album-travisscot.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
                 alt="HIGHEST IN THE ROOM" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">HIGHEST IN THE ROOM</p>
@@ -887,19 +881,20 @@
         </div>
       </div>
 
-      <!-- ===== PAGE: WORKOUT / POP ===== -->
+      <!-- PAGE: WORKOUT/POP -->
       <div id="page-workout" class="page">
         <div class="px-4 md:px-8 mt-8 pb-8">
           <div class="flex items-center gap-3 mb-6">
             <button onclick="navigate('navegar')"
-              class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors">
-              <span class="material-symbols-outlined text-sm">arrow_back</span> Voltar
-            </button>
-            <span class="text-slate-600 dark:text-slate-600">/</span>
-            <span class="text-sm font-bold text-primary">POP</span>
+              class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors"><span
+                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button>
+            <span class="text-slate-600 dark:text-slate-600">/</span><span
+              class="text-sm font-bold text-primary">POP</span>
           </div>
           <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <img class="absolute inset-0 w-full h-full object-cover" src="images/Champagnecoast.jpg" alt="Workout" />
+            <img class="absolute inset-0 w-full h-full object-cover"
+              src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg"
+              alt="Workout" />
             <div class="absolute inset-0"
               style="background:linear-gradient(135deg,rgba(180,10,40,0.6) 0%,rgba(0,0,0,0.7) 100%)"></div>
             <div class="absolute inset-0 p-10 flex flex-col justify-end">
@@ -909,13 +904,11 @@
               <p class="text-slate-300 text-sm mb-6">Energia máxima para sua academia.</p>
               <div class="flex gap-3">
                 <button
-                  class="px-8 py-3 bg-primary text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform">
-                  <span class="material-symbols-outlined fill-1">play_arrow</span> Play
-                </button>
+                  class="px-8 py-3 bg-primary text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform"><span
+                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button>
                 <button
-                  class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all">
-                  <span class="material-symbols-outlined">favorite</span>
-                </button>
+                  class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
+                    class="material-symbols-outlined">favorite</span></button>
               </div>
             </div>
           </div>
@@ -924,94 +917,96 @@
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="1">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/Champagnecoast.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg"
                 alt="Champagne Coast" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Champagne Coast</p>
                 <p class="text-xs text-slate-500 truncate">Blood Orange</p>
               </div>
-              <span class="text-xs text-slate-500">5:01</span>
-              <button
+              <span class="text-xs text-slate-500">5:01</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="1">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/Champagnecoast.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg"
                 alt="Best to You" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Best to You</p>
                 <p class="text-xs text-slate-500 truncate">Blood Orange</p>
               </div>
-              <span class="text-xs text-slate-500">3:55</span>
-              <button
+              <span class="text-xs text-slate-500">3:55</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="1">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/Champagnecoast.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg"
                 alt="You're Not Good Enough" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">You're Not Good Enough</p>
                 <p class="text-xs text-slate-500 truncate">Blood Orange</p>
               </div>
-              <span class="text-xs text-slate-500">4:11</span>
-              <button
+              <span class="text-xs text-slate-500">4:11</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="1">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/Champagnecoast.jpg" alt="Hope" />
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg"
+                alt="Hope" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Hope</p>
                 <p class="text-xs text-slate-500 truncate">Blood Orange</p>
               </div>
-              <span class="text-xs text-slate-500">3:29</span>
-              <button
+              <span class="text-xs text-slate-500">3:29</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="1">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/Champagnecoast.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg"
                 alt="Neon Baby" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Neon Baby</p>
                 <p class="text-xs text-slate-500 truncate">Blood Orange</p>
               </div>
-              <span class="text-xs text-slate-500">4:47</span>
-              <button
+              <span class="text-xs text-slate-500">4:47</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ===== PAGE: CHILL ===== -->
+      <!-- PAGE: CHILL -->
       <div id="page-chill" class="page">
         <div class="px-4 md:px-8 mt-8 pb-8">
           <div class="flex items-center gap-3 mb-6">
             <button onclick="navigate('navegar')"
-              class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors">
-              <span class="material-symbols-outlined text-sm">arrow_back</span> Voltar
-            </button>
-            <span class="text-slate-600 dark:text-slate-600">/</span>
-            <span class="text-sm font-bold text-primary">Chill</span>
+              class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors"><span
+                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button>
+            <span class="text-slate-600 dark:text-slate-600">/</span><span
+              class="text-sm font-bold text-primary">Chill</span>
           </div>
           <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <img class="absolute inset-0 w-full h-full object-cover" src="images/sunflower.jpg" alt="Chill" />
+            <img class="absolute inset-0 w-full h-full object-cover"
+              src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg"
+              alt="Chill" />
             <div class="absolute inset-0"
               style="background:linear-gradient(135deg,rgba(180,120,0,0.5) 0%,rgba(0,0,0,0.7) 100%)"></div>
             <div class="absolute inset-0 p-10 flex flex-col justify-end">
@@ -1021,13 +1016,11 @@
               <p class="text-slate-300 text-sm mb-6">Relaxe com as melhores batidas chill.</p>
               <div class="flex gap-3">
                 <button
-                  class="px-8 py-3 bg-amber-500 text-black font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform">
-                  <span class="material-symbols-outlined fill-1">play_arrow</span> Play
-                </button>
+                  class="px-8 py-3 bg-amber-500 text-black font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform"><span
+                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button>
                 <button
-                  class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all">
-                  <span class="material-symbols-outlined">favorite</span>
-                </button>
+                  class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
+                    class="material-symbols-outlined">favorite</span></button>
               </div>
             </div>
           </div>
@@ -1036,90 +1029,95 @@
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="7">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/sunflower.jpg" alt="Sunflower" />
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg"
+                alt="Sunflower" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Sunflower</p>
                 <p class="text-xs text-slate-500 truncate">Post Malone</p>
               </div>
-              <span class="text-xs text-slate-500">2:38</span>
-              <button
+              <span class="text-xs text-slate-500">2:38</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="7">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/sunflower.jpg" alt="Sunflower" />
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg"
+                alt="Sunflower" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Sunflower</p>
                 <p class="text-xs text-slate-500 truncate">Post Malone</p>
               </div>
-              <span class="text-xs text-slate-500">3:10</span>
-              <button
+              <span class="text-xs text-slate-500">3:10</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="4">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/sunflower.jpg" alt="Sunflower" />
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg"
+                alt="Sunflower" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Sunflower</p>
                 <p class="text-xs text-slate-500 truncate">Post Malone</p>
               </div>
-              <span class="text-xs text-slate-500">2:58</span>
-              <button
+              <span class="text-xs text-slate-500">2:58</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="7">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/sunflower.jpg" alt="Sunflower" />
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg"
+                alt="Sunflower" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Sunflower</p>
                 <p class="text-xs text-slate-500 truncate">Post Malone</p>
               </div>
-              <span class="text-xs text-slate-500">2:38</span>
-              <button
+              <span class="text-xs text-slate-500">2:38</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="7">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/sunflower.jpg" alt="Sunflower" />
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg"
+                alt="Sunflower" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Sunflower</p>
                 <p class="text-xs text-slate-500 truncate">Post Malone</p>
               </div>
-              <span class="text-xs text-slate-500">2:38</span>
-              <button
+              <span class="text-xs text-slate-500">2:38</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ===== PAGE: ELECTRONIC ===== -->
+      <!-- PAGE: ELECTRONIC -->
       <div id="page-electronic" class="page">
         <div class="px-4 md:px-8 mt-8 pb-8">
           <div class="flex items-center gap-3 mb-6">
             <button onclick="navigate('navegar')"
-              class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors">
-              <span class="material-symbols-outlined text-sm">arrow_back</span> Voltar
-            </button>
-            <span class="text-slate-600 dark:text-slate-600">/</span>
-            <span class="text-sm font-bold text-primary">Electronic</span>
+              class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors"><span
+                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button>
+            <span class="text-slate-600 dark:text-slate-600">/</span><span
+              class="text-sm font-bold text-primary">Electronic</span>
           </div>
           <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <img class="absolute inset-0 w-full h-full object-cover" src="images/album-midnight-blue.jpg"
+            <img class="absolute inset-0 w-full h-full object-cover"
+              src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-midnight-blue.jpg"
               alt="Electronic" />
             <div class="absolute inset-0"
               style="background:linear-gradient(135deg,rgba(80,0,160,0.6) 0%,rgba(0,0,0,0.7) 100%)"></div>
@@ -1130,13 +1128,11 @@
               <p class="text-slate-300 text-sm mb-6">Os melhores sons eletrônicos do momento.</p>
               <div class="flex gap-3">
                 <button
-                  class="px-8 py-3 bg-purple-600 text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform">
-                  <span class="material-symbols-outlined fill-1">play_arrow</span> Play
-                </button>
+                  class="px-8 py-3 bg-purple-600 text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform"><span
+                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button>
                 <button
-                  class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all">
-                  <span class="material-symbols-outlined">favorite</span>
-                </button>
+                  class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
+                    class="material-symbols-outlined">favorite</span></button>
               </div>
             </div>
           </div>
@@ -1145,95 +1141,96 @@
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="3">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/album-midnight-blue.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-midnight-blue.jpg"
                 alt="Midnight Blue" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Midnight Blue</p>
                 <p class="text-xs text-slate-500 truncate">Blue Note Collective</p>
               </div>
-              <span class="text-xs text-slate-500">6:10</span>
-              <button
+              <span class="text-xs text-slate-500">6:10</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="3">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/album-midnight-blue.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-midnight-blue.jpg"
                 alt="Neon Drift" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Neon Drift</p>
                 <p class="text-xs text-slate-500 truncate">Blue Note Collective</p>
               </div>
-              <span class="text-xs text-slate-500">5:33</span>
-              <button
+              <span class="text-xs text-slate-500">5:33</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="3">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/album-midnight-blue.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-midnight-blue.jpg"
                 alt="Pulse Wave" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Pulse Wave</p>
                 <p class="text-xs text-slate-500 truncate">Blue Note Collective</p>
               </div>
-              <span class="text-xs text-slate-500">7:02</span>
-              <button
+              <span class="text-xs text-slate-500">7:02</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="3">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/album-midnight-blue.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-midnight-blue.jpg"
                 alt="Static Dream" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Static Dream</p>
                 <p class="text-xs text-slate-500 truncate">Blue Note Collective</p>
               </div>
-              <span class="text-xs text-slate-500">4:58</span>
-              <button
+              <span class="text-xs text-slate-500">4:58</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="3">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/album-midnight-blue.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-midnight-blue.jpg"
                 alt="Voltage" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Voltage</p>
                 <p class="text-xs text-slate-500 truncate">Blue Note Collective</p>
               </div>
-              <span class="text-xs text-slate-500">5:45</span>
-              <button
+              <span class="text-xs text-slate-500">5:45</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ===== PAGE: JAZZ ===== -->
+      <!-- PAGE: JAZZ -->
       <div id="page-jazz" class="page">
         <div class="px-4 md:px-8 mt-8 pb-8">
           <div class="flex items-center gap-3 mb-6">
             <button onclick="navigate('navegar')"
-              class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors">
-              <span class="material-symbols-outlined text-sm">arrow_back</span> Voltar
-            </button>
-            <span class="text-slate-600 dark:text-slate-600">/</span>
-            <span class="text-sm font-bold text-primary">Jazz</span>
+              class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors"><span
+                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button>
+            <span class="text-slate-600 dark:text-slate-600">/</span><span
+              class="text-sm font-bold text-primary">Jazz</span>
           </div>
           <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <img class="absolute inset-0 w-full h-full object-cover" src="images/daily-mix-1.jpg" alt="Jazz" />
+            <img class="absolute inset-0 w-full h-full object-cover"
+              src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-1.jpg"
+              alt="Jazz" />
             <div class="absolute inset-0"
               style="background:linear-gradient(135deg,rgba(30,30,100,0.6) 0%,rgba(0,0,0,0.7) 100%)"></div>
             <div class="absolute inset-0 p-10 flex flex-col justify-end">
@@ -1243,13 +1240,11 @@
               <p class="text-slate-300 text-sm mb-6">Os maiores clássicos do jazz para você.</p>
               <div class="flex gap-3">
                 <button
-                  class="px-8 py-3 bg-indigo-600 text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform">
-                  <span class="material-symbols-outlined fill-1">play_arrow</span> Play
-                </button>
+                  class="px-8 py-3 bg-indigo-600 text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform"><span
+                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button>
                 <button
-                  class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all">
-                  <span class="material-symbols-outlined">favorite</span>
-                </button>
+                  class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
+                    class="material-symbols-outlined">favorite</span></button>
               </div>
             </div>
           </div>
@@ -1258,110 +1253,110 @@
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/daily-mix-1.jpg" alt="So What" />
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-1.jpg"
+                alt="So What" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">So What</p>
                 <p class="text-xs text-slate-500 truncate">Miles Davis</p>
               </div>
-              <span class="text-xs text-slate-500">9:22</span>
-              <button
+              <span class="text-xs text-slate-500">9:22</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/daily-mix-1.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-1.jpg"
                 alt="Take Five" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Take Five</p>
                 <p class="text-xs text-slate-500 truncate">Dave Brubeck</p>
               </div>
-              <span class="text-xs text-slate-500">5:24</span>
-              <button
+              <span class="text-xs text-slate-500">5:24</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/daily-mix-1.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-1.jpg"
                 alt="Autumn Leaves" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Autumn Leaves</p>
                 <p class="text-xs text-slate-500 truncate">Chet Baker</p>
               </div>
-              <span class="text-xs text-slate-500">4:33</span>
-              <button
+              <span class="text-xs text-slate-500">4:33</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/daily-mix-1.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-1.jpg"
                 alt="Fly Me to the Moon" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Fly Me to the Moon</p>
                 <p class="text-xs text-slate-500 truncate">Frank Sinatra</p>
               </div>
-              <span class="text-xs text-slate-500">2:48</span>
-              <button
+              <span class="text-xs text-slate-500">2:48</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/daily-mix-1.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-1.jpg"
                 alt="Round Midnight" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Round Midnight</p>
                 <p class="text-xs text-slate-500 truncate">Thelonious Monk</p>
               </div>
-              <span class="text-xs text-slate-500">5:55</span>
-              <button
+              <span class="text-xs text-slate-500">5:55</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ===== PAGE: FUNK ===== -->
+      <!-- PAGE: FUNK -->
       <div id="page-synthwave" class="page">
         <div class="px-4 md:px-8 mt-8 pb-8">
           <div class="flex items-center gap-3 mb-6">
             <button onclick="navigate('navegar')"
-              class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors">
-              <span class="material-symbols-outlined text-sm">arrow_back</span> Voltar
-            </button>
-            <span class="text-slate-600 dark:text-slate-600">/</span>
-            <span class="text-sm font-bold text-primary">FUNK</span>
+              class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors"><span
+                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button>
+            <span class="text-slate-600 dark:text-slate-600">/</span><span
+              class="text-sm font-bold text-primary">FUNK</span>
           </div>
           <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <img class="absolute inset-0 w-full h-full object-cover" src="images/FUNK BANNERjpg.jpg" alt="Synthwave" />
+            <img class="absolute inset-0 w-full h-full object-cover"
+              src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/FUNK%20BANNERjpg.jpg"
+              alt="Funk" />
             <div class="absolute inset-0"
               style="background:linear-gradient(135deg,rgba(150,0,100,0.6) 0%,rgba(0,0,0,0.7) 100%)"></div>
             <div class="absolute inset-0 p-10 flex flex-col justify-end">
               <span
-                class="px-2 py-0.5 bg-pink-500/20 text-pink-400 text-[10px] font-black uppercase tracking-widest rounded border border-pink-500/30 w-fit mb-3">Synthwave</span>
+                class="px-2 py-0.5 bg-pink-500/20 text-pink-400 text-[10px] font-black uppercase tracking-widest rounded border border-pink-500/30 w-fit mb-3">Funk</span>
               <h1 class="text-5xl font-black text-white uppercase tracking-tighter mb-2">FUNK</h1>
               <p class="text-slate-300 text-sm mb-6">Funk pesadão.</p>
               <div class="flex gap-3">
                 <button
-                  class="px-8 py-3 bg-pink-600 text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform">
-                  <span class="material-symbols-outlined fill-1">play_arrow</span> Play
-                </button>
+                  class="px-8 py-3 bg-pink-600 text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform"><span
+                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button>
                 <button
-                  class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all">
-                  <span class="material-symbols-outlined">favorite</span>
-                </button>
+                  class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
+                    class="material-symbols-outlined">favorite</span></button>
               </div>
             </div>
           </div>
@@ -1370,93 +1365,96 @@
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="3">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/O Vovô Não Ta Casado.jpg"
-                alt="Thriller" />
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/OVovoNaoTaCasado.jpg"
+                alt="O Vovô Não Ta Casado" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">O Vovô Não Ta Casado</p>
                 <p class="text-xs text-slate-500 truncate">O Vovô Não Ta Casado</p>
               </div>
-              <span class="text-xs text-slate-500">3:38</span>
-              <button
+              <span class="text-xs text-slate-500">3:38</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="6">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/automotivo.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/automotivo.jpg"
                 alt="PISOU NA MINHA CARA" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">PISOU NA MINHA CARA</p>
                 <p class="text-xs text-slate-500 truncate">DJ GBR</p>
               </div>
-              <span class="text-xs text-slate-500">2:48</span>
-              <button
+              <span class="text-xs text-slate-500">2:48</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="5">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/daily-mix-2.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-2.jpg"
                 alt="Night Call" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Night Call</p>
                 <p class="text-xs text-slate-500 truncate">Kavinsky</p>
               </div>
-              <span class="text-xs text-slate-500">3:57</span>
-              <button
+              <span class="text-xs text-slate-500">3:57</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="5">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/daily-mix-2.jpg" alt="Sunset" />
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-2.jpg"
+                alt="Sunset" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Sunset</p>
                 <p class="text-xs text-slate-500 truncate">The Midnight</p>
               </div>
-              <span class="text-xs text-slate-500">4:22</span>
-              <button
+              <span class="text-xs text-slate-500">4:22</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="5">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/daily-mix-2.jpg" alt="Gloria" />
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-2.jpg"
+                alt="Gloria" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Gloria</p>
                 <p class="text-xs text-slate-500 truncate">The Midnight</p>
               </div>
-              <span class="text-xs text-slate-500">5:01</span>
-              <button
+              <span class="text-xs text-slate-500">5:01</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ===== PAGE: NEW RELEASES ===== -->
+      <!-- PAGE: NEW RELEASES -->
       <div id="page-newreleases" class="page">
         <div class="px-4 md:px-8 mt-8 pb-8">
           <div class="flex items-center gap-3 mb-6">
             <button onclick="navigate('navegar')"
-              class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors">
-              <span class="material-symbols-outlined text-sm">arrow_back</span> Voltar
-            </button>
-            <span class="text-slate-600 dark:text-slate-600">/</span>
-            <span class="text-sm font-bold text-primary">New Releases</span>
+              class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors"><span
+                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button>
+            <span class="text-slate-600 dark:text-slate-600">/</span><span class="text-sm font-bold text-primary">New
+              Releases</span>
           </div>
           <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <img class="absolute inset-0 w-full h-full object-cover" src="images/daily-mix-3.jpg" alt="New Releases" />
+            <img class="absolute inset-0 w-full h-full object-cover"
+              src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-3.jpg"
+              alt="New Releases" />
             <div class="absolute inset-0"
               style="background:linear-gradient(135deg,rgba(0,100,50,0.6) 0%,rgba(0,0,0,0.7) 100%)"></div>
             <div class="absolute inset-0 p-10 flex flex-col justify-end">
@@ -1467,13 +1465,11 @@
               <p class="text-slate-300 text-sm mb-6">As músicas mais recentes para você descobrir.</p>
               <div class="flex gap-3">
                 <button
-                  class="px-8 py-3 bg-green-600 text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform">
-                  <span class="material-symbols-outlined fill-1">play_arrow</span> Play
-                </button>
+                  class="px-8 py-3 bg-green-600 text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform"><span
+                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button>
                 <button
-                  class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all">
-                  <span class="material-symbols-outlined">favorite</span>
-                </button>
+                  class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
+                    class="material-symbols-outlined">favorite</span></button>
               </div>
             </div>
           </div>
@@ -1482,93 +1478,96 @@
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/TheGooGooDolls.jpg" alt="Iris" />
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/TheGooGooDolls.jpg"
+                alt="Iris" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Iris</p>
                 <p class="text-xs text-slate-500 truncate">Goo Goo Dolls</p>
               </div>
-              <span class="text-xs text-slate-500">4:51</span>
-              <button
+              <span class="text-xs text-slate-500">4:51</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/TheGooGooDolls.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/TheGooGooDolls.jpg"
                 alt="Slide" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Slide</p>
                 <p class="text-xs text-slate-500 truncate">Goo Goo Dolls</p>
               </div>
-              <span class="text-xs text-slate-500">3:32</span>
-              <button
+              <span class="text-xs text-slate-500">3:32</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/TheGooGooDolls.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/TheGooGooDolls.jpg"
                 alt="Broadway" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Broadway</p>
                 <p class="text-xs text-slate-500 truncate">Goo Goo Dolls</p>
               </div>
-              <span class="text-xs text-slate-500">4:18</span>
-              <button
+              <span class="text-xs text-slate-500">4:18</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/TheGooGooDolls.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/TheGooGooDolls.jpg"
                 alt="Black Balloon" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Black Balloon</p>
                 <p class="text-xs text-slate-500 truncate">Goo Goo Dolls</p>
               </div>
-              <span class="text-xs text-slate-500">4:27</span>
-              <button
+              <span class="text-xs text-slate-500">4:27</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/TheGooGooDolls.jpg" alt="Name" />
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/TheGooGooDolls.jpg"
+                alt="Name" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Name</p>
                 <p class="text-xs text-slate-500 truncate">Goo Goo Dolls</p>
               </div>
-              <span class="text-xs text-slate-500">3:25</span>
-              <button
+              <span class="text-xs text-slate-500">3:25</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ===== PAGE: PARTY ===== -->
+      <!-- PAGE: PARTY -->
       <div id="page-party" class="page">
         <div class="px-4 md:px-8 mt-8 pb-8">
           <div class="flex items-center gap-3 mb-6">
             <button onclick="navigate('navegar')"
-              class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors">
-              <span class="material-symbols-outlined text-sm">arrow_back</span> Voltar
-            </button>
-            <span class="text-slate-600 dark:text-slate-600">/</span>
-            <span class="text-sm font-bold text-primary">Party</span>
+              class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors"><span
+                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button>
+            <span class="text-slate-600 dark:text-slate-600">/</span><span
+              class="text-sm font-bold text-primary">Party</span>
           </div>
           <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <img class="absolute inset-0 w-full h-full object-cover" src="images/album-travisscot.jpg" alt="Party" />
+            <img class="absolute inset-0 w-full h-full object-cover"
+              src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
+              alt="Party" />
             <div class="absolute inset-0"
               style="background:linear-gradient(135deg,rgba(180,80,0,0.6) 0%,rgba(0,0,0,0.7) 100%)"></div>
             <div class="absolute inset-0 p-10 flex flex-col justify-end">
@@ -1578,13 +1577,11 @@
               <p class="text-slate-300 text-sm mb-6">As melhores batidas para agitar a festa.</p>
               <div class="flex gap-3">
                 <button
-                  class="px-8 py-3 bg-orange-500 text-black font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform">
-                  <span class="material-symbols-outlined fill-1">play_arrow</span> Play
-                </button>
+                  class="px-8 py-3 bg-orange-500 text-black font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform"><span
+                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button>
                 <button
-                  class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all">
-                  <span class="material-symbols-outlined">favorite</span>
-                </button>
+                  class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
+                    class="material-symbols-outlined">favorite</span></button>
               </div>
             </div>
           </div>
@@ -1593,93 +1590,96 @@
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="0">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/album-travisscot.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
                 alt="MY EYES" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">MY EYES</p>
                 <p class="text-xs text-slate-500 truncate">Travis Scott</p>
               </div>
-              <span class="text-xs text-slate-500">3:42</span>
-              <button
+              <span class="text-xs text-slate-500">3:42</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="1">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/Champagnecoast.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg"
                 alt="Champagne Coast" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Champagne Coast</p>
                 <p class="text-xs text-slate-500 truncate">Blood Orange</p>
               </div>
-              <span class="text-xs text-slate-500">5:01</span>
-              <button
+              <span class="text-xs text-slate-500">5:01</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="7">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/sunflower.jpg" alt="Sunflower" />
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg"
+                alt="Sunflower" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Sunflower</p>
                 <p class="text-xs text-slate-500 truncate">Post Malone</p>
               </div>
-              <span class="text-xs text-slate-500">2:38</span>
-              <button
+              <span class="text-xs text-slate-500">2:38</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/TheGooGooDolls.jpg" alt="Iris" />
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/TheGooGooDolls.jpg"
+                alt="Iris" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Iris</p>
                 <p class="text-xs text-slate-500 truncate">Goo Goo Dolls</p>
               </div>
-              <span class="text-xs text-slate-500">4:51</span>
-              <button
+              <span class="text-xs text-slate-500">4:51</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="3">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">7</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/O Vovô Não Ta Casado.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/OVovoNaoTaCasado.jpg"
                 alt="O Vovô Não Ta Casado" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">O Vovô Não Ta Casado</p>
                 <p class="text-xs text-slate-500 truncate">O Vovô Não Ta Casado</p>
               </div>
-              <span class="text-xs text-slate-500">3:38</span>
-              <button
+              <span class="text-xs text-slate-500">3:38</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ===== PAGE: STUDY ===== -->
+      <!-- PAGE: STUDY -->
       <div id="page-study" class="page">
         <div class="px-4 md:px-8 mt-8 pb-8">
           <div class="flex items-center gap-3 mb-6">
             <button onclick="navigate('navegar')"
-              class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors">
-              <span class="material-symbols-outlined text-sm">arrow_back</span> Voltar
-            </button>
-            <span class="text-slate-600 dark:text-slate-600">/</span>
-            <span class="text-sm font-bold text-primary">Study</span>
+              class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors"><span
+                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button>
+            <span class="text-slate-600 dark:text-slate-600">/</span><span
+              class="text-sm font-bold text-primary">Study</span>
           </div>
           <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <img class="absolute inset-0 w-full h-full object-cover" src="images/daily-mix-1.jpg" alt="Study" />
+            <img class="absolute inset-0 w-full h-full object-cover"
+              src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-1.jpg"
+              alt="Study" />
             <div class="absolute inset-0"
               style="background:linear-gradient(135deg,rgba(0,120,120,0.6) 0%,rgba(0,0,0,0.7) 100%)"></div>
             <div class="absolute inset-0 p-10 flex flex-col justify-end">
@@ -1689,13 +1689,11 @@
               <p class="text-slate-300 text-sm mb-6">Concentre-se e estude com as melhores batidas.</p>
               <div class="flex gap-3">
                 <button
-                  class="px-8 py-3 bg-cyan-600 text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform">
-                  <span class="material-symbols-outlined fill-1">play_arrow</span> Play
-                </button>
+                  class="px-8 py-3 bg-cyan-600 text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform"><span
+                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button>
                 <button
-                  class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all">
-                  <span class="material-symbols-outlined">favorite</span>
-                </button>
+                  class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
+                    class="material-symbols-outlined">favorite</span></button>
               </div>
             </div>
           </div>
@@ -1704,74 +1702,76 @@
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="3">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/O Vovô Não Ta Casado.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/OVovoNaoTaCasado.jpg"
                 alt="O Vovô Não Ta Casado" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">O Vovô Não Ta Casado</p>
-                <p class="text-xs text-slate-500 truncate">SO Vovô Não Ta Casado</p>
+                <p class="text-xs text-slate-500 truncate">O Vovô Não Ta Casado</p>
               </div>
-              <span class="text-xs text-slate-500">6:10</span>
-              <button
+              <span class="text-xs text-slate-500">6:10</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="7">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/sunflower.jpg" alt="Sunflower" />
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg"
+                alt="Sunflower" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Sunflower</p>
                 <p class="text-xs text-slate-500 truncate">Post Malone</p>
               </div>
-              <span class="text-xs text-slate-500">2:38</span>
-              <button
+              <span class="text-xs text-slate-500">2:38</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="1">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/Champagnecoast.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg"
                 alt="Champagne Coast" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Champagne Coast</p>
                 <p class="text-xs text-slate-500 truncate">Blood Orange</p>
               </div>
-              <span class="text-xs text-slate-500">5:01</span>
-              <button
+              <span class="text-xs text-slate-500">5:01</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/TheGooGooDolls.jpg" alt="Iris" />
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/TheGooGooDolls.jpg"
+                alt="Iris" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">Iris</p>
                 <p class="text-xs text-slate-500 truncate">Goo Goo Dolls</p>
               </div>
-              <span class="text-xs text-slate-500">4:51</span>
-              <button
+              <span class="text-xs text-slate-500">4:51</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
             <div
               class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
               data-index="0">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span>
-              <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="images/album-travisscot.jpg"
+              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span><span
+                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
+              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
                 alt="MY EYES" />
               <div class="flex-1 min-w-0">
                 <p class="font-bold text-sm truncate">MY EYES</p>
                 <p class="text-xs text-slate-500 truncate">Travis Scott</p>
               </div>
-              <span class="text-xs text-slate-500">3:42</span>
-              <button
+              <span class="text-xs text-slate-500">3:42</span><button
                 class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
             </div>
           </div>
@@ -1780,32 +1780,25 @@
 
     </main>
 
-    <!-- ===== NAVBAR MOBILE ===== -->
+    <!-- NAVBAR MOBILE -->
     <nav class="mobile-nav">
-      <a class="mobile-link active" data-page="home">
-        <span class="material-symbols-outlined" style="font-size:22px">home</span>
-        Home
-      </a>
-      <a class="mobile-link" data-page="navegar">
-        <span class="material-symbols-outlined" style="font-size:22px">explore</span>
-        Navegar
-      </a>
-      <a class="mobile-link" data-page="radio">
-        <span class="material-symbols-outlined" style="font-size:22px">favorite</span>
-        Favoritas
-      </a>
-      <a class="mobile-link" data-page="radio">
-        <span class="material-symbols-outlined" style="font-size:22px">album</span>
-        Biblioteca
-      </a>
+      <a class="mobile-link active" data-page="home"><span class="material-symbols-outlined"
+          style="font-size:22px">home</span>Home</a>
+      <a class="mobile-link" data-page="navegar"><span class="material-symbols-outlined"
+          style="font-size:22px">explore</span>Navegar</a>
+      <a class="mobile-link" data-page="radio"><span class="material-symbols-outlined"
+          style="font-size:22px">favorite</span>Favoritas</a>
+      <a class="mobile-link" data-page="radio"><span class="material-symbols-outlined"
+          style="font-size:22px">album</span>Biblioteca</a>
     </nav>
 
-    <!-- ===== FLOATING PLAYER ===== -->
+    <!-- FLOATING PLAYER -->
     <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-4rem)] max-w-5xl z-50">
       <div class="glass-player px-6 py-4 rounded-2xl flex items-center justify-between shadow-2xl">
         <div class="flex items-center gap-4 w-1/4">
           <div class="w-12 h-12 rounded-lg overflow-hidden shadow-md">
-            <img id="player-img" class="w-full h-full object-cover" src="images/album-travisscot.jpg"
+            <img id="player-img" class="w-full h-full object-cover"
+              src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
               alt="Now Playing" />
           </div>
           <div class="flex flex-col">
@@ -1864,7 +1857,6 @@
 
   <!-- SPA Navigation -->
   <script>
-    // ===== HISTÓRICO DE NAVEGAÇÃO =====
     let navHistory = ['home'];
     let navCursor = 0;
 
@@ -1873,15 +1865,12 @@
       const btnForward = document.getElementById('btn-forward');
       const canBack = navCursor > 0;
       const canForward = navCursor < navHistory.length - 1;
-
       btnBack.disabled = !canBack;
       btnForward.disabled = !canForward;
       btnBack.classList.toggle('opacity-40', !canBack);
       btnBack.classList.toggle('cursor-not-allowed', !canBack);
-      btnBack.classList.toggle('hover:opacity-100', canBack);
       btnForward.classList.toggle('opacity-40', !canForward);
       btnForward.classList.toggle('cursor-not-allowed', !canForward);
-      btnForward.classList.toggle('hover:opacity-100', canForward);
     }
 
     function showPage(page) {
@@ -1889,18 +1878,12 @@
       const target = document.getElementById("page-" + page);
       if (target) target.classList.add("active");
       document.querySelector("main").scrollTo(0, 0);
-      document.querySelectorAll(".nav-link").forEach(a => {
-        a.classList.toggle("active", a.dataset.page === page);
-      });
-      document.querySelectorAll(".mobile-link").forEach(a => {
-        a.classList.toggle("active", a.dataset.page === page);
-      });
+      document.querySelectorAll(".nav-link").forEach(a => a.classList.toggle("active", a.dataset.page === page));
+      document.querySelectorAll(".mobile-link").forEach(a => a.classList.toggle("active", a.dataset.page === page));
     }
 
     function navigate(page) {
-      // Se navegou pra uma página diferente da atual, adiciona ao histórico
       if (navHistory[navCursor] !== page) {
-        // Remove tudo após o cursor atual (descarta o "futuro")
         navHistory = navHistory.slice(0, navCursor + 1);
         navHistory.push(page);
         navCursor = navHistory.length - 1;
@@ -1910,44 +1893,16 @@
       closeSidebar();
     }
 
-    document.getElementById('btn-back').addEventListener('click', () => {
-      if (navCursor > 0) {
-        navCursor--;
-        showPage(navHistory[navCursor]);
-        updateNavButtons();
-      }
-    });
+    document.getElementById('btn-back').addEventListener('click', () => { if (navCursor > 0) { navCursor--; showPage(navHistory[navCursor]); updateNavButtons(); } });
+    document.getElementById('btn-forward').addEventListener('click', () => { if (navCursor < navHistory.length - 1) { navCursor++; showPage(navHistory[navCursor]); updateNavButtons(); } });
+    document.querySelectorAll(".nav-link[data-page]").forEach(a => a.addEventListener("click", () => navigate(a.dataset.page)));
+    document.querySelectorAll(".mobile-link[data-page]").forEach(a => a.addEventListener("click", () => navigate(a.dataset.page)));
 
-    document.getElementById('btn-forward').addEventListener('click', () => {
-      if (navCursor < navHistory.length - 1) {
-        navCursor++;
-        showPage(navHistory[navCursor]);
-        updateNavButtons();
-      }
-    });
-
-    // Attach sidebar nav links
-    document.querySelectorAll(".nav-link[data-page]").forEach(a => {
-      a.addEventListener("click", () => navigate(a.dataset.page));
-    });
-
-    // Attach mobile nav links
-    document.querySelectorAll(".mobile-link[data-page]").forEach(a => {
-      a.addEventListener("click", () => navigate(a.dataset.page));
-    });
-
-    // Sidebar mobile open/close
-    function openSidebar() {
-      document.getElementById("sidebar").classList.add("open");
-      document.getElementById("sidebar-overlay").classList.add("open");
-    }
-    function closeSidebar() {
-      document.getElementById("sidebar").classList.remove("open");
-      document.getElementById("sidebar-overlay").classList.remove("open");
-    }
+    function openSidebar() { document.getElementById("sidebar").classList.add("open"); document.getElementById("sidebar-overlay").classList.add("open"); }
+    function closeSidebar() { document.getElementById("sidebar").classList.remove("open"); document.getElementById("sidebar-overlay").classList.remove("open"); }
   </script>
 
-  <!-- Firebase Auth Guard + Avatar -->
+  <!-- Firebase Auth -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -1982,17 +1937,9 @@
       document.getElementById("user-email").textContent = user.email || "";
     });
 
-    document.getElementById("avatar-btn").addEventListener("click", e => {
-      e.stopPropagation();
-      document.getElementById("avatar-menu").classList.toggle("hidden");
-    });
-    document.addEventListener("click", () => {
-      document.getElementById("avatar-menu").classList.add("hidden");
-    });
-    document.getElementById("btn-logout").addEventListener("click", async () => {
-      await signOut(auth);
-      window.location.href = "login.html";
-    });
+    document.getElementById("avatar-btn").addEventListener("click", e => { e.stopPropagation(); document.getElementById("avatar-menu").classList.toggle("hidden"); });
+    document.addEventListener("click", () => document.getElementById("avatar-menu").classList.add("hidden"));
+    document.getElementById("btn-logout").addEventListener("click", async () => { await signOut(auth); window.location.href = "login.html"; });
   </script>
 
 </body>
