@@ -5,9 +5,11 @@ const tracks = [
   { title: "MY EYES", artist: "Travis Scott", img: "images/album-travisscot.jpg", src: "musicas/My Eyes.mp3" },
   { title: "Champagne Coast", artist: "Blood Orange", img: "images/Champagnecoast.jpg", src: "musicas/champagne Coast.mp3" },
   { title: "Iris", artist: "Goo Goo Dolls", img: "images/TheGooGooDolls.jpg", src: "musicas/GooGooDolls-Iris.mp3" },
-  { title: "Midnight Blue", artist: "Blue Note Collective", img: "images/album-midnight-blue.jpg", src: "musicas/midnight-blue.mp3" },
-  { title: "Sunsets", artist: "Dayglow", img: "images/album-sunsets.jpg", src: "musicas/sunsets.mp3" },
+  { title: "O Vovô Não Ta Casado", artist: "SO Vovô Não Ta Casado", img: "images/O Vovô Não Ta Casado.jpg", src: "musicas/AITODOMUNDO.mp3" },
+  { title: "Sunsets", artist: "Dayglo", img: "images/album-sunsets.jpg", src: "musicas/sunsets.mp3" },
   { title: "Sidewalks and Skeletons", artist: "Sidewalks and Skeletons", img: "images/sidewalks.jpg", src: "musicas/sidewalks.mp3" },
+  { title: "PISOU NA MINHA CARA", artist: "DJ GBR", img: "images/automotivo.jpg", src: "musicas/AUTOMOTIVO VEM PREPARADA - PISOU NA MINHA CARA.mp3" },
+  { title: "Sunflower", artist: "Post Malone", img: "images/sunflower.jpg", src: "musicas/sunflower.mp3" },
 ];
 
 // ===== AUDIO =====
