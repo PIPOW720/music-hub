@@ -26,7 +26,7 @@ const tracks = [
   {
     title: "O Vovô Não Ta Casado",
     artist: "O Vovô Não Ta Casado",
-    img: `https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/O Vovô Não Ta Casado.jpg`,
+    img: `https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/OVovoNaoTaCasado.jpg`,
     src: `https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/musicas/AITODOMUNDO.mp3`
   },
   {
