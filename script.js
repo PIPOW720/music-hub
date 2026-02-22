@@ -4,7 +4,7 @@
 const STORAGE = 'https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe';
 
 // ===== DADOS DAS MÚSICAS =====
-const tracks = [
+var tracks = [
   {
     title: "MY EYES",
     artist: "Travis Scott",
@@ -80,7 +80,7 @@ const playerTitle = document.getElementById('player-title');
 const playerArtist = document.getElementById('player-artist');
 
 // ===== ESTADO =====
-let currentIndex = 0;
+var currentIndex = 0;
 let isShuffle = false;
 let isRepeat = false;
 let isFavorite = false;

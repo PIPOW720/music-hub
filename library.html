@@ -693,11 +693,6 @@
             countLabel.textContent = filtered.length + ' música' + (filtered.length !== 1 ? 's' : '');
             statsLabel.textContent = favorites.length + ' música' + (favorites.length !== 1 ? 's' : '') + ' favorita' + (favorites.length !== 1 ? 's' : '') + ' • ' + playlists.length + ' playlist' + (playlists.length !== 1 ? 's' : '');
 
-            // sync with audio engine if playing from library
-            if (typeof tracks !== 'undefined' && Array.isArray(tracks)) {
-                // optional: only sync if we haven't manually loaded a mix
-            }
-
             // clear rows (keep empty state)
             list.querySelectorAll('.song-row').forEach(r => r.remove());
 
