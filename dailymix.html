@@ -88,6 +88,53 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        /* Mobile adjustments for player */
+        @media (max-width: 640px) {
+            .glass-player {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+                gap: 0.5rem;
+            }
+
+            .player-controls-extra,
+            .player-time-container {
+                display: none !important;
+            }
+
+            .player-info {
+                width: 55% !important;
+                gap: 0.5rem !important;
+            }
+
+            .player-info .w-10 {
+                width: 2.25rem !important;
+                height: 2.25rem !important;
+            }
+
+            .player-main-controls {
+                flex: 1 !important;
+                width: auto !important;
+            }
+
+            .player-main-controls .gap-4 {
+                gap: 0.75rem !important;
+            }
+
+            #btn-play {
+                width: 2.5rem !important;
+                height: 2.5rem !important;
+            }
+
+            #btn-play span {
+                font-size: 1.5rem !important;
+            }
+
+            /* Song grid for mobile */
+            .song-grid {
+                grid-template-columns: 40px 1fr 60px !important;
+            }
+        }
+
         .mobile-nav {
             display: none;
             position: fixed;
@@ -441,7 +488,7 @@
 
                 <!-- content -->
                 <div
-                    class="relative z-10 flex flex-col md:flex-row items-end md:items-center gap-8 p-8 md:p-12 min-h-[320px]">
+                    class="relative z-10 flex flex-col md:flex-row items-center md:items-center gap-6 md:gap-8 p-6 md:p-12 min-h-[320px]">
                     <!-- cover -->
                     <div id="hero-cover"
                         class="w-44 h-44 md:w-52 md:h-52 rounded-xl overflow-hidden flex-shrink-0 shadow-2xl border border-white/10 group">
@@ -485,7 +532,7 @@
             <div class="px-4 md:px-8">
 
                 <!-- table header -->
-                <div class="grid gap-4 px-3 py-2 border-b border-white/5 text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1"
+                <div class="song-grid grid items-center gap-4 px-3 py-2 border-b border-white/5 text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1"
                     style="grid-template-columns:50px 1fr 160px 100px 60px">
                     <div class="text-center">#</div>
                     <div>Título</div>
@@ -516,49 +563,54 @@
         </nav>
 
         <!-- ===== FLOATING PLAYER ===== -->
-        <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-4rem)] max-w-5xl z-50">
-            <div class="glass-player px-6 py-4 rounded-2xl flex items-center justify-between shadow-2xl">
-                <div class="flex items-center gap-4 w-1/4">
-                    <div class="w-12 h-12 rounded-lg overflow-hidden shadow-md">
+        <div
+            class="fixed bottom-20 md:bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-1rem)] md:w-[calc(100%-4rem)] max-w-5xl z-50">
+            <div
+                class="glass-player px-4 md:px-6 py-3 md:py-4 rounded-xl md:rounded-2xl flex items-center justify-between shadow-2xl">
+                <div class="player-info flex items-center gap-3 md:gap-4 w-full md:w-1/4">
+                    <div class="w-10 h-10 md:w-12 md:h-12 rounded-lg overflow-hidden flex-shrink-0 shadow-md">
                         <img id="player-img" class="w-full h-full object-cover"
                             src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
                             alt="Now Playing" />
                     </div>
-                    <div class="flex flex-col">
-                        <h5 id="player-title" class="text-sm font-bold text-white">MY EYES</h5>
-                        <p id="player-artist" class="text-xs text-slate-400 font-medium">Travis Scott</p>
+                    <div class="flex flex-col min-w-0 pr-2">
+                        <h5 id="player-title" class="text-xs md:text-sm font-bold text-white truncate">MY EYES</h5>
+                        <p id="player-artist" class="text-[10px] md:text-xs text-slate-400 font-medium truncate">Travis
+                            Scott</p>
                     </div>
                     <button id="btn-favorite"
-                        class="material-symbols-outlined text-slate-400 hover:text-primary transition-colors text-xl">favorite</button>
+                        class="material-symbols-outlined text-slate-400 hover:text-primary transition-colors text-lg md:text-xl">favorite</button>
                 </div>
-                <div class="flex flex-col items-center gap-2 flex-1">
-                    <div class="flex items-center gap-6">
+                <div class="player-main-controls flex flex-col items-center gap-1 md:gap-2 flex-1">
+                    <div class="flex items-center gap-4 md:gap-6">
                         <button id="btn-shuffle"
-                            class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">shuffle</button>
+                            class="player-controls-extra material-symbols-outlined text-slate-400 hover:text-white transition-colors">shuffle</button>
                         <button id="btn-prev"
-                            class="material-symbols-outlined text-white hover:text-primary transition-colors">skip_previous</button>
+                            class="material-symbols-outlined text-white hover:text-primary transition-colors text-xl md:text-2xl">skip_previous</button>
                         <button id="btn-play"
-                            class="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
-                            <span class="material-symbols-outlined text-black fill-1">play_arrow</span>
+                            class="w-10 h-10 md:w-12 md:h-12 bg-white rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
+                            <span
+                                class="material-symbols-outlined text-black fill-1 text-2xl md:text-3xl">play_arrow</span>
                         </button>
                         <button id="btn-next"
-                            class="material-symbols-outlined text-white hover:text-primary transition-colors">skip_next</button>
+                            class="material-symbols-outlined text-white hover:text-primary transition-colors text-xl md:text-2xl">skip_next</button>
                         <button id="btn-repeat"
-                            class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">repeat</button>
+                            class="player-controls-extra material-symbols-outlined text-slate-400 hover:text-white transition-colors">repeat</button>
                     </div>
-                    <div class="flex items-center gap-3 w-full max-w-lg">
-                        <span id="time-current" class="text-[10px] font-bold text-slate-400 w-8">0:00</span>
+                    <div class="player-time-container flex items-center gap-3 w-full max-w-lg">
+                        <span id="time-current"
+                            class="text-[9px] md:text-[10px] font-bold text-slate-400 w-8 text-right">0:00</span>
                         <div id="progress-bar"
-                            class="flex-1 h-1.5 bg-white/10 rounded-full relative group cursor-pointer">
+                            class="flex-1 h-1 md:h-1.5 bg-white/10 rounded-full relative group cursor-pointer">
                             <div id="progress-fill" class="absolute inset-y-0 left-0 w-0 bg-primary rounded-full"></div>
                             <div id="progress-thumb"
-                                class="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-lg scale-0 group-hover:scale-100 transition-transform">
+                                class="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 w-2.5 h-2.5 md:w-3 md:h-3 bg-white rounded-full shadow-lg scale-0 md:group-hover:scale-100 transition-transform">
                             </div>
                         </div>
-                        <span id="time-total" class="text-[10px] font-bold text-slate-400 w-8">0:00</span>
+                        <span id="time-total" class="text-[9px] md:text-[10px] font-bold text-slate-400 w-8">0:00</span>
                     </div>
                 </div>
-                <div class="flex items-center justify-end gap-4 w-1/4">
+                <div class="player-controls-extra hidden md:flex items-center justify-end gap-4 w-1/4">
                     <button
                         class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">lyrics</button>
                     <button
@@ -566,12 +618,13 @@
                     <div class="flex items-center gap-2 group">
                         <button id="btn-volume"
                             class="material-symbols-outlined text-slate-400 group-hover:text-white transition-colors">volume_up</button>
-                        <div id="volume-bar" class="w-20 h-1 bg-white/10 rounded-full overflow-hidden cursor-pointer">
+                        <div id="volume-bar"
+                            class="w-16 lg:w-20 h-1 bg-white/10 rounded-full overflow-hidden cursor-pointer">
                             <div id="volume-fill" class="w-2/3 h-full bg-slate-300"></div>
                         </div>
                     </div>
                     <button
-                        class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">fullscreen</button>
+                        class="material-symbols-outlined text-slate-400 hover:text-white transition-colors lg:block hidden">fullscreen</button>
                 </div>
             </div>
         </div>
@@ -764,7 +817,7 @@
                 const isFav = favs.find(f => f.id === track.id);
                 const isCurrent = (typeof currentIndex !== 'undefined' && i === currentIndex);
                 const row = document.createElement('div');
-                row.className = 'track-row grid gap-4 px-3 py-3 rounded-xl items-center';
+                row.className = 'track-row song-grid grid gap-4 px-3 py-3 rounded-xl items-center';
                 row.style.gridTemplateColumns = '50px 1fr 160px 100px 60px'; // Increased slightly for spacing
                 row.dataset.index = i;
                 row.innerHTML = `
