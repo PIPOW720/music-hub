@@ -152,7 +152,7 @@
         }
 
         .song-row:hover .row-num {
-            display: none;
+            display: none !important;
         }
 
         .song-row:hover .row-play {
@@ -425,7 +425,7 @@
 
                 <!-- table header -->
                 <div class="grid gap-4 px-3 py-2 border-b border-white/5 text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1"
-                    style="grid-template-columns:40px 1fr 160px 100px">
+                    style="grid-template-columns:50px 1fr 160px 100px">
                     <div class="text-center">#</div>
                     <div>Título</div>
                     <div>Artista</div>
@@ -693,6 +693,11 @@
             countLabel.textContent = filtered.length + ' música' + (filtered.length !== 1 ? 's' : '');
             statsLabel.textContent = favorites.length + ' música' + (favorites.length !== 1 ? 's' : '') + ' favorita' + (favorites.length !== 1 ? 's' : '') + ' • ' + playlists.length + ' playlist' + (playlists.length !== 1 ? 's' : '');
 
+            // sync with audio engine if playing from library
+            if (typeof tracks !== 'undefined' && Array.isArray(tracks)) {
+                // optional: only sync if we haven't manually loaded a mix
+            }
+
             // clear rows (keep empty state)
             list.querySelectorAll('.song-row').forEach(r => r.remove());
 
@@ -703,22 +708,28 @@
             empty.style.display = 'none';
 
             filtered.forEach((song, i) => {
+                const isCurrent = (typeof currentIndex !== 'undefined' && tracks[currentIndex] && tracks[currentIndex].id === song.id);
                 const row = document.createElement('div');
                 row.className = 'song-row grid gap-4 px-3 py-3 rounded-xl items-center cursor-pointer';
-                row.style.gridTemplateColumns = '40px 1fr 160px 100px';
+                row.style.gridTemplateColumns = '50px 1fr 160px 100px';
                 row.innerHTML = `
-          <div class="text-center">
+          <div class="flex items-center gap-2 justify-center relative min-w-[40px]">
             <span class="row-num text-slate-500 text-xs">${i + 1}</span>
             <span class="row-play items-center justify-center" style="display:none">
-              <span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings:'FILL' 1">play_arrow</span>
+              <span class="material-symbols-outlined text-white text-xl">play_arrow</span>
             </span>
+            <div class="playing-bars ${isCurrent ? 'flex' : 'hidden'} items-center gap-[2px] justify-center" style="height:16px">
+              <span class="bg-primary rounded-full w-[3px]" style="height:4px;display:block"></span>
+              <span class="bg-primary rounded-full w-[3px]" style="height:10px;display:block"></span>
+              <span class="bg-primary rounded-full w-[3px]" style="height:7px;display:block"></span>
+            </div>
           </div>
           <div class="flex items-center gap-3 min-w-0">
             <div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 shadow-md">
               <img class="w-full h-full object-cover" src="${song.img}" alt="${song.title}" />
             </div>
             <div class="min-w-0">
-              <p class="font-bold text-sm truncate song-title-text">${song.title}</p>
+              <p class="font-bold text-sm truncate song-title-text" style="color: ${isCurrent ? '#ec1337' : ''}">${song.title}</p>
               <p class="text-xs text-slate-500 truncate">${song.album || ''}</p>
             </div>
           </div>
@@ -728,17 +739,6 @@
             <button class="material-symbols-outlined text-primary text-base transition-colors hover:text-white remove-fav-btn" title="Remover dos favoritos" style="font-variation-settings:'FILL' 1" data-id="${song.id}">favorite</button>
           </div>
         `;
-                // hover
-                row.addEventListener('mouseenter', () => {
-                    row.querySelector('.row-num').style.display = 'none';
-                    row.querySelector('.row-play').style.display = 'flex';
-                    row.querySelector('.song-title-text').style.color = '#ec1337';
-                });
-                row.addEventListener('mouseleave', () => {
-                    row.querySelector('.row-num').style.display = '';
-                    row.querySelector('.row-play').style.display = 'none';
-                    row.querySelector('.song-title-text').style.color = '';
-                });
                 // remove fav
                 row.querySelector('.remove-fav-btn').addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -747,13 +747,40 @@
                 // play
                 row.addEventListener('click', (e) => {
                     if (!e.target.classList.contains('remove-fav-btn')) {
-                        updatePlayer(song);
+                        // Sync entire filtered list to tracks before playing
+                        if (typeof tracks !== 'undefined') {
+                            tracks.length = 0;
+                            filtered.forEach(s => tracks.push(s));
+                        }
+                        playTrack(i);
                     }
                 });
                 list.appendChild(row);
             });
 
             renderArtists();
+        }
+
+        function playTrack(index) {
+            if (typeof loadTrack === 'function') {
+                loadTrack(index, true);
+                updateRowHighlight();
+            }
+        }
+
+        function updateRowHighlight() {
+            document.querySelectorAll('.song-row').forEach((r, i) => {
+                const isCurrent = (i === currentIndex);
+                r.querySelector('.row-num').style.display = ''; // Always show
+                r.querySelector('.row-play').style.display = 'none';
+                const bars = r.querySelector('.playing-bars');
+                if (bars) {
+                    bars.classList.toggle('hidden', !isCurrent);
+                    bars.style.display = isCurrent ? 'flex' : '';
+                }
+                const title = r.querySelector('.song-title-text');
+                if (title) title.style.color = isCurrent ? '#ec1337' : '';
+            });
         }
 
         // ---- RENDER PLAYLISTS ----
@@ -903,9 +930,14 @@
         // ---- SHUFFLE ----
         function shufflePlay() {
             if (favorites.length === 0) return;
-            const rand = favorites[Math.floor(Math.random() * favorites.length)];
-            updatePlayer(rand);
-            showToast('🔀 ' + rand.title);
+            // Sync entire favorites to tracks before playing random
+            if (typeof tracks !== 'undefined') {
+                tracks.length = 0;
+                favorites.forEach(f => tracks.push(f));
+            }
+            const randIdx = Math.floor(Math.random() * favorites.length);
+            playTrack(randIdx);
+            showToast('🔀 Aleatório');
         }
 
         // ---- TOAST ----

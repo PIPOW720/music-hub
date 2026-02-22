@@ -157,11 +157,11 @@
         }
 
         .track-row:hover .row-num {
-            display: none;
+            display: none !important;
         }
 
         .track-row:hover .row-play {
-            display: block;
+            display: block !important;
         }
 
         .track-row:hover .track-title {
@@ -486,7 +486,7 @@
 
                 <!-- table header -->
                 <div class="grid gap-4 px-3 py-2 border-b border-white/5 text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1"
-                    style="grid-template-columns:40px 1fr 160px 100px 60px">
+                    style="grid-template-columns:50px 1fr 160px 100px 60px">
                     <div class="text-center">#</div>
                     <div>Título</div>
                     <div class="hidden md:block">Álbum</div>
@@ -648,7 +648,7 @@
                     { id: 0, num: 1, title: 'MY EYES', artist: 'Travis Scott', album: 'UTOPIA', duration: '3:42', img: BASE + '/album-travisscot.jpg', date: 'Hoje' },
                     { id: 1, num: 2, title: 'Champagne Coast', artist: 'Blood Orange', album: 'Coastal Grooves', duration: '5:01', img: BASE + '/Champagnecoast.jpg', date: 'Ontem' },
                     { id: 2, num: 3, title: 'Iris', artist: 'Goo Goo Dolls', album: 'Dizzy Up the Girl', duration: '4:51', img: BASE + '/TheGooGooDolls.jpg', date: '3 dias' },
-                    { id: 3, num: 4, title: 'O Vovô Não Ta Casado', artist: 'O Vovô Não Ta Casado', album: 'Funk Hits', duration: '3:38', img: BASE + 'OVovoNaoTaCasado.jpg', date: '4 dias' },
+                    { id: 3, num: 4, title: 'O Vovô Não Ta Casado', artist: 'O Vovô Não Ta Casado', album: 'Funk Hits', duration: '3:38', img: BASE + '/OVovoNaoTaCasado.jpg', date: '4 dias' },
                     { id: 7, num: 5, title: 'Sunflower', artist: 'Post Malone', album: "Hollywood's Bleeding", duration: '2:38', img: BASE + '/sunflower.jpg', date: '1 semana' },
                 ]
             },
@@ -683,9 +683,11 @@
         };
 
         let currentMix = 1;
-        let currentTrackIndex = -1;
         let isPlaying = false;
         const favs = JSON.parse(localStorage.getItem('davi_vibe_favorites') || '[]');
+
+        // Store original tracks and update the global one for the mix
+        const allTracks = [...tracks];
 
         // ---- LOAD MIX ----
         function loadMix(num, tabBtn) {
@@ -696,16 +698,36 @@
             if (tabBtn) {
                 tabBtn.classList.add('active');
             } else {
-                document.querySelectorAll('.mix-tab')[num - 1].classList.add('active');
+                const tabs = document.querySelectorAll('.mix-tab');
+                if (tabs[num - 1]) tabs[num - 1].classList.add('active');
             }
 
             // update sidebar nav
             document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
             document.querySelectorAll('[onclick*="loadMix"]').forEach((a, i) => {
-                if (i === num - 1) a.classList.add('active');
+                const mixNum = parseInt(a.getAttribute('onclick').match(/\d+/)[0]);
+                if (mixNum === num) a.classList.add('active');
             });
 
             const mix = MIXES[num];
+
+            // Sync with script.js engine: replace global tracks with this mix's tracks
+            if (typeof tracks !== 'undefined') {
+                tracks.length = 0;
+                mix.tracks.forEach(mt => {
+                    // Find original track from allTracks by title first, then id, then fallback
+                    const original = allTracks.find(t => t.title === mt.title) || allTracks[mt.id] || allTracks[0] || {};
+                    tracks.push({
+                        title: mt.title || original.title || 'Unknown Title',
+                        artist: mt.artist || original.artist || 'Unknown Artist',
+                        album: mt.album || original.album || 'Unknown Album',
+                        duration: mt.duration || original.duration || '0:00',
+                        img: mt.img || original.img || '',
+                        src: mt.src || original.src || '',
+                        ...mt
+                    });
+                });
+            }
 
             // update hero
             document.getElementById('hero-bg').style.backgroundImage = `url('${mix.cover}')`;
@@ -714,9 +736,23 @@
             document.getElementById('mix-desc').textContent = mix.desc;
             document.getElementById('mix-meta').textContent = mix.meta;
 
-            renderTracks(mix.tracks);
-            currentTrackIndex = -1;
+            renderTracks(tracks); // Render from the synced tracks array
             isPlaying = false;
+
+            // Highlight current playing song if any
+            updateRowHighlight();
+        }
+
+        function updateRowHighlight() {
+            document.querySelectorAll('.track-row').forEach((r, i) => {
+                const isCurrent = (i === currentIndex);
+                r.querySelector('.row-num').style.display = ''; // Always show number
+                r.querySelector('.row-play').style.display = 'none';
+                const bars = r.querySelector('.playing-bars');
+                bars.classList.toggle('hidden', !isCurrent);
+                bars.style.display = isCurrent ? 'flex' : '';
+                r.querySelector('.track-title').style.color = isCurrent ? '#ec1337' : '';
+            });
         }
 
         // ---- RENDER TRACKS ----
@@ -726,15 +762,16 @@
 
             tracks.forEach((track, i) => {
                 const isFav = favs.find(f => f.id === track.id);
+                const isCurrent = (typeof currentIndex !== 'undefined' && i === currentIndex);
                 const row = document.createElement('div');
                 row.className = 'track-row grid gap-4 px-3 py-3 rounded-xl items-center';
-                row.style.gridTemplateColumns = '40px 1fr 160px 100px 60px';
+                row.style.gridTemplateColumns = '50px 1fr 160px 100px 60px'; // Increased slightly for spacing
                 row.dataset.index = i;
                 row.innerHTML = `
-          <div class="flex items-center justify-center">
-            <span class="row-num text-slate-500 text-xs">${track.num}</span>
-            <span class="row-play material-symbols-outlined text-primary text-xl" style="font-variation-settings:'FILL' 1;display:none">play_arrow</span>
-            <div class="playing-bars hidden items-center gap-[2px] justify-center" style="height:16px">
+          <div class="flex items-center gap-2 justify-center relative min-w-[40px]">
+            <span class="row-num text-slate-500 text-xs">${i + 1}</span>
+            <span class="row-play material-symbols-outlined text-white text-xl" style="display: none">play_arrow</span>
+            <div class="playing-bars ${isCurrent ? 'flex' : 'hidden'} items-center gap-[2px] justify-center" style="height:16px">
               <span class="bg-primary rounded-full w-[3px]" style="height:4px;display:block"></span>
               <span class="bg-primary rounded-full w-[3px]" style="height:10px;display:block"></span>
               <span class="bg-primary rounded-full w-[3px]" style="height:7px;display:block"></span>
@@ -776,38 +813,11 @@
 
         // ---- PLAY TRACK ----
         function playTrack(index) {
-            const mix = MIXES[currentMix];
-            const track = mix.tracks[index];
-
-            // reset all rows
-            document.querySelectorAll('.track-row').forEach(r => {
-                r.querySelector('.row-num').style.display = '';
-                r.querySelector('.row-play').style.display = 'none';
-                r.querySelector('.playing-bars').classList.add('hidden');
-                r.querySelector('.playing-bars').style.display = '';
-                r.querySelector('.track-title').style.color = '';
-            });
-
-            // highlight current
-            const rows = document.querySelectorAll('.track-row');
-            const row = rows[index];
-            row.querySelector('.row-num').style.display = 'none';
-            row.querySelector('.row-play').style.display = 'none';
-            row.querySelector('.playing-bars').classList.remove('hidden');
-            row.querySelector('.playing-bars').style.display = 'flex';
-            row.querySelector('.track-title').style.color = '#ec1337';
-
-            // update player
-            document.getElementById('player-title').textContent = track.title;
-            document.getElementById('player-artist').textContent = track.artist;
-            document.getElementById('player-img').src = track.img;
-
-            currentTrackIndex = index;
+            if (typeof loadTrack === 'function') {
+                loadTrack(index, true);
+                updateRowHighlight();
+            }
             isPlaying = true;
-
-            // update play button
-            const btn = document.getElementById('btn-play');
-            btn.innerHTML = '<span class="material-symbols-outlined text-black fill-1" style="font-variation-settings:\'FILL\' 1">pause</span>';
         }
 
         // ---- PLAY ALL ----
@@ -859,15 +869,10 @@
             setTimeout(() => t.classList.remove('show'), 2500);
         }
 
-        // ---- PREV / NEXT ----
-        document.getElementById('btn-prev').addEventListener('click', () => {
-            if (currentTrackIndex > 0) playTrack(currentTrackIndex - 1);
-        });
-        document.getElementById('btn-next').addEventListener('click', () => {
-            const mix = MIXES[currentMix];
-            if (currentTrackIndex < mix.tracks.length - 1) playTrack(currentTrackIndex + 1);
-            else playTrack(0);
-        });
+        // ---- PREV / NEXT SYNC ----
+        // These are handled by script.js, but we update our UI highlights
+        audio.addEventListener('play', updateRowHighlight);
+        audio.addEventListener('ended', updateRowHighlight);
 
         // ---- INIT ----
         loadMix(1);
