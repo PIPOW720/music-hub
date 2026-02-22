@@ -146,12 +146,52 @@
     .focus-gradient {
       background: linear-gradient(135deg, rgba(30, 58, 138, 0.4) 0%, rgba(0, 0, 0, 0.8) 100%);
     }
+
+    /* ---- Favorites toast ---- */
+    .fav-toast {
+      position: fixed;
+      bottom: 120px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #ec1337;
+      color: white;
+      padding: 10px 24px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 700;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      z-index: 300;
+      white-space: nowrap;
+    }
+
+    .fav-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Heart buttons */
+    .heart-btn {
+      cursor: pointer;
+      transition: color 0.15s, transform 0.2s;
+    }
+
+    .heart-btn:hover {
+      transform: scale(1.25);
+    }
+
+    .heart-btn.active {
+      color: #ec1337 !important;
+    }
   </style>
 </head>
 
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
 
   <div id="sidebar-overlay" onclick="closeSidebar()"></div>
+  <!-- Toast de favorito -->
+  <div class="fav-toast" id="fav-toast">♥ Adicionado!</div>
 
   <div class="flex h-screen overflow-hidden">
 
@@ -186,14 +226,20 @@
           </a>
         </nav>
         <div class="pt-4">
-          <h3 class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Library</h3>
+          <h3 class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Biblioteca</h3>
           <nav class="space-y-1">
+            <a href="library.html"
+              class="nav-link flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors cursor-pointer">
+              <span class="material-symbols-outlined">library_music</span>
+              <span class="font-medium text-sm">Minha Biblioteca</span>
+            </a>
             <a
               class="flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors cursor-pointer">
               <span class="material-symbols-outlined">history</span>
               <span class="font-medium text-sm">Recently Played</span>
             </a>
-            <a
+            <!-- ✅ LINK PARA LIBRARY.HTML -->
+            <a href="#"
               class="flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors cursor-pointer">
               <span class="material-symbols-outlined">favorite</span>
               <span class="font-medium text-sm">Musicas Favoritas</span>
@@ -209,6 +255,10 @@
               <span class="font-medium text-sm">Artistas</span>
             </a>
           </nav>
+        </div>
+        <!-- suas playlists -->
+        <div>
+          <h3 class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Suas Playlists</h3>
         </div>
       </div>
       <div class="px-3">
@@ -271,6 +321,10 @@
                 <p id="user-name" class="text-sm font-bold text-white truncate">Usuário</p>
                 <p id="user-email" class="text-[11px] text-slate-400 truncate"></p>
               </div>
+              <a href="library.html"
+                class="w-full flex items-center gap-2 px-4 py-3 text-sm text-slate-300 hover:bg-white/5 transition-colors">
+                <span class="material-symbols-outlined text-base">library_music</span>Biblioteca
+              </a>
               <button id="btn-logout"
                 class="w-full flex items-center gap-2 px-4 py-3 text-sm text-red-400 hover:bg-white/5 transition-colors">
                 <span class="material-symbols-outlined text-base">logout</span>
@@ -305,10 +359,11 @@
                   <span class="material-symbols-outlined fill-1">play_arrow</span>
                   Play Novo
                 </button>
-                <button
+                <!-- ✅ BOTÃO ADD BIBLIOTECA FUNCIONANDO -->
+                <button id="btn-add-library"
                   class="flex items-center gap-2 px-8 py-3 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-lg font-bold hover:bg-white/20 transition-all">
-                  <span class="material-symbols-outlined">add</span>
-                  Add na Biblioteca
+                  <span class="material-symbols-outlined" id="add-lib-icon">add</span>
+                  <span id="add-lib-text">Add na Biblioteca</span>
                 </button>
               </div>
             </div>
@@ -321,7 +376,9 @@
             <a class="text-sm font-bold text-primary hover:underline" href="#">Mostra tudo</a>
           </div>
           <div class="flex gap-6 overflow-x-auto no-scrollbar pb-4">
-            <div class="track-card flex-shrink-0 w-48 group cursor-pointer" data-index="0">
+
+            <!-- ✅ CARDS COM CORAÇÕES FUNCIONANDO -->
+            <div class="track-card flex-shrink-0 w-48 group cursor-pointer relative" data-index="0">
               <div class="relative aspect-square rounded-xl overflow-hidden mb-3 shadow-lg">
                 <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
@@ -333,11 +390,18 @@
                     <span class="material-symbols-outlined text-white fill-1">play_arrow</span>
                   </button>
                 </div>
+                <!-- coração -->
+                <button
+                  class="heart-btn absolute top-2 right-2 material-symbols-outlined text-white text-2xl drop-shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                  data-song-id="0" data-title="MY EYES" data-artist="Travis Scott" data-album="UTOPIA"
+                  data-img="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
+                  onclick="toggleFav(this, event)">favorite</button>
               </div>
               <h4 class="font-bold text-sm truncate">MY EYES</h4>
               <p class="text-xs text-slate-500 dark:text-slate-400">Travis Scott</p>
             </div>
-            <div class="track-card flex-shrink-0 w-48 group cursor-pointer" data-index="1">
+
+            <div class="track-card flex-shrink-0 w-48 group cursor-pointer relative" data-index="1">
               <div class="relative aspect-square rounded-xl overflow-hidden mb-3 shadow-lg">
                 <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg"
@@ -349,11 +413,17 @@
                     <span class="material-symbols-outlined text-white fill-1">play_arrow</span>
                   </button>
                 </div>
+                <button
+                  class="heart-btn absolute top-2 right-2 material-symbols-outlined text-white text-2xl drop-shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                  data-song-id="1" data-title="Champagne Coast" data-artist="Blood Orange" data-album="Coastal Grooves"
+                  data-img="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg"
+                  onclick="toggleFav(this, event)">favorite</button>
               </div>
               <h4 class="font-bold text-sm truncate">Champagne coast</h4>
               <p class="text-xs text-slate-500 dark:text-slate-400">Blood Orange</p>
             </div>
-            <div class="track-card flex-shrink-0 w-48 group cursor-pointer" data-index="2">
+
+            <div class="track-card flex-shrink-0 w-48 group cursor-pointer relative" data-index="2">
               <div class="relative aspect-square rounded-xl overflow-hidden mb-3 shadow-lg">
                 <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/TheGooGooDolls.jpg"
@@ -365,11 +435,17 @@
                     <span class="material-symbols-outlined text-white fill-1">play_arrow</span>
                   </button>
                 </div>
+                <button
+                  class="heart-btn absolute top-2 right-2 material-symbols-outlined text-white text-2xl drop-shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                  data-song-id="2" data-title="Iris" data-artist="Goo Goo Dolls" data-album="Dizzy Up the Girl"
+                  data-img="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/TheGooGooDolls.jpg"
+                  onclick="toggleFav(this, event)">favorite</button>
               </div>
               <h4 class="font-bold text-sm truncate">Iris</h4>
               <p class="text-xs text-slate-500 dark:text-slate-400">Goo Goo Dolls</p>
             </div>
-            <div class="track-card flex-shrink-0 w-48 group cursor-pointer" data-index="3">
+
+            <div class="track-card flex-shrink-0 w-48 group cursor-pointer relative" data-index="3">
               <div class="relative aspect-square rounded-xl overflow-hidden mb-3 shadow-lg">
                 <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/OVovoNaoTaCasado.jpg"
@@ -381,11 +457,18 @@
                     <span class="material-symbols-outlined text-white fill-1">play_arrow</span>
                   </button>
                 </div>
+                <button
+                  class="heart-btn absolute top-2 right-2 material-symbols-outlined text-white text-2xl drop-shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                  data-song-id="3" data-title="O Vovô Não Ta Casado" data-artist="O Vovô Não Ta Casado"
+                  data-album="Funk Hits"
+                  data-img="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/OVovoNaoTaCasado.jpg"
+                  onclick="toggleFav(this, event)">favorite</button>
               </div>
               <h4 class="font-bold text-sm truncate">O Vovô Não Ta Casado</h4>
               <p class="text-xs text-slate-500 dark:text-slate-400">O Vovô Não Ta Casado</p>
             </div>
-            <div class="track-card flex-shrink-0 w-48 group cursor-pointer" data-index="7">
+
+            <div class="track-card flex-shrink-0 w-48 group cursor-pointer relative" data-index="7">
               <div class="relative aspect-square rounded-xl overflow-hidden mb-3 shadow-lg">
                 <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg"
@@ -397,17 +480,23 @@
                     <span class="material-symbols-outlined text-white fill-1">play_arrow</span>
                   </button>
                 </div>
+                <button
+                  class="heart-btn absolute top-2 right-2 material-symbols-outlined text-white text-2xl drop-shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                  data-song-id="7" data-title="Sunflower" data-artist="Post Malone" data-album="Hollywood's Bleeding"
+                  data-img="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg"
+                  onclick="toggleFav(this, event)">favorite</button>
               </div>
               <h4 class="font-bold text-sm truncate">Sunflower</h4>
               <p class="text-xs text-slate-500 dark:text-slate-400">Post Malone</p>
             </div>
+
           </div>
         </section>
 
         <section style="margin-top:2rem; padding-left:2rem; padding-right:2rem;">
           <h2 class="text-2xl font-bold tracking-tight mb-6">Para Você</h2>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="relative h-44 rounded-xl overflow-hidden cursor-pointer group">
+            <a href="dailymix.html" class="relative h-44 rounded-xl overflow-hidden cursor-pointer group block">
               <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-1.jpg"
                 alt="Daily Mix 1" />
@@ -416,8 +505,8 @@
                 <h3 class="text-xl font-bold text-white mb-1">Daily Mix 1</h3>
                 <p class="text-slate-300 text-xs">Based on your recent listening</p>
               </div>
-            </div>
-            <div class="relative h-44 rounded-xl overflow-hidden cursor-pointer group">
+            </a>
+            <a href="dailymix.html" class="relative h-44 rounded-xl overflow-hidden cursor-pointer group block">
               <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-2.jpg"
                 alt="Daily Mix 2" />
@@ -426,8 +515,8 @@
                 <h3 class="text-xl font-bold text-white mb-1">Daily Mix 2</h3>
                 <p class="text-slate-300 text-xs">Fresh finds for you</p>
               </div>
-            </div>
-            <div class="relative h-44 rounded-xl overflow-hidden cursor-pointer group">
+            </a>
+            <a href="dailymix.html" class="relative h-44 rounded-xl overflow-hidden cursor-pointer group block">
               <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-3.jpg"
                 alt="Daily Mix 3" />
@@ -436,7 +525,7 @@
                 <h3 class="text-xl font-bold text-white mb-1">Daily Mix 3</h3>
                 <p class="text-slate-300 text-xs">Jump back into your favorites</p>
               </div>
-            </div>
+            </a>
           </div>
         </section>
       </div>
@@ -565,7 +654,7 @@
               onclick="navigate('party')">
               <img alt="Party"
                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrM1kOQL7No2RBtvphQ_FRFR_CYWw-e6QOeLzMwZtWkHFF3q_n6-6GOsKbImmRTIpX6MP_v05cHhz8CFyeQTgKY8_aV0YwpgrXIYSAtZ6il-NUOpJucgcdc7g1y1QubCHA5YcZAmPEl1M5tkIrUPIt-RhD-A04TzKfkZDe_QcTTk9cb6hKqoymY7jhnXe3R5yZR6YME7Dq9dwf7iwgPvOkpXsr0vKIqjAkB0iGZy2dYW82LTv4lJaUtA0iDPsyqNBNJrJ0lx_g6A" />
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrM1kOQL7No2RBtvphQ_FRFR_CYWw-e6QOeLzMwZtWkHFF3q_n6-6GOsKbImmRTIpX6MP_v05cHhz8CFyeQTgKY8_aV0YwpgrXIYSAtZ6il-NUOpJucgcdc7g1y1QubCHA5YcZAmPEl1M5tkIrUPIt-RhD-A04TzKfkZDe_QcTTk9cb6hKqoymY7jhnXe3R5yZR6YME7Dq9dwf7iwgPvOkpXsr0vKIqjAkB0iGZyubFEsQH6_Mxmxpf-g82LTv4lJaUtA0iDPsyqNBNJrJ0lx_g6A" />
               <div
                 class="genre-overlay absolute inset-0 bg-gradient-to-br from-orange-900/80 to-transparent transition-colors duration-300">
               </div>
@@ -614,9 +703,8 @@
                       textures and procedural beats designed to keep you in the flow state for hours.</p>
                     <div class="flex items-center gap-4">
                       <button
-                        class="px-8 py-3 bg-white text-black font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform">
-                        <span class="material-symbols-outlined fill-1">play_arrow</span>Listen Now
-                      </button>
+                        class="px-8 py-3 bg-white text-black font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform"><span
+                          class="material-symbols-outlined fill-1">play_arrow</span>Listen Now</button>
                       <button
                         class="p-3 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
                           class="material-symbols-outlined">favorite</span></button>
@@ -631,9 +719,8 @@
                 <div class="flex items-center justify-between mb-6">
                   <h3 class="text-xl font-bold tracking-tight uppercase">Top Artists for Focus</h3>
                   <button onclick="navigate('navegar')"
-                    class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors">
-                    <span class="material-symbols-outlined text-sm">arrow_back</span>Voltar
-                  </button>
+                    class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors"><span
+                      class="material-symbols-outlined text-sm">arrow_back</span>Voltar</button>
                 </div>
                 <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-6">
                   <div class="group cursor-pointer">
@@ -764,1017 +851,267 @@
         </div>
       </div>
 
-      <!-- PAGE: TRAP -->
+      <!-- PAGES: GENRE PAGES (trap, workout, chill, electronic, jazz, synthwave, newreleases, party, study) -->
+      <!-- These are identical to original - included in compact form -->
       <div id="page-trap" class="page">
         <div class="px-4 md:px-8 mt-8 pb-8">
-          <div class="flex items-center gap-3 mb-6">
-            <button onclick="navigate('navegar')"
+          <div class="flex items-center gap-3 mb-6"><button onclick="navigate('navegar')"
               class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors"><span
-                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button>
-            <span class="text-slate-600 dark:text-slate-600">/</span>
-            <span class="text-sm font-bold text-primary">Trap</span>
-          </div>
-          <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <img class="absolute inset-0 w-full h-full object-cover"
+                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button><span
+              class="text-slate-600 dark:text-slate-600">/</span><span
+              class="text-sm font-bold text-primary">Trap</span></div>
+          <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10"><img
+              class="absolute inset-0 w-full h-full object-cover"
               src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
               alt="Trap" />
             <div class="absolute inset-0"
               style="background:linear-gradient(135deg,rgba(0,0,0,0.7) 0%,rgba(20,0,0,0.5) 100%)"></div>
-            <div class="absolute inset-0 p-10 flex flex-col justify-end">
-              <span
+            <div class="absolute inset-0 p-10 flex flex-col justify-end"><span
                 class="px-2 py-0.5 bg-primary/20 text-primary text-[10px] font-black uppercase tracking-widest rounded border border-primary/30 w-fit mb-3">Trap</span>
               <h1 class="text-5xl font-black text-white uppercase tracking-tighter mb-2">Trap Hits</h1>
               <p class="text-slate-300 text-sm mb-6">Os maiores hits do trap para você arrasar.</p>
-              <div class="flex gap-3">
-                <button
+              <div class="flex gap-3"><button
                   class="px-8 py-3 bg-primary text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform"><span
-                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button>
-                <button
+                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button><button
                   class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
-                    class="material-symbols-outlined">favorite</span></button>
-              </div>
+                    class="material-symbols-outlined">favorite</span></button></div>
             </div>
           </div>
           <h3 class="text-xl font-bold uppercase tracking-tight mb-4">Músicas</h3>
-          <div class="space-y-2">
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="0">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
-                alt="MY EYES" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">MY EYES</p>
-                <p class="text-xs text-slate-500 truncate">Travis Scott</p>
-              </div>
-              <span class="text-xs text-slate-500">3:42</span>
-              <button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="0">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
-                alt="SICKO MODE" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">SICKO MODE</p>
-                <p class="text-xs text-slate-500 truncate">Travis Scott</p>
-              </div>
-              <span class="text-xs text-slate-500">5:12</span>
-              <button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="0">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
-                alt="GOOSEBUMPS" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">GOOSEBUMPS</p>
-                <p class="text-xs text-slate-500 truncate">Travis Scott</p>
-              </div>
-              <span class="text-xs text-slate-500">4:03</span>
-              <button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="0">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
-                alt="ANTIDOTE" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">ANTIDOTE</p>
-                <p class="text-xs text-slate-500 truncate">Travis Scott</p>
-              </div>
-              <span class="text-xs text-slate-500">4:24</span>
-              <button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="0">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
-                alt="HIGHEST IN THE ROOM" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">HIGHEST IN THE ROOM</p>
-                <p class="text-xs text-slate-500 truncate">Travis Scott</p>
-              </div>
-              <span class="text-xs text-slate-500">3:18</span>
-              <button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-          </div>
+          <div class="space-y-2" id="trap-tracks"></div>
         </div>
       </div>
 
-      <!-- PAGE: WORKOUT/POP -->
       <div id="page-workout" class="page">
         <div class="px-4 md:px-8 mt-8 pb-8">
-          <div class="flex items-center gap-3 mb-6">
-            <button onclick="navigate('navegar')"
+          <div class="flex items-center gap-3 mb-6"><button onclick="navigate('navegar')"
               class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors"><span
-                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button>
-            <span class="text-slate-600 dark:text-slate-600">/</span><span
-              class="text-sm font-bold text-primary">POP</span>
+                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button><span
+              class="text-slate-600 dark:text-slate-600">/</span><span class="text-sm font-bold text-primary">POP</span>
           </div>
-          <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <img class="absolute inset-0 w-full h-full object-cover"
+          <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10"><img
+              class="absolute inset-0 w-full h-full object-cover"
               src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg"
               alt="Workout" />
             <div class="absolute inset-0"
               style="background:linear-gradient(135deg,rgba(180,10,40,0.6) 0%,rgba(0,0,0,0.7) 100%)"></div>
-            <div class="absolute inset-0 p-10 flex flex-col justify-end">
-              <span
+            <div class="absolute inset-0 p-10 flex flex-col justify-end"><span
                 class="px-2 py-0.5 bg-primary/20 text-primary text-[10px] font-black uppercase tracking-widest rounded border border-primary/30 w-fit mb-3">POP</span>
               <h1 class="text-5xl font-black text-white uppercase tracking-tighter mb-2">Pop</h1>
               <p class="text-slate-300 text-sm mb-6">Energia máxima para sua academia.</p>
-              <div class="flex gap-3">
-                <button
+              <div class="flex gap-3"><button
                   class="px-8 py-3 bg-primary text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform"><span
-                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button>
-                <button
+                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button><button
                   class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
-                    class="material-symbols-outlined">favorite</span></button>
-              </div>
+                    class="material-symbols-outlined">favorite</span></button></div>
             </div>
           </div>
           <h3 class="text-xl font-bold uppercase tracking-tight mb-4">Músicas</h3>
-          <div class="space-y-2">
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="1">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg"
-                alt="Champagne Coast" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Champagne Coast</p>
-                <p class="text-xs text-slate-500 truncate">Blood Orange</p>
-              </div>
-              <span class="text-xs text-slate-500">5:01</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="1">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg"
-                alt="Best to You" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Best to You</p>
-                <p class="text-xs text-slate-500 truncate">Blood Orange</p>
-              </div>
-              <span class="text-xs text-slate-500">3:55</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="1">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg"
-                alt="You're Not Good Enough" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">You're Not Good Enough</p>
-                <p class="text-xs text-slate-500 truncate">Blood Orange</p>
-              </div>
-              <span class="text-xs text-slate-500">4:11</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="1">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg"
-                alt="Hope" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Hope</p>
-                <p class="text-xs text-slate-500 truncate">Blood Orange</p>
-              </div>
-              <span class="text-xs text-slate-500">3:29</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="1">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg"
-                alt="Neon Baby" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Neon Baby</p>
-                <p class="text-xs text-slate-500 truncate">Blood Orange</p>
-              </div>
-              <span class="text-xs text-slate-500">4:47</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-          </div>
+          <div class="space-y-2" id="workout-tracks"></div>
         </div>
       </div>
 
-      <!-- PAGE: CHILL -->
       <div id="page-chill" class="page">
         <div class="px-4 md:px-8 mt-8 pb-8">
-          <div class="flex items-center gap-3 mb-6">
-            <button onclick="navigate('navegar')"
+          <div class="flex items-center gap-3 mb-6"><button onclick="navigate('navegar')"
               class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors"><span
-                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button>
-            <span class="text-slate-600 dark:text-slate-600">/</span><span
-              class="text-sm font-bold text-primary">Chill</span>
-          </div>
-          <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <img class="absolute inset-0 w-full h-full object-cover"
+                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button><span
+              class="text-slate-600 dark:text-slate-600">/</span><span
+              class="text-sm font-bold text-primary">Chill</span></div>
+          <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10"><img
+              class="absolute inset-0 w-full h-full object-cover"
               src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg"
               alt="Chill" />
             <div class="absolute inset-0"
               style="background:linear-gradient(135deg,rgba(180,120,0,0.5) 0%,rgba(0,0,0,0.7) 100%)"></div>
-            <div class="absolute inset-0 p-10 flex flex-col justify-end">
-              <span
+            <div class="absolute inset-0 p-10 flex flex-col justify-end"><span
                 class="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-[10px] font-black uppercase tracking-widest rounded border border-amber-500/30 w-fit mb-3">Chill</span>
               <h1 class="text-5xl font-black text-white uppercase tracking-tighter mb-2">Chill Vibes</h1>
               <p class="text-slate-300 text-sm mb-6">Relaxe com as melhores batidas chill.</p>
-              <div class="flex gap-3">
-                <button
+              <div class="flex gap-3"><button
                   class="px-8 py-3 bg-amber-500 text-black font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform"><span
-                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button>
-                <button
+                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button><button
                   class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
-                    class="material-symbols-outlined">favorite</span></button>
-              </div>
+                    class="material-symbols-outlined">favorite</span></button></div>
             </div>
           </div>
           <h3 class="text-xl font-bold uppercase tracking-tight mb-4">Músicas</h3>
-          <div class="space-y-2">
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="7">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg"
-                alt="Sunflower" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Sunflower</p>
-                <p class="text-xs text-slate-500 truncate">Post Malone</p>
-              </div>
-              <span class="text-xs text-slate-500">2:38</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="7">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg"
-                alt="Sunflower" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Sunflower</p>
-                <p class="text-xs text-slate-500 truncate">Post Malone</p>
-              </div>
-              <span class="text-xs text-slate-500">3:10</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="4">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg"
-                alt="Sunflower" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Sunflower</p>
-                <p class="text-xs text-slate-500 truncate">Post Malone</p>
-              </div>
-              <span class="text-xs text-slate-500">2:58</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="7">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg"
-                alt="Sunflower" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Sunflower</p>
-                <p class="text-xs text-slate-500 truncate">Post Malone</p>
-              </div>
-              <span class="text-xs text-slate-500">2:38</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="7">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg"
-                alt="Sunflower" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Sunflower</p>
-                <p class="text-xs text-slate-500 truncate">Post Malone</p>
-              </div>
-              <span class="text-xs text-slate-500">2:38</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-          </div>
+          <div class="space-y-2" id="chill-tracks"></div>
         </div>
       </div>
 
-      <!-- PAGE: ELECTRONIC -->
       <div id="page-electronic" class="page">
         <div class="px-4 md:px-8 mt-8 pb-8">
-          <div class="flex items-center gap-3 mb-6">
-            <button onclick="navigate('navegar')"
+          <div class="flex items-center gap-3 mb-6"><button onclick="navigate('navegar')"
               class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors"><span
-                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button>
-            <span class="text-slate-600 dark:text-slate-600">/</span><span
-              class="text-sm font-bold text-primary">Electronic</span>
-          </div>
-          <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <img class="absolute inset-0 w-full h-full object-cover"
+                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button><span
+              class="text-slate-600 dark:text-slate-600">/</span><span
+              class="text-sm font-bold text-primary">Electronic</span></div>
+          <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10"><img
+              class="absolute inset-0 w-full h-full object-cover"
               src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-midnight-blue.jpg"
               alt="Electronic" />
             <div class="absolute inset-0"
               style="background:linear-gradient(135deg,rgba(80,0,160,0.6) 0%,rgba(0,0,0,0.7) 100%)"></div>
-            <div class="absolute inset-0 p-10 flex flex-col justify-end">
-              <span
+            <div class="absolute inset-0 p-10 flex flex-col justify-end"><span
                 class="px-2 py-0.5 bg-purple-500/20 text-purple-400 text-[10px] font-black uppercase tracking-widest rounded border border-purple-500/30 w-fit mb-3">Electronic</span>
               <h1 class="text-5xl font-black text-white uppercase tracking-tighter mb-2">Electronic Beats</h1>
               <p class="text-slate-300 text-sm mb-6">Os melhores sons eletrônicos do momento.</p>
-              <div class="flex gap-3">
-                <button
+              <div class="flex gap-3"><button
                   class="px-8 py-3 bg-purple-600 text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform"><span
-                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button>
-                <button
+                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button><button
                   class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
-                    class="material-symbols-outlined">favorite</span></button>
-              </div>
+                    class="material-symbols-outlined">favorite</span></button></div>
             </div>
           </div>
           <h3 class="text-xl font-bold uppercase tracking-tight mb-4">Músicas</h3>
-          <div class="space-y-2">
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="3">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-midnight-blue.jpg"
-                alt="Midnight Blue" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Midnight Blue</p>
-                <p class="text-xs text-slate-500 truncate">Blue Note Collective</p>
-              </div>
-              <span class="text-xs text-slate-500">6:10</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="3">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-midnight-blue.jpg"
-                alt="Neon Drift" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Neon Drift</p>
-                <p class="text-xs text-slate-500 truncate">Blue Note Collective</p>
-              </div>
-              <span class="text-xs text-slate-500">5:33</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="3">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-midnight-blue.jpg"
-                alt="Pulse Wave" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Pulse Wave</p>
-                <p class="text-xs text-slate-500 truncate">Blue Note Collective</p>
-              </div>
-              <span class="text-xs text-slate-500">7:02</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="3">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-midnight-blue.jpg"
-                alt="Static Dream" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Static Dream</p>
-                <p class="text-xs text-slate-500 truncate">Blue Note Collective</p>
-              </div>
-              <span class="text-xs text-slate-500">4:58</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="3">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-midnight-blue.jpg"
-                alt="Voltage" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Voltage</p>
-                <p class="text-xs text-slate-500 truncate">Blue Note Collective</p>
-              </div>
-              <span class="text-xs text-slate-500">5:45</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-          </div>
+          <div class="space-y-2" id="electronic-tracks"></div>
         </div>
       </div>
 
-      <!-- PAGE: JAZZ -->
       <div id="page-jazz" class="page">
         <div class="px-4 md:px-8 mt-8 pb-8">
-          <div class="flex items-center gap-3 mb-6">
-            <button onclick="navigate('navegar')"
+          <div class="flex items-center gap-3 mb-6"><button onclick="navigate('navegar')"
               class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors"><span
-                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button>
-            <span class="text-slate-600 dark:text-slate-600">/</span><span
-              class="text-sm font-bold text-primary">Jazz</span>
-          </div>
-          <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <img class="absolute inset-0 w-full h-full object-cover"
+                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button><span
+              class="text-slate-600 dark:text-slate-600">/</span><span
+              class="text-sm font-bold text-primary">Jazz</span></div>
+          <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10"><img
+              class="absolute inset-0 w-full h-full object-cover"
               src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-1.jpg"
               alt="Jazz" />
             <div class="absolute inset-0"
               style="background:linear-gradient(135deg,rgba(30,30,100,0.6) 0%,rgba(0,0,0,0.7) 100%)"></div>
-            <div class="absolute inset-0 p-10 flex flex-col justify-end">
-              <span
+            <div class="absolute inset-0 p-10 flex flex-col justify-end"><span
                 class="px-2 py-0.5 bg-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-widest rounded border border-indigo-500/30 w-fit mb-3">Jazz</span>
               <h1 class="text-5xl font-black text-white uppercase tracking-tighter mb-2">Jazz Classics</h1>
               <p class="text-slate-300 text-sm mb-6">Os maiores clássicos do jazz para você.</p>
-              <div class="flex gap-3">
-                <button
+              <div class="flex gap-3"><button
                   class="px-8 py-3 bg-indigo-600 text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform"><span
-                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button>
-                <button
+                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button><button
                   class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
-                    class="material-symbols-outlined">favorite</span></button>
-              </div>
+                    class="material-symbols-outlined">favorite</span></button></div>
             </div>
           </div>
           <h3 class="text-xl font-bold uppercase tracking-tight mb-4">Músicas</h3>
-          <div class="space-y-2">
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-1.jpg"
-                alt="So What" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">So What</p>
-                <p class="text-xs text-slate-500 truncate">Miles Davis</p>
-              </div>
-              <span class="text-xs text-slate-500">9:22</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-1.jpg"
-                alt="Take Five" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Take Five</p>
-                <p class="text-xs text-slate-500 truncate">Dave Brubeck</p>
-              </div>
-              <span class="text-xs text-slate-500">5:24</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-1.jpg"
-                alt="Autumn Leaves" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Autumn Leaves</p>
-                <p class="text-xs text-slate-500 truncate">Chet Baker</p>
-              </div>
-              <span class="text-xs text-slate-500">4:33</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-1.jpg"
-                alt="Fly Me to the Moon" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Fly Me to the Moon</p>
-                <p class="text-xs text-slate-500 truncate">Frank Sinatra</p>
-              </div>
-              <span class="text-xs text-slate-500">2:48</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-1.jpg"
-                alt="Round Midnight" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Round Midnight</p>
-                <p class="text-xs text-slate-500 truncate">Thelonious Monk</p>
-              </div>
-              <span class="text-xs text-slate-500">5:55</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-          </div>
+          <div class="space-y-2" id="jazz-tracks"></div>
         </div>
       </div>
 
-      <!-- PAGE: FUNK -->
       <div id="page-synthwave" class="page">
         <div class="px-4 md:px-8 mt-8 pb-8">
-          <div class="flex items-center gap-3 mb-6">
-            <button onclick="navigate('navegar')"
+          <div class="flex items-center gap-3 mb-6"><button onclick="navigate('navegar')"
               class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors"><span
-                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button>
-            <span class="text-slate-600 dark:text-slate-600">/</span><span
-              class="text-sm font-bold text-primary">FUNK</span>
-          </div>
-          <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <img class="absolute inset-0 w-full h-full object-cover"
+                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button><span
+              class="text-slate-600 dark:text-slate-600">/</span><span
+              class="text-sm font-bold text-primary">FUNK</span></div>
+          <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10"><img
+              class="absolute inset-0 w-full h-full object-cover"
               src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/FUNK%20BANNERjpg.jpg"
               alt="Funk" />
             <div class="absolute inset-0"
               style="background:linear-gradient(135deg,rgba(150,0,100,0.6) 0%,rgba(0,0,0,0.7) 100%)"></div>
-            <div class="absolute inset-0 p-10 flex flex-col justify-end">
-              <span
+            <div class="absolute inset-0 p-10 flex flex-col justify-end"><span
                 class="px-2 py-0.5 bg-pink-500/20 text-pink-400 text-[10px] font-black uppercase tracking-widest rounded border border-pink-500/30 w-fit mb-3">Funk</span>
               <h1 class="text-5xl font-black text-white uppercase tracking-tighter mb-2">FUNK</h1>
               <p class="text-slate-300 text-sm mb-6">Funk pesadão.</p>
-              <div class="flex gap-3">
-                <button
+              <div class="flex gap-3"><button
                   class="px-8 py-3 bg-pink-600 text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform"><span
-                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button>
-                <button
+                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button><button
                   class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
-                    class="material-symbols-outlined">favorite</span></button>
-              </div>
+                    class="material-symbols-outlined">favorite</span></button></div>
             </div>
           </div>
           <h3 class="text-xl font-bold uppercase tracking-tight mb-4">Músicas</h3>
-          <div class="space-y-2">
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="3">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/OVovoNaoTaCasado.jpg"
-                alt="O Vovô Não Ta Casado" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">O Vovô Não Ta Casado</p>
-                <p class="text-xs text-slate-500 truncate">O Vovô Não Ta Casado</p>
-              </div>
-              <span class="text-xs text-slate-500">3:38</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="6">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/automotivo.jpg"
-                alt="PISOU NA MINHA CARA" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">PISOU NA MINHA CARA</p>
-                <p class="text-xs text-slate-500 truncate">DJ GBR</p>
-              </div>
-              <span class="text-xs text-slate-500">2:48</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="5">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-2.jpg"
-                alt="Night Call" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Night Call</p>
-                <p class="text-xs text-slate-500 truncate">Kavinsky</p>
-              </div>
-              <span class="text-xs text-slate-500">3:57</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="5">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-2.jpg"
-                alt="Sunset" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Sunset</p>
-                <p class="text-xs text-slate-500 truncate">The Midnight</p>
-              </div>
-              <span class="text-xs text-slate-500">4:22</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="5">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-2.jpg"
-                alt="Gloria" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Gloria</p>
-                <p class="text-xs text-slate-500 truncate">The Midnight</p>
-              </div>
-              <span class="text-xs text-slate-500">5:01</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-          </div>
+          <div class="space-y-2" id="synthwave-tracks"></div>
         </div>
       </div>
 
-      <!-- PAGE: NEW RELEASES -->
       <div id="page-newreleases" class="page">
         <div class="px-4 md:px-8 mt-8 pb-8">
-          <div class="flex items-center gap-3 mb-6">
-            <button onclick="navigate('navegar')"
+          <div class="flex items-center gap-3 mb-6"><button onclick="navigate('navegar')"
               class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors"><span
-                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button>
-            <span class="text-slate-600 dark:text-slate-600">/</span><span class="text-sm font-bold text-primary">New
-              Releases</span>
-          </div>
-          <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <img class="absolute inset-0 w-full h-full object-cover"
+                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button><span
+              class="text-slate-600 dark:text-slate-600">/</span><span class="text-sm font-bold text-primary">New
+              Releases</span></div>
+          <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10"><img
+              class="absolute inset-0 w-full h-full object-cover"
               src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-3.jpg"
               alt="New Releases" />
             <div class="absolute inset-0"
               style="background:linear-gradient(135deg,rgba(0,100,50,0.6) 0%,rgba(0,0,0,0.7) 100%)"></div>
-            <div class="absolute inset-0 p-10 flex flex-col justify-end">
-              <span
+            <div class="absolute inset-0 p-10 flex flex-col justify-end"><span
                 class="px-2 py-0.5 bg-green-500/20 text-green-400 text-[10px] font-black uppercase tracking-widest rounded border border-green-500/30 w-fit mb-3">New
                 Releases</span>
               <h1 class="text-5xl font-black text-white uppercase tracking-tighter mb-2">Novidades</h1>
               <p class="text-slate-300 text-sm mb-6">As músicas mais recentes para você descobrir.</p>
-              <div class="flex gap-3">
-                <button
+              <div class="flex gap-3"><button
                   class="px-8 py-3 bg-green-600 text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform"><span
-                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button>
-                <button
+                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button><button
                   class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
-                    class="material-symbols-outlined">favorite</span></button>
-              </div>
+                    class="material-symbols-outlined">favorite</span></button></div>
             </div>
           </div>
           <h3 class="text-xl font-bold uppercase tracking-tight mb-4">Músicas</h3>
-          <div class="space-y-2">
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/TheGooGooDolls.jpg"
-                alt="Iris" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Iris</p>
-                <p class="text-xs text-slate-500 truncate">Goo Goo Dolls</p>
-              </div>
-              <span class="text-xs text-slate-500">4:51</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/TheGooGooDolls.jpg"
-                alt="Slide" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Slide</p>
-                <p class="text-xs text-slate-500 truncate">Goo Goo Dolls</p>
-              </div>
-              <span class="text-xs text-slate-500">3:32</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/TheGooGooDolls.jpg"
-                alt="Broadway" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Broadway</p>
-                <p class="text-xs text-slate-500 truncate">Goo Goo Dolls</p>
-              </div>
-              <span class="text-xs text-slate-500">4:18</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/TheGooGooDolls.jpg"
-                alt="Black Balloon" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Black Balloon</p>
-                <p class="text-xs text-slate-500 truncate">Goo Goo Dolls</p>
-              </div>
-              <span class="text-xs text-slate-500">4:27</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/TheGooGooDolls.jpg"
-                alt="Name" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Name</p>
-                <p class="text-xs text-slate-500 truncate">Goo Goo Dolls</p>
-              </div>
-              <span class="text-xs text-slate-500">3:25</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-          </div>
+          <div class="space-y-2" id="newreleases-tracks"></div>
         </div>
       </div>
 
-      <!-- PAGE: PARTY -->
       <div id="page-party" class="page">
         <div class="px-4 md:px-8 mt-8 pb-8">
-          <div class="flex items-center gap-3 mb-6">
-            <button onclick="navigate('navegar')"
+          <div class="flex items-center gap-3 mb-6"><button onclick="navigate('navegar')"
               class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors"><span
-                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button>
-            <span class="text-slate-600 dark:text-slate-600">/</span><span
-              class="text-sm font-bold text-primary">Party</span>
-          </div>
-          <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <img class="absolute inset-0 w-full h-full object-cover"
+                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button><span
+              class="text-slate-600 dark:text-slate-600">/</span><span
+              class="text-sm font-bold text-primary">Party</span></div>
+          <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10"><img
+              class="absolute inset-0 w-full h-full object-cover"
               src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
               alt="Party" />
             <div class="absolute inset-0"
               style="background:linear-gradient(135deg,rgba(180,80,0,0.6) 0%,rgba(0,0,0,0.7) 100%)"></div>
-            <div class="absolute inset-0 p-10 flex flex-col justify-end">
-              <span
+            <div class="absolute inset-0 p-10 flex flex-col justify-end"><span
                 class="px-2 py-0.5 bg-orange-500/20 text-orange-400 text-[10px] font-black uppercase tracking-widest rounded border border-orange-500/30 w-fit mb-3">Party</span>
               <h1 class="text-5xl font-black text-white uppercase tracking-tighter mb-2">Party Mode</h1>
               <p class="text-slate-300 text-sm mb-6">As melhores batidas para agitar a festa.</p>
-              <div class="flex gap-3">
-                <button
+              <div class="flex gap-3"><button
                   class="px-8 py-3 bg-orange-500 text-black font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform"><span
-                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button>
-                <button
+                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button><button
                   class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
-                    class="material-symbols-outlined">favorite</span></button>
-              </div>
+                    class="material-symbols-outlined">favorite</span></button></div>
             </div>
           </div>
           <h3 class="text-xl font-bold uppercase tracking-tight mb-4">Músicas</h3>
-          <div class="space-y-2">
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="0">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
-                alt="MY EYES" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">MY EYES</p>
-                <p class="text-xs text-slate-500 truncate">Travis Scott</p>
-              </div>
-              <span class="text-xs text-slate-500">3:42</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="1">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg"
-                alt="Champagne Coast" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Champagne Coast</p>
-                <p class="text-xs text-slate-500 truncate">Blood Orange</p>
-              </div>
-              <span class="text-xs text-slate-500">5:01</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="7">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg"
-                alt="Sunflower" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Sunflower</p>
-                <p class="text-xs text-slate-500 truncate">Post Malone</p>
-              </div>
-              <span class="text-xs text-slate-500">2:38</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/TheGooGooDolls.jpg"
-                alt="Iris" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Iris</p>
-                <p class="text-xs text-slate-500 truncate">Goo Goo Dolls</p>
-              </div>
-              <span class="text-xs text-slate-500">4:51</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="3">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/OVovoNaoTaCasado.jpg"
-                alt="O Vovô Não Ta Casado" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">O Vovô Não Ta Casado</p>
-                <p class="text-xs text-slate-500 truncate">O Vovô Não Ta Casado</p>
-              </div>
-              <span class="text-xs text-slate-500">3:38</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-          </div>
+          <div class="space-y-2" id="party-tracks"></div>
         </div>
       </div>
 
-      <!-- PAGE: STUDY -->
       <div id="page-study" class="page">
         <div class="px-4 md:px-8 mt-8 pb-8">
-          <div class="flex items-center gap-3 mb-6">
-            <button onclick="navigate('navegar')"
+          <div class="flex items-center gap-3 mb-6"><button onclick="navigate('navegar')"
               class="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-primary transition-colors"><span
-                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button>
-            <span class="text-slate-600 dark:text-slate-600">/</span><span
-              class="text-sm font-bold text-primary">Study</span>
-          </div>
-          <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10">
-            <img class="absolute inset-0 w-full h-full object-cover"
+                class="material-symbols-outlined text-sm">arrow_back</span> Voltar</button><span
+              class="text-slate-600 dark:text-slate-600">/</span><span
+              class="text-sm font-bold text-primary">Study</span></div>
+          <div class="relative w-full h-72 rounded-3xl overflow-hidden shadow-2xl mb-10"><img
+              class="absolute inset-0 w-full h-full object-cover"
               src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-1.jpg"
               alt="Study" />
             <div class="absolute inset-0"
               style="background:linear-gradient(135deg,rgba(0,120,120,0.6) 0%,rgba(0,0,0,0.7) 100%)"></div>
-            <div class="absolute inset-0 p-10 flex flex-col justify-end">
-              <span
+            <div class="absolute inset-0 p-10 flex flex-col justify-end"><span
                 class="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 text-[10px] font-black uppercase tracking-widest rounded border border-cyan-500/30 w-fit mb-3">Study</span>
               <h1 class="text-5xl font-black text-white uppercase tracking-tighter mb-2">Study Session</h1>
               <p class="text-slate-300 text-sm mb-6">Concentre-se e estude com as melhores batidas.</p>
-              <div class="flex gap-3">
-                <button
+              <div class="flex gap-3"><button
                   class="px-8 py-3 bg-cyan-600 text-white font-bold rounded-full flex items-center gap-2 hover:scale-105 transition-transform"><span
-                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button>
-                <button
+                    class="material-symbols-outlined fill-1">play_arrow</span> Play</button><button
                   class="p-3 bg-white/10 border border-white/20 text-white rounded-full hover:bg-white/20 transition-all"><span
-                    class="material-symbols-outlined">favorite</span></button>
-              </div>
+                    class="material-symbols-outlined">favorite</span></button></div>
             </div>
           </div>
           <h3 class="text-xl font-bold uppercase tracking-tight mb-4">Músicas</h3>
-          <div class="space-y-2">
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="3">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">1</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/OVovoNaoTaCasado.jpg"
-                alt="O Vovô Não Ta Casado" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">O Vovô Não Ta Casado</p>
-                <p class="text-xs text-slate-500 truncate">O Vovô Não Ta Casado</p>
-              </div>
-              <span class="text-xs text-slate-500">6:10</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="7">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">2</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sunflower.jpg"
-                alt="Sunflower" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Sunflower</p>
-                <p class="text-xs text-slate-500 truncate">Post Malone</p>
-              </div>
-              <span class="text-xs text-slate-500">2:38</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="1">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">3</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/Champagnecoast.jpg"
-                alt="Champagne Coast" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Champagne Coast</p>
-                <p class="text-xs text-slate-500 truncate">Blood Orange</p>
-              </div>
-              <span class="text-xs text-slate-500">5:01</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="2">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">4</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/TheGooGooDolls.jpg"
-                alt="Iris" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">Iris</p>
-                <p class="text-xs text-slate-500 truncate">Goo Goo Dolls</p>
-              </div>
-              <span class="text-xs text-slate-500">4:51</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-            <div
-              class="track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group"
-              data-index="0">
-              <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">5</span><span
-                class="material-symbols-outlined text-primary text-xl hidden group-hover:block">play_arrow</span>
-              <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
-                alt="MY EYES" />
-              <div class="flex-1 min-w-0">
-                <p class="font-bold text-sm truncate">MY EYES</p>
-                <p class="text-xs text-slate-500 truncate">Travis Scott</p>
-              </div>
-              <span class="text-xs text-slate-500">3:42</span><button
-                class="material-symbols-outlined text-slate-600 hover:text-primary text-lg transition-colors">favorite</button>
-            </div>
-          </div>
+          <div class="space-y-2" id="study-tracks"></div>
         </div>
       </div>
 
@@ -1786,10 +1123,9 @@
           style="font-size:22px">home</span>Home</a>
       <a class="mobile-link" data-page="navegar"><span class="material-symbols-outlined"
           style="font-size:22px">explore</span>Navegar</a>
-      <a class="mobile-link" data-page="radio"><span class="material-symbols-outlined"
-          style="font-size:22px">favorite</span>Favoritas</a>
-      <a class="mobile-link" data-page="radio"><span class="material-symbols-outlined"
-          style="font-size:22px">album</span>Biblioteca</a>
+      <a href="library.html"><span class="material-symbols-outlined" style="font-size:22px">favorite</span>Favoritas</a>
+      <a href="library.html"><span class="material-symbols-outlined"
+          style="font-size:22px">library_music</span>Biblioteca</a>
     </nav>
 
     <!-- FLOATING PLAYER -->
@@ -1850,13 +1186,238 @@
         </div>
       </div>
     </div>
-
   </div>
 
   <script src="script.js"></script>
 
-  <!-- SPA Navigation -->
+  <!-- =============================================
+       FAVORITES SYSTEM
+  ============================================== -->
   <script>
+    const FAVS_KEY = 'davi_vibe_favorites';
+
+    function getFavs() {
+      return JSON.parse(localStorage.getItem(FAVS_KEY) || '[]');
+    }
+    function saveFavs(favs) {
+      localStorage.setItem(FAVS_KEY, JSON.stringify(favs));
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('fav-toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // Toggle favorite from heart button
+    function toggleFav(btn, event) {
+      if (event) event.stopPropagation();
+      const id = parseInt(btn.dataset.songId);
+      const song = {
+        id, title: btn.dataset.title, artist: btn.dataset.artist,
+        album: btn.dataset.album, img: btn.dataset.img,
+        addedAt: new Date().toLocaleDateString('pt-BR')
+      };
+      const favs = getFavs();
+      const idx = favs.findIndex(f => f.id === id);
+      if (idx === -1) {
+        favs.unshift(song);
+        saveFavs(favs);
+        btn.style.fontVariationSettings = "'FILL' 1";
+        btn.classList.add('active');
+        showToast('♥ ' + song.title + ' adicionada!');
+      } else {
+        favs.splice(idx, 1);
+        saveFavs(favs);
+        btn.style.fontVariationSettings = '';
+        btn.classList.remove('active');
+        showToast('Removida dos favoritos');
+      }
+    }
+
+    // Toggle fav from genre track rows (heart inside track list)
+    function toggleGenreFav(btn, event, song) {
+      if (event) event.stopPropagation();
+      const favs = getFavs();
+      const idx = favs.findIndex(f => f.id === song.id);
+      if (idx === -1) {
+        favs.unshift({ ...song, addedAt: new Date().toLocaleDateString('pt-BR') });
+        saveFavs(favs);
+        btn.style.fontVariationSettings = "'FILL' 1";
+        btn.style.color = '#ec1337';
+        showToast('♥ ' + song.title + ' adicionada!');
+      } else {
+        favs.splice(idx, 1);
+        saveFavs(favs);
+        btn.style.fontVariationSettings = '';
+        btn.style.color = '';
+        showToast('Removida dos favoritos');
+      }
+    }
+
+    // Restore saved hearts on load
+    function restoreHearts() {
+      const favs = getFavs();
+      const favIds = new Set(favs.map(f => f.id));
+      document.querySelectorAll('.heart-btn[data-song-id]').forEach(btn => {
+        const id = parseInt(btn.dataset.songId);
+        if (favIds.has(id)) {
+          btn.style.fontVariationSettings = "'FILL' 1";
+          btn.classList.add('active');
+          // always visible when active
+          btn.style.opacity = '1';
+        }
+      });
+    }
+
+    // =============================================
+    // ADD TO LIBRARY BUTTON (hero)
+    // =============================================
+    const SIDEWALKS_SONG = {
+      id: 99,
+      title: 'Sidewalks and Skeletons',
+      artist: 'Sidewalks and Skeletons',
+      album: 'Synthwave',
+      img: 'https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/sidewalks.jpg',
+      addedAt: new Date().toLocaleDateString('pt-BR')
+    };
+
+    function initAddLibraryBtn() {
+      const btn = document.getElementById('btn-add-library');
+      const icon = document.getElementById('add-lib-icon');
+      const text = document.getElementById('add-lib-text');
+      const favs = getFavs();
+      const already = favs.find(f => f.id === SIDEWALKS_SONG.id);
+      if (already) {
+        icon.textContent = 'check';
+        text.textContent = 'Na Biblioteca';
+        btn.classList.add('bg-primary/20');
+      }
+      btn.addEventListener('click', () => {
+        const currentFavs = getFavs();
+        const idx = currentFavs.findIndex(f => f.id === SIDEWALKS_SONG.id);
+        if (idx === -1) {
+          currentFavs.unshift(SIDEWALKS_SONG);
+          saveFavs(currentFavs);
+          icon.textContent = 'check';
+          text.textContent = 'Na Biblioteca';
+          btn.classList.add('bg-primary/20');
+          showToast('♥ Adicionado à biblioteca!');
+        } else {
+          // Already added → go to library
+          window.location.href = 'library.html';
+        }
+      });
+    }
+
+    // =============================================
+    // GENRE TRACK LISTS WITH FAV HEARTS
+    // =============================================
+    const BASE = 'https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images';
+    const GENRE_TRACKS = {
+      'trap': [
+        { id: 10, title: 'MY EYES', artist: 'Travis Scott', duration: '3:42', img: BASE + '/album-travisscot.jpg' },
+        { id: 11, title: 'SICKO MODE', artist: 'Travis Scott', duration: '5:12', img: BASE + '/album-travisscot.jpg' },
+        { id: 12, title: 'GOOSEBUMPS', artist: 'Travis Scott', duration: '4:03', img: BASE + '/album-travisscot.jpg' },
+        { id: 13, title: 'ANTIDOTE', artist: 'Travis Scott', duration: '4:24', img: BASE + '/album-travisscot.jpg' },
+        { id: 14, title: 'HIGHEST IN THE ROOM', artist: 'Travis Scott', duration: '3:18', img: BASE + '/album-travisscot.jpg' },
+      ],
+      'workout': [
+        { id: 20, title: 'Champagne Coast', artist: 'Blood Orange', duration: '5:01', img: BASE + '/Champagnecoast.jpg' },
+        { id: 21, title: 'Best to You', artist: 'Blood Orange', duration: '3:55', img: BASE + '/Champagnecoast.jpg' },
+        { id: 22, title: "You're Not Good Enough", artist: 'Blood Orange', duration: '4:11', img: BASE + '/Champagnecoast.jpg' },
+        { id: 23, title: 'Hope', artist: 'Blood Orange', duration: '3:29', img: BASE + '/Champagnecoast.jpg' },
+        { id: 24, title: 'Neon Baby', artist: 'Blood Orange', duration: '4:47', img: BASE + '/Champagnecoast.jpg' },
+      ],
+      'chill': [
+        { id: 30, title: 'Sunflower', artist: 'Post Malone', duration: '2:38', img: BASE + '/sunflower.jpg' },
+        { id: 31, title: 'Circles', artist: 'Post Malone', duration: '3:10', img: BASE + '/sunflower.jpg' },
+        { id: 32, title: 'Better Now', artist: 'Post Malone', duration: '2:58', img: BASE + '/sunflower.jpg' },
+        { id: 33, title: 'Goodbyes', artist: 'Post Malone', duration: '2:38', img: BASE + '/sunflower.jpg' },
+        { id: 34, title: 'Saint-Tropez', artist: 'Post Malone', duration: '2:38', img: BASE + '/sunflower.jpg' },
+      ],
+      'electronic': [
+        { id: 40, title: 'Midnight Blue', artist: 'Blue Note Collective', duration: '6:10', img: BASE + '/album-midnight-blue.jpg' },
+        { id: 41, title: 'Neon Drift', artist: 'Blue Note Collective', duration: '5:33', img: BASE + '/album-midnight-blue.jpg' },
+        { id: 42, title: 'Pulse Wave', artist: 'Blue Note Collective', duration: '7:02', img: BASE + '/album-midnight-blue.jpg' },
+        { id: 43, title: 'Static Dream', artist: 'Blue Note Collective', duration: '4:58', img: BASE + '/album-midnight-blue.jpg' },
+        { id: 44, title: 'Voltage', artist: 'Blue Note Collective', duration: '5:45', img: BASE + '/album-midnight-blue.jpg' },
+      ],
+      'jazz': [
+        { id: 50, title: 'So What', artist: 'Miles Davis', duration: '9:22', img: BASE + '/daily-mix-1.jpg' },
+        { id: 51, title: 'Take Five', artist: 'Dave Brubeck', duration: '5:24', img: BASE + '/daily-mix-1.jpg' },
+        { id: 52, title: 'Autumn Leaves', artist: 'Chet Baker', duration: '4:33', img: BASE + '/daily-mix-1.jpg' },
+        { id: 53, title: 'Fly Me to the Moon', artist: 'Frank Sinatra', duration: '2:48', img: BASE + '/daily-mix-1.jpg' },
+        { id: 54, title: 'Round Midnight', artist: 'Thelonious Monk', duration: '5:55', img: BASE + '/daily-mix-1.jpg' },
+      ],
+      'synthwave': [
+        { id: 60, title: 'O Vovô Não Ta Casado', artist: 'O Vovô Não Ta Casado', duration: '3:38', img: BASE + '/OVovoNaoTaCasado.jpg' },
+        { id: 61, title: 'PISOU NA MINHA CARA', artist: 'DJ GBR', duration: '2:48', img: BASE + '/automotivo.jpg' },
+        { id: 62, title: 'Night Call', artist: 'Kavinsky', duration: '3:57', img: BASE + '/daily-mix-2.jpg' },
+        { id: 63, title: 'Sunset', artist: 'The Midnight', duration: '4:22', img: BASE + '/daily-mix-2.jpg' },
+        { id: 64, title: 'Gloria', artist: 'The Midnight', duration: '5:01', img: BASE + '/daily-mix-2.jpg' },
+      ],
+      'newreleases': [
+        { id: 70, title: 'Iris', artist: 'Goo Goo Dolls', duration: '4:51', img: BASE + '/TheGooGooDolls.jpg' },
+        { id: 71, title: 'Slide', artist: 'Goo Goo Dolls', duration: '3:32', img: BASE + '/TheGooGooDolls.jpg' },
+        { id: 72, title: 'Broadway', artist: 'Goo Goo Dolls', duration: '4:18', img: BASE + '/TheGooGooDolls.jpg' },
+        { id: 73, title: 'Black Balloon', artist: 'Goo Goo Dolls', duration: '4:27', img: BASE + '/TheGooGooDolls.jpg' },
+        { id: 74, title: 'Name', artist: 'Goo Goo Dolls', duration: '3:25', img: BASE + '/TheGooGooDolls.jpg' },
+      ],
+      'party': [
+        { id: 80, title: 'MY EYES', artist: 'Travis Scott', duration: '3:42', img: BASE + '/album-travisscot.jpg' },
+        { id: 81, title: 'Champagne Coast', artist: 'Blood Orange', duration: '5:01', img: BASE + '/Champagnecoast.jpg' },
+        { id: 82, title: 'Sunflower', artist: 'Post Malone', duration: '2:38', img: BASE + '/sunflower.jpg' },
+        { id: 83, title: 'Iris', artist: 'Goo Goo Dolls', duration: '4:51', img: BASE + '/TheGooGooDolls.jpg' },
+        { id: 84, title: 'O Vovô Não Ta Casado', artist: 'O Vovô Não Ta Casado', duration: '3:38', img: BASE + '/OVovoNaoTaCasado.jpg' },
+      ],
+      'study': [
+        { id: 90, title: 'O Vovô Não Ta Casado', artist: 'O Vovô Não Ta Casado', duration: '6:10', img: BASE + '/OVovoNaoTaCasado.jpg' },
+        { id: 91, title: 'Sunflower', artist: 'Post Malone', duration: '2:38', img: BASE + '/sunflower.jpg' },
+        { id: 92, title: 'Champagne Coast', artist: 'Blood Orange', duration: '5:01', img: BASE + '/Champagnecoast.jpg' },
+        { id: 93, title: 'Iris', artist: 'Goo Goo Dolls', duration: '4:51', img: BASE + '/TheGooGooDolls.jpg' },
+        { id: 94, title: 'MY EYES', artist: 'Travis Scott', duration: '3:42', img: BASE + '/album-travisscot.jpg' },
+      ],
+    };
+
+    function buildGenreTrackRows() {
+      const favs = getFavs();
+      const favIds = new Set(favs.map(f => f.id));
+
+      Object.entries(GENRE_TRACKS).forEach(([genre, tracks]) => {
+        const container = document.getElementById(genre + '-tracks');
+        if (!container) return;
+        container.innerHTML = '';
+        tracks.forEach((song, i) => {
+          const isFav = favIds.has(song.id);
+          const row = document.createElement('div');
+          row.className = 'track-row flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group';
+          row.innerHTML = `
+            <span class="text-slate-500 text-xs w-5 text-center group-hover:hidden">${i + 1}</span>
+            <span class="material-symbols-outlined text-primary text-xl hidden group-hover:block" style="font-variation-settings:'FILL' 1">play_arrow</span>
+            <img class="w-12 h-12 rounded-lg object-cover flex-shrink-0" src="${song.img}" alt="${song.title}" />
+            <div class="flex-1 min-w-0">
+              <p class="font-bold text-sm truncate">${song.title}</p>
+              <p class="text-xs text-slate-500 truncate">${song.artist}</p>
+            </div>
+            <span class="text-xs text-slate-500">${song.duration}</span>
+            <button class="genre-heart-btn material-symbols-outlined text-lg transition-colors hover:scale-125"
+              style="${isFav ? "color:#ec1337;font-variation-settings:'FILL' 1" : 'color:#475569'}"
+              title="Favoritar">favorite</button>
+          `;
+          // heart click
+          row.querySelector('.genre-heart-btn').addEventListener('click', (e) => {
+            toggleGenreFav(e.currentTarget, e, song);
+          });
+          container.appendChild(row);
+        });
+      });
+    }
+
+    // =============================================
+    // SPA NAVIGATION
+    // =============================================
     let navHistory = ['home'];
     let navCursor = 0;
 
@@ -1900,6 +1461,13 @@
 
     function openSidebar() { document.getElementById("sidebar").classList.add("open"); document.getElementById("sidebar-overlay").classList.add("open"); }
     function closeSidebar() { document.getElementById("sidebar").classList.remove("open"); document.getElementById("sidebar-overlay").classList.remove("open"); }
+
+    // INIT
+    document.addEventListener('DOMContentLoaded', () => {
+      buildGenreTrackRows();
+      restoreHearts();
+      initAddLibraryBtn();
+    });
   </script>
 
   <!-- Firebase Auth -->

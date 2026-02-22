@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Davi Vibe - Daily Mix</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind = {
+            config: {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "primary": "#ec1337",
+                            "background-light": "#f8f6f6",
+                            "background-dark": "#0a0a0a",
+                            "neutral-dark": "#1a1a1a",
+                            "card-dark": "#121212"
+                        },
+                        fontFamily: { "display": ["Spline Sans", "sans-serif"] },
+                        borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        #sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 30;
+        }
+
+        #sidebar-overlay.open {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            #sidebar {
+                position: fixed !important;
+                left: -280px !important;
+                top: 0 !important;
+                bottom: 0 !important;
+                height: 100vh !important;
+                z-index: 40 !important;
+                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                width: 260px !important;
+                display: flex !important;
+                overflow-y: auto;
+            }
+
+            #sidebar.open {
+                left: 0 !important;
+            }
+        }
+
+        .nav-link.active {
+            background: rgba(236, 19, 55, 0.1);
+            color: #ec1337 !important;
+        }
+
+        .nav-link.active .material-symbols-outlined {
+            font-variation-settings: "FILL" 1;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .glass-player {
+            background: rgba(26, 26, 26, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 35;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 8px 0 env(safe-area-inset-bottom);
+            justify-content: space-around;
+        }
+
+        .mobile-nav a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            font-size: 10px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            padding: 6px 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+        }
+
+        .mobile-nav a.active {
+            color: #ec1337;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-nav {
+                display: flex;
+            }
+
+            .desktop-only {
+                display: none !important;
+            }
+        }
+
+        /* ---- Daily Mix específico ---- */
+        .hero-blur {
+            background-size: cover;
+            background-position: center;
+            filter: blur(60px) brightness(0.35);
+            transform: scale(1.2);
+        }
+
+        .track-row {
+            transition: background 0.15s;
+            cursor: pointer;
+        }
+
+        .track-row:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .track-row .row-num {
+            display: block;
+        }
+
+        .track-row .row-play {
+            display: none;
+        }
+
+        .track-row:hover .row-num {
+            display: none;
+        }
+
+        .track-row:hover .row-play {
+            display: block;
+        }
+
+        .track-row:hover .track-title {
+            color: #ec1337;
+        }
+
+        /* mix tabs */
+        .mix-tab {
+            transition: all 0.2s;
+        }
+
+        .mix-tab.active {
+            background: #ec1337;
+            color: white;
+            box-shadow: 0 4px 20px rgba(236, 19, 55, 0.4);
+        }
+
+        .mix-tab:not(.active):hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* fav btn */
+        .fav-btn {
+            transition: color 0.15s, transform 0.15s;
+        }
+
+        .fav-btn:hover {
+            color: #ec1337;
+            transform: scale(1.2);
+        }
+
+        .fav-btn.active {
+            color: #ec1337;
+        }
+
+        .fav-toast {
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #ec1337;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 700;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+            z-index: 200;
+        }
+
+        .fav-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* playing animation */
+        @keyframes bar1 {
+
+            0%,
+            100% {
+                height: 4px
+            }
+
+            50% {
+                height: 14px
+            }
+        }
+
+        @keyframes bar2 {
+
+            0%,
+            100% {
+                height: 10px
+            }
+
+            50% {
+                height: 4px
+            }
+        }
+
+        @keyframes bar3 {
+
+            0%,
+            100% {
+                height: 7px
+            }
+
+            25% {
+                height: 14px
+            }
+
+            75% {
+                height: 3px
+            }
+        }
+
+        .playing-bars span:nth-child(1) {
+            animation: bar1 0.8s infinite;
+        }
+
+        .playing-bars span:nth-child(2) {
+            animation: bar2 0.8s infinite 0.15s;
+        }
+
+        .playing-bars span:nth-child(3) {
+            animation: bar3 0.8s infinite 0.3s;
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark text-slate-100 font-display">
+
+    <div id="sidebar-overlay" onclick="closeSidebar()"></div>
+    <div class="fav-toast" id="fav-toast">♥ Adicionado às favoritas!</div>
+
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- ===== SIDEBAR ===== -->
+        <aside id="sidebar"
+            class="w-64 flex-shrink-0 bg-neutral-dark border-r border-white/5 flex flex-col justify-between py-6 px-4">
+            <div class="space-y-8">
+                <div class="flex items-center gap-3 px-3">
+                    <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">
+                        <span class="material-symbols-outlined text-2xl font-bold">graphic_eq</span>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold leading-none">Davi Vibe</h1>
+                        <span class="text-xs text-slate-500 font-medium">PREMIUM</span>
+                    </div>
+                </div>
+                <nav class="space-y-1">
+                    <a href="index.html"
+                        class="nav-link flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined">home</span>
+                        <span class="font-medium text-sm">Home</span>
+                    </a>
+                    <a href="index.html"
+                        class="nav-link flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined">explore</span>
+                        <span class="font-medium text-sm">Navegar</span>
+                    </a>
+                    <a href="index.html"
+                        class="nav-link flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined">radio</span>
+                        <span class="font-medium text-sm">Radio</span>
+                    </a>
+                </nav>
+                <div class="pt-2">
+                    <h3 class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Library</h3>
+                    <nav class="space-y-1">
+                        <a href="library.html"
+                            class="nav-link flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 transition-colors cursor-pointer">
+                            <span class="material-symbols-outlined">library_music</span>
+                            <span class="font-medium text-sm">Minha Biblioteca</span>
+                        </a>
+                        <a href="library.html"
+                            class="nav-link flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 transition-colors cursor-pointer">
+                            <span class="material-symbols-outlined">favorite</span>
+                            <span class="font-medium text-sm">Favoritas</span>
+                        </a>
+                    </nav>
+                </div>
+                <div>
+                    <h3 class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Para Você</h3>
+                    <nav class="space-y-1">
+                        <a class="nav-link active flex items-center gap-4 px-3 py-2.5 rounded-lg transition-colors cursor-pointer"
+                            onclick="loadMix(1)">
+                            <span class="material-symbols-outlined">looks_one</span>
+                            <span class="font-medium text-sm">Daily Mix 1</span>
+                        </a>
+                        <a class="nav-link flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 transition-colors cursor-pointer"
+                            onclick="loadMix(2)">
+                            <span class="material-symbols-outlined">looks_two</span>
+                            <span class="font-medium text-sm">Daily Mix 2</span>
+                        </a>
+                        <a class="nav-link flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 transition-colors cursor-pointer"
+                            onclick="loadMix(3)">
+                            <span class="material-symbols-outlined">looks_3</span>
+                            <span class="font-medium text-sm">Daily Mix 3</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+            <div class="px-3">
+                <div class="p-4 bg-primary/5 rounded-xl border border-primary/20">
+                    <p class="text-xs font-bold text-primary mb-1">ATIVE O PLANO PREMIUM</p>
+                    <p class="text-[11px] text-slate-500 leading-relaxed mb-3">Tenha acesso a áudio sem perdas e
+                        lançamentos exclusivos.</p>
+                    <button
+                        class="w-full py-2 bg-primary text-white text-xs font-bold rounded-lg hover:brightness-110 transition-all">Gerenciar
+                        conta</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ===== MAIN ===== -->
+        <main class="flex-1 overflow-y-auto no-scrollbar pb-32 relative">
+
+            <!-- Header -->
+            <header
+                class="sticky top-0 z-20 flex items-center justify-between px-4 md:px-8 py-4 bg-background-dark/80 backdrop-blur-md">
+                <div class="flex items-center gap-3">
+                    <button class="md:hidden w-9 h-9 rounded-full bg-white/5 flex items-center justify-center"
+                        onclick="openSidebar()">
+                        <span class="material-symbols-outlined text-xl">menu</span>
+                    </button>
+                    <div class="hidden md:flex gap-3">
+                        <button onclick="history.back()"
+                            class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
+                            <span class="material-symbols-outlined text-sm">chevron_left</span>
+                        </button>
+                        <button onclick="history.forward()"
+                            class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
+                            <span class="material-symbols-outlined text-sm">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex-1 max-w-md mx-4 md:mx-8">
+                    <div class="relative">
+                        <span
+                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                        <input
+                            class="w-full bg-white/5 border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-slate-500"
+                            placeholder="Artistas, músicas, podcasts" type="text" />
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <button id="avatar-btn"
+                            class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary focus:outline-none">
+                            <img id="user-avatar" class="w-full h-full object-cover"
+                                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/avatar.jpg"
+                                alt="User" />
+                        </button>
+                        <div id="avatar-menu"
+                            class="hidden absolute right-0 top-12 w-44 bg-neutral-900 border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden">
+                            <div class="px-4 py-3 border-b border-white/10">
+                                <p id="user-name" class="text-sm font-bold text-white truncate">Usuário</p>
+                                <p id="user-email" class="text-[11px] text-slate-400 truncate"></p>
+                            </div>
+                            <a href="index.html"
+                                class="w-full flex items-center gap-2 px-4 py-3 text-sm text-slate-300 hover:bg-white/5 transition-colors">
+                                <span class="material-symbols-outlined text-base">home</span>Home
+                            </a>
+                            <button id="btn-logout"
+                                class="w-full flex items-center gap-2 px-4 py-3 text-sm text-red-400 hover:bg-white/5 transition-colors">
+                                <span class="material-symbols-outlined text-base">logout</span>Sair
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- ===== MIX TABS ===== -->
+            <div class="px-4 md:px-8 pt-6 pb-4 flex gap-3">
+                <button class="mix-tab active px-5 py-2 rounded-full text-sm font-bold" onclick="loadMix(1, this)">Daily
+                    Mix 1</button>
+                <button class="mix-tab px-5 py-2 rounded-full text-sm font-bold text-slate-400"
+                    onclick="loadMix(2, this)">Daily Mix 2</button>
+                <button class="mix-tab px-5 py-2 rounded-full text-sm font-bold text-slate-400"
+                    onclick="loadMix(3, this)">Daily Mix 3</button>
+            </div>
+
+            <!-- ===== HERO ===== -->
+            <section class="relative overflow-hidden mx-4 md:mx-8 rounded-2xl mb-8">
+                <!-- blurred bg -->
+                <div id="hero-bg" class="absolute inset-0 hero-blur"
+                    style="background-image:url('https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-1.jpg')">
+                </div>
+                <!-- gradient overlay -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/60 to-transparent">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-r from-background-dark/80 to-transparent"></div>
+
+                <!-- content -->
+                <div
+                    class="relative z-10 flex flex-col md:flex-row items-end md:items-center gap-8 p-8 md:p-12 min-h-[320px]">
+                    <!-- cover -->
+                    <div id="hero-cover"
+                        class="w-44 h-44 md:w-52 md:h-52 rounded-xl overflow-hidden flex-shrink-0 shadow-2xl border border-white/10 group">
+                        <img id="mix-cover-img"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/daily-mix-1.jpg"
+                            alt="Daily Mix 1" />
+                    </div>
+                    <!-- info -->
+                    <div class="flex flex-col gap-3">
+                        <span class="text-xs font-bold text-primary uppercase tracking-[0.2em]">Mix Personalizado</span>
+                        <h1 id="mix-title"
+                            class="text-5xl md:text-7xl font-black tracking-tighter leading-none uppercase">Daily Mix 1
+                        </h1>
+                        <p id="mix-desc" class="text-slate-300 font-medium max-w-lg">Baseado nas suas músicas favoritas
+                            • Travis Scott, Blood Orange e mais.</p>
+                        <p id="mix-meta" class="text-slate-500 text-sm">Feito para você • 5 músicas</p>
+
+                        <!-- action buttons -->
+                        <div class="flex items-center gap-3 mt-2">
+                            <button id="hero-play-btn" onclick="playAll()"
+                                class="flex items-center gap-2 px-8 py-3 bg-primary text-white rounded-lg font-bold hover:scale-105 transition-transform shadow-lg shadow-primary/30">
+                                <span class="material-symbols-outlined fill-1">play_arrow</span>
+                                Play
+                            </button>
+                            <button onclick="shuffleAll()"
+                                class="flex items-center gap-2 px-6 py-3 bg-white/10 border border-white/10 text-white rounded-lg font-bold hover:bg-white/20 transition-all">
+                                <span class="material-symbols-outlined">shuffle</span>
+                                Aleatório
+                            </button>
+                            <button id="mix-fav-btn" onclick="toggleMixFav()"
+                                class="w-11 h-11 rounded-full bg-white/10 border border-white/10 flex items-center justify-center hover:bg-white/20 transition-all">
+                                <span class="material-symbols-outlined text-slate-300">favorite</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== TRACKLIST ===== -->
+            <div class="px-4 md:px-8">
+
+                <!-- table header -->
+                <div class="grid gap-4 px-3 py-2 border-b border-white/5 text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1"
+                    style="grid-template-columns:40px 1fr 160px 100px 60px">
+                    <div class="text-center">#</div>
+                    <div>Título</div>
+                    <div class="hidden md:block">Álbum</div>
+                    <div class="hidden lg:block text-center">Data</div>
+                    <div class="text-right">
+                        <span class="material-symbols-outlined text-xs">schedule</span>
+                    </div>
+                </div>
+
+                <!-- tracks -->
+                <div id="track-list" class="space-y-1 mt-1">
+                    <!-- populated by JS -->
+                </div>
+            </div>
+
+        </main>
+
+        <!-- NAVBAR MOBILE -->
+        <nav class="mobile-nav">
+            <a href="index.html"><span class="material-symbols-outlined" style="font-size:22px">home</span>Home</a>
+            <a href="index.html"><span class="material-symbols-outlined"
+                    style="font-size:22px">explore</span>Navegar</a>
+            <a class="active"><span class="material-symbols-outlined" style="font-size:22px">queue_music</span>Daily
+                Mix</a>
+            <a href="library.html"><span class="material-symbols-outlined"
+                    style="font-size:22px">library_music</span>Biblioteca</a>
+        </nav>
+
+        <!-- ===== FLOATING PLAYER ===== -->
+        <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-4rem)] max-w-5xl z-50">
+            <div class="glass-player px-6 py-4 rounded-2xl flex items-center justify-between shadow-2xl">
+                <div class="flex items-center gap-4 w-1/4">
+                    <div class="w-12 h-12 rounded-lg overflow-hidden shadow-md">
+                        <img id="player-img" class="w-full h-full object-cover"
+                            src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
+                            alt="Now Playing" />
+                    </div>
+                    <div class="flex flex-col">
+                        <h5 id="player-title" class="text-sm font-bold text-white">MY EYES</h5>
+                        <p id="player-artist" class="text-xs text-slate-400 font-medium">Travis Scott</p>
+                    </div>
+                    <button id="btn-favorite"
+                        class="material-symbols-outlined text-slate-400 hover:text-primary transition-colors text-xl">favorite</button>
+                </div>
+                <div class="flex flex-col items-center gap-2 flex-1">
+                    <div class="flex items-center gap-6">
+                        <button id="btn-shuffle"
+                            class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">shuffle</button>
+                        <button id="btn-prev"
+                            class="material-symbols-outlined text-white hover:text-primary transition-colors">skip_previous</button>
+                        <button id="btn-play"
+                            class="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
+                            <span class="material-symbols-outlined text-black fill-1">play_arrow</span>
+                        </button>
+                        <button id="btn-next"
+                            class="material-symbols-outlined text-white hover:text-primary transition-colors">skip_next</button>
+                        <button id="btn-repeat"
+                            class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">repeat</button>
+                    </div>
+                    <div class="flex items-center gap-3 w-full max-w-lg">
+                        <span id="time-current" class="text-[10px] font-bold text-slate-400 w-8">0:00</span>
+                        <div id="progress-bar"
+                            class="flex-1 h-1.5 bg-white/10 rounded-full relative group cursor-pointer">
+                            <div id="progress-fill" class="absolute inset-y-0 left-0 w-0 bg-primary rounded-full"></div>
+                            <div id="progress-thumb"
+                                class="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-lg scale-0 group-hover:scale-100 transition-transform">
+                            </div>
+                        </div>
+                        <span id="time-total" class="text-[10px] font-bold text-slate-400 w-8">0:00</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end gap-4 w-1/4">
+                    <button
+                        class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">lyrics</button>
+                    <button
+                        class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">queue_music</button>
+                    <div class="flex items-center gap-2 group">
+                        <button id="btn-volume"
+                            class="material-symbols-outlined text-slate-400 group-hover:text-white transition-colors">volume_up</button>
+                        <div id="volume-bar" class="w-20 h-1 bg-white/10 rounded-full overflow-hidden cursor-pointer">
+                            <div id="volume-fill" class="w-2/3 h-full bg-slate-300"></div>
+                        </div>
+                    </div>
+                    <button
+                        class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">fullscreen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- script.js do site (player) -->
+    <script src="script.js"></script>
+
+    <!-- Firebase Auth -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+        const app = initializeApp({
+            apiKey: "AIzaSyDpkeu4920YRA4pc5HOAaEuP7-KMevUNno",
+            authDomain: "davi-vibes.firebaseapp.com",
+            projectId: "davi-vibes",
+            storageBucket: "davi-vibes.firebasestorage.app",
+            messagingSenderId: "198203679502",
+            appId: "1:198203679502:web:cfc71ee1dcd2a537412d5f"
+        });
+        const auth = getAuth(app);
+
+        onAuthStateChanged(auth, user => {
+            if (!user) { window.location.href = "login.html"; return; }
+            const avatarEl = document.getElementById("user-avatar");
+            if (user.photoURL) {
+                avatarEl.src = user.photoURL;
+            } else {
+                const initials = (user.displayName || user.email || "U").charAt(0).toUpperCase();
+                const canvas = document.createElement("canvas");
+                canvas.width = canvas.height = 80;
+                const ctx = canvas.getContext("2d");
+                ctx.fillStyle = "#ec1337"; ctx.fillRect(0, 0, 80, 80);
+                ctx.fillStyle = "#fff"; ctx.font = "bold 36px sans-serif";
+                ctx.textAlign = "center"; ctx.textBaseline = "middle";
+                ctx.fillText(initials, 40, 40);
+                avatarEl.src = canvas.toDataURL();
+            }
+            document.getElementById("user-name").textContent = user.displayName || "Usuário";
+            document.getElementById("user-email").textContent = user.email || "";
+        });
+
+        document.getElementById("avatar-btn").addEventListener("click", e => {
+            e.stopPropagation();
+            document.getElementById("avatar-menu").classList.toggle("hidden");
+        });
+        document.addEventListener("click", () => document.getElementById("avatar-menu").classList.add("hidden"));
+        document.getElementById("btn-logout").addEventListener("click", async () => {
+            await signOut(auth);
+            window.location.href = "login.html";
+        });
+    </script>
+
+    <!-- Sidebar mobile -->
+    <script>
+        function openSidebar() { document.getElementById("sidebar").classList.add("open"); document.getElementById("sidebar-overlay").classList.add("open"); }
+        function closeSidebar() { document.getElementById("sidebar").classList.remove("open"); document.getElementById("sidebar-overlay").classList.remove("open"); }
+    </script>
+
+    <!-- ===== DAILY MIX LOGIC ===== -->
+    <script>
+        const BASE = 'https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images';
+
+        // ---- MIX DATA ----
+        const MIXES = {
+            1: {
+                title: 'Daily Mix 1',
+                desc: 'Baseado nas suas músicas favoritas • Travis Scott, Blood Orange e mais.',
+                meta: 'Feito para você • 5 músicas',
+                cover: BASE + '/daily-mix-1.jpg',
+                gradient: 'from-red-900/40',
+                tracks: [
+                    { id: 0, num: 1, title: 'MY EYES', artist: 'Travis Scott', album: 'UTOPIA', duration: '3:42', img: BASE + '/album-travisscot.jpg', date: 'Hoje' },
+                    { id: 1, num: 2, title: 'Champagne Coast', artist: 'Blood Orange', album: 'Coastal Grooves', duration: '5:01', img: BASE + '/Champagnecoast.jpg', date: 'Ontem' },
+                    { id: 2, num: 3, title: 'Iris', artist: 'Goo Goo Dolls', album: 'Dizzy Up the Girl', duration: '4:51', img: BASE + '/TheGooGooDolls.jpg', date: '3 dias' },
+                    { id: 3, num: 4, title: 'O Vovô Não Ta Casado', artist: 'O Vovô Não Ta Casado', album: 'Funk Hits', duration: '3:38', img: BASE + 'OVovoNaoTaCasado.jpg', date: '4 dias' },
+                    { id: 7, num: 5, title: 'Sunflower', artist: 'Post Malone', album: "Hollywood's Bleeding", duration: '2:38', img: BASE + '/sunflower.jpg', date: '1 semana' },
+                ]
+            },
+            2: {
+                title: 'Daily Mix 2',
+                desc: 'Seleção especial de batidas chill e eletrônico.',
+                meta: 'Feito para você • 5 músicas',
+                cover: BASE + '/daily-mix-2.jpg',
+                gradient: 'from-blue-900/40',
+                tracks: [
+                    { id: 5, num: 1, title: 'Night Call', artist: 'Kavinsky', album: 'Outrun', duration: '3:57', img: BASE + '/daily-mix-2.jpg', date: 'Hoje' },
+                    { id: 6, num: 2, title: 'PISOU NA MINHA CARA', artist: 'DJ GBR', album: 'Automotivo', duration: '2:48', img: BASE + '/automotivo.jpg', date: 'Ontem' },
+                    { id: 1, num: 3, title: 'Champagne Coast', artist: 'Blood Orange', album: 'Coastal Grooves', duration: '5:01', img: BASE + '/Champagnecoast.jpg', date: '2 dias' },
+                    { id: 7, num: 4, title: 'Sunflower', artist: 'Post Malone', album: "Hollywood's Bleeding", duration: '2:38', img: BASE + '/sunflower.jpg', date: '3 dias' },
+                    { id: 0, num: 5, title: 'MY EYES', artist: 'Travis Scott', album: 'UTOPIA', duration: '3:42', img: BASE + '/album-travisscot.jpg', date: '5 dias' },
+                ]
+            },
+            3: {
+                title: 'Daily Mix 3',
+                desc: 'Novidades e lançamentos que você vai amar.',
+                meta: 'Feito para você • 5 músicas',
+                cover: BASE + '/daily-mix-3.jpg',
+                gradient: 'from-green-900/40',
+                tracks: [
+                    { id: 2, num: 1, title: 'Iris', artist: 'Goo Goo Dolls', album: 'Dizzy Up the Girl', duration: '4:51', img: BASE + '/TheGooGooDolls.jpg', date: 'Hoje' },
+                    { id: 7, num: 2, title: 'Sunflower', artist: 'Post Malone', album: "Hollywood's Bleeding", duration: '2:38', img: BASE + '/sunflower.jpg', date: 'Ontem' },
+                    { id: 3, num: 3, title: 'O Vovô Não Ta Casado', artist: 'O Vovô Não Ta Casado', album: 'Funk Hits', duration: '3:38', img: BASE + '/O%20Vov%C3%B4%20N%C3%A3o%20Ta%20Casado.jpg', date: '2 dias' },
+                    { id: 0, num: 4, title: 'MY EYES', artist: 'Travis Scott', album: 'UTOPIA', duration: '3:42', img: BASE + '/album-travisscot.jpg', date: '3 dias' },
+                    { id: 1, num: 5, title: 'Champagne Coast', artist: 'Blood Orange', album: 'Coastal Grooves', duration: '5:01', img: BASE + '/Champagnecoast.jpg', date: '1 semana' },
+                ]
+            }
+        };
+
+        let currentMix = 1;
+        let currentTrackIndex = -1;
+        let isPlaying = false;
+        const favs = JSON.parse(localStorage.getItem('davi_vibe_favorites') || '[]');
+
+        // ---- LOAD MIX ----
+        function loadMix(num, tabBtn) {
+            currentMix = num;
+
+            // update tabs
+            document.querySelectorAll('.mix-tab').forEach(b => b.classList.remove('active'));
+            if (tabBtn) {
+                tabBtn.classList.add('active');
+            } else {
+                document.querySelectorAll('.mix-tab')[num - 1].classList.add('active');
+            }
+
+            // update sidebar nav
+            document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
+            document.querySelectorAll('[onclick*="loadMix"]').forEach((a, i) => {
+                if (i === num - 1) a.classList.add('active');
+            });
+
+            const mix = MIXES[num];
+
+            // update hero
+            document.getElementById('hero-bg').style.backgroundImage = `url('${mix.cover}')`;
+            document.getElementById('mix-cover-img').src = mix.cover;
+            document.getElementById('mix-title').textContent = mix.title;
+            document.getElementById('mix-desc').textContent = mix.desc;
+            document.getElementById('mix-meta').textContent = mix.meta;
+
+            renderTracks(mix.tracks);
+            currentTrackIndex = -1;
+            isPlaying = false;
+        }
+
+        // ---- RENDER TRACKS ----
+        function renderTracks(tracks) {
+            const list = document.getElementById('track-list');
+            list.innerHTML = '';
+
+            tracks.forEach((track, i) => {
+                const isFav = favs.find(f => f.id === track.id);
+                const row = document.createElement('div');
+                row.className = 'track-row grid gap-4 px-3 py-3 rounded-xl items-center';
+                row.style.gridTemplateColumns = '40px 1fr 160px 100px 60px';
+                row.dataset.index = i;
+                row.innerHTML = `
+          <div class="flex items-center justify-center">
+            <span class="row-num text-slate-500 text-xs">${track.num}</span>
+            <span class="row-play material-symbols-outlined text-primary text-xl" style="font-variation-settings:'FILL' 1;display:none">play_arrow</span>
+            <div class="playing-bars hidden items-center gap-[2px] justify-center" style="height:16px">
+              <span class="bg-primary rounded-full w-[3px]" style="height:4px;display:block"></span>
+              <span class="bg-primary rounded-full w-[3px]" style="height:10px;display:block"></span>
+              <span class="bg-primary rounded-full w-[3px]" style="height:7px;display:block"></span>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 shadow-md">
+              <img class="w-full h-full object-cover" src="${track.img}" alt="${track.title}" />
+            </div>
+            <div class="min-w-0">
+              <p class="track-title font-bold text-sm truncate">${track.title}</p>
+              <p class="text-xs text-slate-500 truncate">${track.artist}</p>
+            </div>
+          </div>
+          <div class="hidden md:block text-sm text-slate-500 truncate">${track.album}</div>
+          <div class="hidden lg:block text-xs text-slate-500 text-center">${track.date}</div>
+          <div class="flex items-center justify-end gap-2">
+            <button class="fav-btn material-symbols-outlined text-base ${isFav ? 'active text-primary' : 'text-slate-600'}"
+              style="${isFav ? "font-variation-settings:'FILL' 1" : ''}"
+              data-id="${track.id}" title="Favoritar">favorite</button>
+            <span class="text-xs text-slate-500">${track.duration}</span>
+          </div>
+        `;
+
+                // play on row click
+                row.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('fav-btn')) playTrack(i);
+                });
+
+                // fav button
+                row.querySelector('.fav-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleFav(track, row.querySelector('.fav-btn'));
+                });
+
+                list.appendChild(row);
+            });
+        }
+
+        // ---- PLAY TRACK ----
+        function playTrack(index) {
+            const mix = MIXES[currentMix];
+            const track = mix.tracks[index];
+
+            // reset all rows
+            document.querySelectorAll('.track-row').forEach(r => {
+                r.querySelector('.row-num').style.display = '';
+                r.querySelector('.row-play').style.display = 'none';
+                r.querySelector('.playing-bars').classList.add('hidden');
+                r.querySelector('.playing-bars').style.display = '';
+                r.querySelector('.track-title').style.color = '';
+            });
+
+            // highlight current
+            const rows = document.querySelectorAll('.track-row');
+            const row = rows[index];
+            row.querySelector('.row-num').style.display = 'none';
+            row.querySelector('.row-play').style.display = 'none';
+            row.querySelector('.playing-bars').classList.remove('hidden');
+            row.querySelector('.playing-bars').style.display = 'flex';
+            row.querySelector('.track-title').style.color = '#ec1337';
+
+            // update player
+            document.getElementById('player-title').textContent = track.title;
+            document.getElementById('player-artist').textContent = track.artist;
+            document.getElementById('player-img').src = track.img;
+
+            currentTrackIndex = index;
+            isPlaying = true;
+
+            // update play button
+            const btn = document.getElementById('btn-play');
+            btn.innerHTML = '<span class="material-symbols-outlined text-black fill-1" style="font-variation-settings:\'FILL\' 1">pause</span>';
+        }
+
+        // ---- PLAY ALL ----
+        function playAll() { playTrack(0); }
+
+        // ---- SHUFFLE ----
+        function shuffleAll() {
+            const mix = MIXES[currentMix];
+            const rand = Math.floor(Math.random() * mix.tracks.length);
+            playTrack(rand);
+        }
+
+        // ---- TOGGLE MIX FAV ----
+        function toggleMixFav() {
+            const btn = document.getElementById('mix-fav-btn').querySelector('span');
+            const isActive = btn.style.getPropertyValue('font-variation-settings') === "'FILL' 1";
+            if (isActive) {
+                btn.style.fontVariationSettings = '';
+                btn.style.color = '';
+            } else {
+                btn.style.fontVariationSettings = "'FILL' 1";
+                btn.style.color = '#ec1337';
+                showToast('♥ Daily Mix ' + currentMix + ' salvo!');
+            }
+        }
+
+        // ---- TOGGLE INDIVIDUAL FAV ----
+        function toggleFav(track, btn) {
+            const favIdx = favs.findIndex(f => f.id === track.id);
+            if (favIdx === -1) {
+                favs.unshift({ ...track, addedAt: new Date().toLocaleDateString('pt-BR') });
+                btn.style.fontVariationSettings = "'FILL' 1";
+                btn.classList.add('active');
+                showToast('♥ ' + track.title + ' adicionada!');
+            } else {
+                favs.splice(favIdx, 1);
+                btn.style.fontVariationSettings = '';
+                btn.classList.remove('active');
+                showToast('Removida dos favoritos');
+            }
+            localStorage.setItem('davi_vibe_favorites', JSON.stringify(favs));
+        }
+
+        // ---- TOAST ----
+        function showToast(msg) {
+            const t = document.getElementById('fav-toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2500);
+        }
+
+        // ---- PREV / NEXT ----
+        document.getElementById('btn-prev').addEventListener('click', () => {
+            if (currentTrackIndex > 0) playTrack(currentTrackIndex - 1);
+        });
+        document.getElementById('btn-next').addEventListener('click', () => {
+            const mix = MIXES[currentMix];
+            if (currentTrackIndex < mix.tracks.length - 1) playTrack(currentTrackIndex + 1);
+            else playTrack(0);
+        });
+
+        // ---- INIT ----
+        loadMix(1);
+    </script>
+
+</body>
+
+</html>

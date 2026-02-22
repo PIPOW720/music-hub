@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Davi Vibe - Biblioteca</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind = {
+            config: {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "primary": "#ec1337",
+                            "background-light": "#f8f6f6",
+                            "background-dark": "#0a0a0a",
+                            "neutral-dark": "#1a1a1a",
+                            "card-dark": "#121212"
+                        },
+                        fontFamily: { "display": ["Spline Sans", "sans-serif"] },
+                        borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" }
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        /* ---- reutilizando as mesmas classes do index.html ---- */
+        #sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 30;
+        }
+
+        #sidebar-overlay.open {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            #sidebar {
+                position: fixed !important;
+                left: -280px !important;
+                top: 0 !important;
+                bottom: 0 !important;
+                height: 100vh !important;
+                z-index: 40 !important;
+                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                width: 260px !important;
+                display: flex !important;
+                overflow-y: auto;
+            }
+
+            #sidebar.open {
+                left: 0 !important;
+            }
+        }
+
+        .nav-link.active {
+            background: rgba(236, 19, 55, 0.1);
+            color: #ec1337 !important;
+        }
+
+        .nav-link.active .material-symbols-outlined {
+            font-variation-settings: "FILL" 1;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .glass-player {
+            background: rgba(26, 26, 26, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 35;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 8px 0 env(safe-area-inset-bottom);
+            justify-content: space-around;
+        }
+
+        .mobile-nav a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            font-size: 10px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            padding: 6px 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+        }
+
+        .mobile-nav a.active {
+            color: #ec1337;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-nav {
+                display: flex;
+            }
+
+            .desktop-only {
+                display: none !important;
+            }
+        }
+
+        /* ---- estilos específicos da biblioteca ---- */
+        .playlist-card {
+            background: rgba(255, 255, 255, 0.04);
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .playlist-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .song-row {
+            transition: background 0.15s;
+        }
+
+        .song-row:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .song-row:hover .row-num {
+            display: none;
+        }
+
+        .song-row:hover .row-play {
+            display: flex !important;
+        }
+
+        .row-play {
+            display: none;
+        }
+
+        /* tabs */
+        .tab-btn {
+            transition: color 0.15s, border-color 0.15s;
+        }
+
+        .tab-btn.active {
+            color: #ec1337;
+            border-bottom: 2px solid #ec1337;
+        }
+
+        /* create playlist modal */
+        #create-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.7);
+            align-items: center;
+            justify-content: center;
+        }
+
+        #create-modal.open {
+            display: flex;
+        }
+
+        /* confirmação de favorito */
+        .fav-toast {
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #ec1337;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 700;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+            z-index: 200;
+        }
+
+        .fav-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* gradient hero */
+        .lib-hero {
+            background: linear-gradient(135deg, rgba(236, 19, 55, 0.15) 0%, rgba(10, 10, 10, 0) 60%);
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark text-slate-100 font-display">
+
+    <div id="sidebar-overlay" onclick="closeSidebar()"></div>
+    <div class="fav-toast" id="fav-toast">♥ Adicionado às favoritas!</div>
+
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- ===== SIDEBAR ===== -->
+        <aside id="sidebar"
+            class="w-64 flex-shrink-0 bg-neutral-dark border-r border-white/5 flex flex-col justify-between py-6 px-4">
+            <div class="space-y-8">
+                <div class="flex items-center gap-3 px-3">
+                    <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">
+                        <span class="material-symbols-outlined text-2xl font-bold">graphic_eq</span>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold leading-none">Davi Vibe</h1>
+                        <span class="text-xs text-slate-500 font-medium">PREMIUM</span>
+                    </div>
+                </div>
+                <nav class="space-y-1">
+                    <a href="index.html"
+                        class="nav-link flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined">home</span>
+                        <span class="font-medium text-sm">Home</span>
+                    </a>
+                    <a href="index.html"
+                        class="nav-link flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined">explore</span>
+                        <span class="font-medium text-sm">Navegar</span>
+                    </a>
+                    <a href="index.html"
+                        class="nav-link flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined">radio</span>
+                        <span class="font-medium text-sm">Radio</span>
+                    </a>
+                </nav>
+
+                <!-- library section -->
+                <div class="pt-2">
+                    <h3 class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Biblioteca</h3>
+                    <nav class="space-y-1">
+                        <a
+                            class="nav-link active flex items-center gap-4 px-3 py-2.5 rounded-lg transition-colors cursor-pointer">
+                            <span class="material-symbols-outlined">library_music</span>
+                            <span class="font-medium text-sm">Minha Biblioteca</span>
+                        </a>
+                        <a
+                            class="nav-link flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 transition-colors cursor-pointer">
+                            <span class="material-symbols-outlined">history</span>
+                            <span class="font-medium text-sm">Recently Played</span>
+                        </a>
+                        <a
+                            class="nav-link flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 transition-colors cursor-pointer">
+                            <span class="material-symbols-outlined">favorite</span>
+                            <span class="font-medium text-sm">Musicas Favoritas</span>
+                        </a>
+                        <a
+                            class="nav-link flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 transition-colors cursor-pointer">
+                            <span class="material-symbols-outlined">album</span>
+                            <span class="font-medium text-sm">Albums</span>
+                        </a>
+                        <a
+                            class="nav-link flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 transition-colors cursor-pointer">
+                            <span class="material-symbols-outlined">artist</span>
+                            <span class="font-medium text-sm">Artistas</span>
+                        </a>
+                    </nav>
+                </div>
+
+                <!-- suas playlists -->
+                <div>
+                    <h3 class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Suas Playlists
+
+                        </nav>
+                </div>
+            </div>
+
+            <!-- upgrade box -->
+            <div class="px-3">
+                <div class="p-4 bg-primary/5 rounded-xl border border-primary/20">
+                    <p class="text-xs font-bold text-primary mb-1">ATIVE O PLANO PREMIUM</p>
+                    <p class="text-[11px] text-slate-500 leading-relaxed mb-3">Tenha acesso a áudio sem perdas e
+                        lançamentos exclusivos.</p>
+                    <button
+                        class="w-full py-2 bg-primary text-white text-xs font-bold rounded-lg hover:brightness-110 transition-all">Gerenciar
+                        conta</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ===== MAIN ===== -->
+        <main class="flex-1 overflow-y-auto no-scrollbar pb-32">
+
+            <!-- Header -->
+            <header
+                class="sticky top-0 z-20 flex items-center justify-between px-4 md:px-8 py-4 bg-background-dark/80 backdrop-blur-md">
+                <div class="flex items-center gap-3">
+                    <button class="md:hidden w-9 h-9 rounded-full bg-white/5 flex items-center justify-center"
+                        onclick="openSidebar()">
+                        <span class="material-symbols-outlined text-xl">menu</span>
+                    </button>
+                    <div class="hidden md:flex gap-3">
+                        <button onclick="history.back()"
+                            class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
+                            <span class="material-symbols-outlined text-sm">chevron_left</span>
+                        </button>
+                        <button onclick="history.forward()"
+                            class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
+                            <span class="material-symbols-outlined text-sm">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex-1 max-w-md mx-4 md:mx-8">
+                    <div class="relative">
+                        <span
+                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                        <input id="search-input"
+                            class="w-full bg-white/5 border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-slate-500"
+                            placeholder="Buscar na biblioteca..." type="text" />
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <button id="avatar-btn"
+                            class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary focus:outline-none">
+                            <img id="user-avatar" class="w-full h-full object-cover"
+                                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/avatar.jpg"
+                                alt="User" />
+                        </button>
+                        <div id="avatar-menu"
+                            class="hidden absolute right-0 top-12 w-44 bg-neutral-900 border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden">
+                            <div class="px-4 py-3 border-b border-white/10">
+                                <p id="user-name" class="text-sm font-bold text-white truncate">Usuário</p>
+                                <p id="user-email" class="text-[11px] text-slate-400 truncate"></p>
+                            </div>
+                            <a href="index.html"
+                                class="w-full flex items-center gap-2 px-4 py-3 text-sm text-slate-300 hover:bg-white/5 transition-colors">
+                                <span class="material-symbols-outlined text-base">home</span>Home
+                            </a>
+                            <button id="btn-logout"
+                                class="w-full flex items-center gap-2 px-4 py-3 text-sm text-red-400 hover:bg-white/5 transition-colors">
+                                <span class="material-symbols-outlined text-base">logout</span>Sair
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- ===== HERO BIBLIOTECA ===== -->
+            <section class="lib-hero px-4 md:px-8 pt-8 pb-6">
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div>
+                        <div class="flex items-center gap-3 mb-3">
+                            <div
+                                class="w-16 h-16 bg-primary/20 border border-primary/30 rounded-xl flex items-center justify-center">
+                                <span class="material-symbols-outlined text-primary text-3xl"
+                                    style="font-variation-settings:'FILL' 1">library_music</span>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-primary uppercase tracking-widest">Sua Coleção</p>
+                                <h2 class="text-4xl font-black tracking-tight">Minha Biblioteca</h2>
+                            </div>
+                        </div>
+                        <p class="text-slate-400 text-sm font-medium" id="library-stats">0 músicas favoritas • 0
+                            playlists</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button onclick="shufflePlay()"
+                            class="flex items-center gap-2 px-6 py-2.5 bg-white/10 border border-white/10 text-white rounded-full text-sm font-bold hover:bg-white/20 transition-all">
+                            <span class="material-symbols-outlined text-lg">shuffle</span>
+                            Aleatório
+                        </button>
+                        <button onclick="openCreateModal()"
+                            class="flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-full text-sm font-bold hover:brightness-110 transition-all shadow-lg shadow-primary/30">
+                            <span class="material-symbols-outlined text-lg">add</span>
+                            Nova Playlist
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== TABS ===== -->
+            <div class="px-4 md:px-8 border-b border-white/5 flex gap-8 mt-2">
+                <button class="tab-btn active pb-3 text-sm font-bold tracking-wide"
+                    onclick="switchTab('favoritas', this)">Músicas Favoritas</button>
+                <button class="tab-btn pb-3 text-sm font-bold tracking-wide text-slate-400"
+                    onclick="switchTab('playlists', this)">Playlists</button>
+                <button class="tab-btn pb-3 text-sm font-bold tracking-wide text-slate-400"
+                    onclick="switchTab('artistas', this)">Artistas</button>
+            </div>
+
+            <!-- ===== TAB: FAVORITAS ===== -->
+            <div id="tab-favoritas" class="px-4 md:px-8 mt-6">
+
+                <!-- sort bar -->
+                <div class="flex items-center justify-between mb-4">
+                    <p class="text-xs text-slate-500 font-bold uppercase tracking-widest" id="count-label">0 músicas</p>
+                    <button
+                        class="flex items-center gap-1 text-xs text-slate-400 hover:text-white transition-colors font-bold">
+                        <span class="material-symbols-outlined text-sm">sort</span>
+                        Data adicionada
+                    </button>
+                </div>
+
+                <!-- table header -->
+                <div class="grid gap-4 px-3 py-2 border-b border-white/5 text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1"
+                    style="grid-template-columns:40px 1fr 160px 100px">
+                    <div class="text-center">#</div>
+                    <div>Título</div>
+                    <div>Artista</div>
+                    <div class="text-right">Adicionada</div>
+                </div>
+
+                <!-- song rows container -->
+                <div id="fav-list" class="space-y-1">
+                    <!-- empty state -->
+                    <div id="empty-fav" class="py-16 text-center">
+                        <div class="w-16 h-16 mx-auto bg-white/5 rounded-xl flex items-center justify-center mb-4">
+                            <span class="material-symbols-outlined text-slate-500 text-3xl">favorite_border</span>
+                        </div>
+                        <p class="text-slate-400 font-bold mb-1">Nenhuma música favorita ainda</p>
+                        <p class="text-slate-500 text-sm">Clique no ♥ nas músicas para adicioná-las aqui</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== TAB: PLAYLISTS ===== -->
+            <div id="tab-playlists" class="px-4 md:px-8 mt-6 hidden">
+                <div class="flex items-center justify-between mb-6">
+                    <p class="text-xs text-slate-500 font-bold uppercase tracking-widest" id="playlist-count">0
+                        playlists</p>
+                    <button onclick="openCreateModal()"
+                        class="flex items-center gap-1 text-xs text-primary font-bold hover:underline">
+                        <span class="material-symbols-outlined text-sm">add</span>
+                        Nova Playlist
+                    </button>
+                </div>
+                <div id="playlist-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+                    <!-- empty -->
+                    <div id="empty-playlist" class="col-span-full py-16 text-center">
+                        <div class="w-16 h-16 mx-auto bg-white/5 rounded-xl flex items-center justify-center mb-4">
+                            <span class="material-symbols-outlined text-slate-500 text-3xl">queue_music</span>
+                        </div>
+                        <p class="text-slate-400 font-bold mb-1">Nenhuma playlist ainda</p>
+                        <p class="text-slate-500 text-sm">Crie sua primeira playlist e organize suas músicas</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== TAB: ARTISTAS ===== -->
+            <div id="tab-artistas" class="px-4 md:px-8 mt-6 hidden">
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6" id="artist-grid">
+                    <!-- populated from favorites -->
+                    <div id="empty-artist" class="col-span-full py-16 text-center">
+                        <div class="w-16 h-16 mx-auto bg-white/5 rounded-xl flex items-center justify-center mb-4">
+                            <span class="material-symbols-outlined text-slate-500 text-3xl">person</span>
+                        </div>
+                        <p class="text-slate-400 font-bold mb-1">Nenhum artista ainda</p>
+                        <p class="text-slate-500 text-sm">Os artistas das suas músicas favoritas aparecerão aqui</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- NAVBAR MOBILE -->
+        <nav class="mobile-nav">
+            <a href="index.html"><span class="material-symbols-outlined" style="font-size:22px">home</span>Home</a>
+            <a href="index.html"><span class="material-symbols-outlined"
+                    style="font-size:22px">explore</span>Navegar</a>
+            <a class="active"><span class="material-symbols-outlined"
+                    style="font-size:22px">library_music</span>Biblioteca</a>
+            <a href="index.html"><span class="material-symbols-outlined" style="font-size:22px">album</span>Álbuns</a>
+        </nav>
+
+        <!-- ===== FLOATING PLAYER ===== -->
+        <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-4rem)] max-w-5xl z-50">
+            <div class="glass-player px-6 py-4 rounded-2xl flex items-center justify-between shadow-2xl">
+                <div class="flex items-center gap-4 w-1/4">
+                    <div class="w-12 h-12 rounded-lg overflow-hidden shadow-md">
+                        <img id="player-img" class="w-full h-full object-cover"
+                            src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/album-travisscot.jpg"
+                            alt="Now Playing" />
+                    </div>
+                    <div class="flex flex-col">
+                        <h5 id="player-title" class="text-sm font-bold text-white">MY EYES</h5>
+                        <p id="player-artist" class="text-xs text-slate-400 font-medium">Travis Scott</p>
+                    </div>
+                    <button id="btn-favorite"
+                        class="material-symbols-outlined text-slate-400 hover:text-primary transition-colors text-xl">favorite</button>
+                </div>
+                <div class="flex flex-col items-center gap-2 flex-1">
+                    <div class="flex items-center gap-6">
+                        <button id="btn-shuffle"
+                            class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">shuffle</button>
+                        <button id="btn-prev"
+                            class="material-symbols-outlined text-white hover:text-primary transition-colors">skip_previous</button>
+                        <button id="btn-play"
+                            class="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
+                            <span class="material-symbols-outlined text-black fill-1">play_arrow</span>
+                        </button>
+                        <button id="btn-next"
+                            class="material-symbols-outlined text-white hover:text-primary transition-colors">skip_next</button>
+                        <button id="btn-repeat"
+                            class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">repeat</button>
+                    </div>
+                    <div class="flex items-center gap-3 w-full max-w-lg">
+                        <span id="time-current" class="text-[10px] font-bold text-slate-400 w-8">0:00</span>
+                        <div id="progress-bar"
+                            class="flex-1 h-1.5 bg-white/10 rounded-full relative group cursor-pointer">
+                            <div id="progress-fill" class="absolute inset-y-0 left-0 w-0 bg-primary rounded-full"></div>
+                            <div id="progress-thumb"
+                                class="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-lg scale-0 group-hover:scale-100 transition-transform">
+                            </div>
+                        </div>
+                        <span id="time-total" class="text-[10px] font-bold text-slate-400 w-8">0:00</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-end gap-4 w-1/4">
+                    <button
+                        class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">lyrics</button>
+                    <button
+                        class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">queue_music</button>
+                    <div class="flex items-center gap-2 group">
+                        <button id="btn-volume"
+                            class="material-symbols-outlined text-slate-400 group-hover:text-white transition-colors">volume_up</button>
+                        <div id="volume-bar" class="w-20 h-1 bg-white/10 rounded-full overflow-hidden cursor-pointer">
+                            <div id="volume-fill" class="w-2/3 h-full bg-slate-300"></div>
+                        </div>
+                    </div>
+                    <button
+                        class="material-symbols-outlined text-slate-400 hover:text-white transition-colors">fullscreen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL: CRIAR PLAYLIST ===== -->
+    <div id="create-modal">
+        <div class="bg-neutral-dark border border-white/10 rounded-2xl p-8 w-full max-w-md mx-4 shadow-2xl">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold">Nova Playlist</h3>
+                <button onclick="closeCreateModal()"
+                    class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                </button>
+            </div>
+
+            <!-- cover picker placeholder -->
+            <div class="w-full aspect-square max-w-[180px] mx-auto mb-6 rounded-xl bg-white/5 border-2 border-dashed border-white/10 flex flex-col items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-all group"
+                onclick="document.getElementById('cover-input').click()">
+                <span
+                    class="material-symbols-outlined text-slate-500 text-4xl group-hover:text-primary transition-colors mb-2">add_photo_alternate</span>
+                <p class="text-xs text-slate-500 group-hover:text-primary transition-colors">Escolher capa</p>
+                <input type="file" id="cover-input" accept="image/*" class="hidden" onchange="previewCover(this)" />
+                <img id="cover-preview" src="" alt=""
+                    class="hidden w-full h-full object-cover rounded-xl absolute inset-0" />
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2">Nome da
+                        Playlist</label>
+                    <input id="playlist-name-input" type="text" placeholder="Ex: Minha Playlist de Treino"
+                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all placeholder:text-slate-600 outline-none" />
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2">Descrição
+                        (opcional)</label>
+                    <textarea id="playlist-desc-input" placeholder="Sobre o que é essa playlist?" rows="2"
+                        class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all placeholder:text-slate-600 outline-none resize-none"></textarea>
+                </div>
+            </div>
+
+            <div class="flex gap-3 mt-6">
+                <button onclick="closeCreateModal()"
+                    class="flex-1 py-3 rounded-xl border border-white/10 text-sm font-bold text-slate-400 hover:bg-white/5 transition-all">Cancelar</button>
+                <button onclick="createPlaylist()"
+                    class="flex-1 py-3 rounded-xl bg-primary text-white text-sm font-bold hover:brightness-110 transition-all shadow-lg shadow-primary/20">Criar
+                    Playlist</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- script.js do site (player) -->
+    <script src="script.js"></script>
+
+    <!-- Firebase Auth -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+        const app = initializeApp({
+            apiKey: "AIzaSyDpkeu4920YRA4pc5HOAaEuP7-KMevUNno",
+            authDomain: "davi-vibes.firebaseapp.com",
+            projectId: "davi-vibes",
+            storageBucket: "davi-vibes.firebasestorage.app",
+            messagingSenderId: "198203679502",
+            appId: "1:198203679502:web:cfc71ee1dcd2a537412d5f"
+        });
+        const auth = getAuth(app);
+
+        onAuthStateChanged(auth, user => {
+            if (!user) { window.location.href = "login.html"; return; }
+            const avatarEl = document.getElementById("user-avatar");
+            if (user.photoURL) {
+                avatarEl.src = user.photoURL;
+            } else {
+                const initials = (user.displayName || user.email || "U").charAt(0).toUpperCase();
+                const canvas = document.createElement("canvas");
+                canvas.width = canvas.height = 80;
+                const ctx = canvas.getContext("2d");
+                ctx.fillStyle = "#ec1337"; ctx.fillRect(0, 0, 80, 80);
+                ctx.fillStyle = "#fff"; ctx.font = "bold 36px sans-serif";
+                ctx.textAlign = "center"; ctx.textBaseline = "middle";
+                ctx.fillText(initials, 40, 40);
+                avatarEl.src = canvas.toDataURL();
+            }
+            document.getElementById("user-name").textContent = user.displayName || "Usuário";
+            document.getElementById("user-email").textContent = user.email || "";
+        });
+
+        document.getElementById("avatar-btn").addEventListener("click", e => {
+            e.stopPropagation();
+            document.getElementById("avatar-menu").classList.toggle("hidden");
+        });
+        document.addEventListener("click", () => document.getElementById("avatar-menu").classList.add("hidden"));
+        document.getElementById("btn-logout").addEventListener("click", async () => {
+            await signOut(auth);
+            window.location.href = "login.html";
+        });
+    </script>
+
+    <!-- Sidebar mobile -->
+    <script>
+        function openSidebar() { document.getElementById("sidebar").classList.add("open"); document.getElementById("sidebar-overlay").classList.add("open"); }
+        function closeSidebar() { document.getElementById("sidebar").classList.remove("open"); document.getElementById("sidebar-overlay").classList.remove("open"); }
+    </script>
+
+    <!-- ===== BIBLIOTECA LOGIC ===== -->
+    <script>
+        // ---- STORAGE KEYS ----
+        const FAVS_KEY = 'davi_vibe_favorites';
+        const PLAYLISTS_KEY = 'davi_vibe_playlists';
+
+        // ---- STATE ----
+        let favorites = JSON.parse(localStorage.getItem(FAVS_KEY) || '[]');
+        let playlists = JSON.parse(localStorage.getItem(PLAYLISTS_KEY) || '[]');
+
+        // ---- TABS ----
+        function switchTab(tab, btn) {
+            ['favoritas', 'playlists', 'artistas'].forEach(t => {
+                document.getElementById('tab-' + t).classList.toggle('hidden', t !== tab);
+            });
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        // ---- RENDER FAVORITES ----
+        function renderFavorites() {
+            const list = document.getElementById('fav-list');
+            const empty = document.getElementById('empty-fav');
+            const countLabel = document.getElementById('count-label');
+            const statsLabel = document.getElementById('library-stats');
+
+            // filter by search
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const filtered = favorites.filter(f =>
+                f.title.toLowerCase().includes(query) || f.artist.toLowerCase().includes(query)
+            );
+
+            countLabel.textContent = filtered.length + ' música' + (filtered.length !== 1 ? 's' : '');
+            statsLabel.textContent = favorites.length + ' música' + (favorites.length !== 1 ? 's' : '') + ' favorita' + (favorites.length !== 1 ? 's' : '') + ' • ' + playlists.length + ' playlist' + (playlists.length !== 1 ? 's' : '');
+
+            // clear rows (keep empty state)
+            list.querySelectorAll('.song-row').forEach(r => r.remove());
+
+            if (filtered.length === 0) {
+                empty.style.display = '';
+                return;
+            }
+            empty.style.display = 'none';
+
+            filtered.forEach((song, i) => {
+                const row = document.createElement('div');
+                row.className = 'song-row grid gap-4 px-3 py-3 rounded-xl items-center cursor-pointer';
+                row.style.gridTemplateColumns = '40px 1fr 160px 100px';
+                row.innerHTML = `
+          <div class="text-center">
+            <span class="row-num text-slate-500 text-xs">${i + 1}</span>
+            <span class="row-play items-center justify-center" style="display:none">
+              <span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings:'FILL' 1">play_arrow</span>
+            </span>
+          </div>
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 shadow-md">
+              <img class="w-full h-full object-cover" src="${song.img}" alt="${song.title}" />
+            </div>
+            <div class="min-w-0">
+              <p class="font-bold text-sm truncate song-title-text">${song.title}</p>
+              <p class="text-xs text-slate-500 truncate">${song.album || ''}</p>
+            </div>
+          </div>
+          <div class="text-sm text-slate-400 truncate">${song.artist}</div>
+          <div class="flex items-center justify-end gap-2">
+            <span class="text-xs text-slate-500">${song.addedAt || 'Recente'}</span>
+            <button class="material-symbols-outlined text-primary text-base transition-colors hover:text-white remove-fav-btn" title="Remover dos favoritos" style="font-variation-settings:'FILL' 1" data-id="${song.id}">favorite</button>
+          </div>
+        `;
+                // hover
+                row.addEventListener('mouseenter', () => {
+                    row.querySelector('.row-num').style.display = 'none';
+                    row.querySelector('.row-play').style.display = 'flex';
+                    row.querySelector('.song-title-text').style.color = '#ec1337';
+                });
+                row.addEventListener('mouseleave', () => {
+                    row.querySelector('.row-num').style.display = '';
+                    row.querySelector('.row-play').style.display = 'none';
+                    row.querySelector('.song-title-text').style.color = '';
+                });
+                // remove fav
+                row.querySelector('.remove-fav-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    removeFavorite(song.id);
+                });
+                // play
+                row.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('remove-fav-btn')) {
+                        updatePlayer(song);
+                    }
+                });
+                list.appendChild(row);
+            });
+
+            renderArtists();
+        }
+
+        // ---- RENDER PLAYLISTS ----
+        function renderPlaylists() {
+            const grid = document.getElementById('playlist-grid');
+            const empty = document.getElementById('empty-playlist');
+            const countLabel = document.getElementById('playlist-count');
+            grid.querySelectorAll('.playlist-card').forEach(c => c.remove());
+            countLabel.textContent = playlists.length + ' playlist' + (playlists.length !== 1 ? 's' : '');
+
+            if (playlists.length === 0) { empty.style.display = ''; return; }
+            empty.style.display = 'none';
+
+            playlists.forEach(pl => {
+                const card = document.createElement('div');
+                card.className = 'playlist-card rounded-xl p-4 cursor-pointer group relative';
+                const coverBg = pl.cover
+                    ? `<img src="${pl.cover}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />`
+                    : `<div class="w-full h-full flex items-center justify-center bg-primary/10"><span class="material-symbols-outlined text-primary text-4xl">queue_music</span></div>`;
+                card.innerHTML = `
+          <div class="aspect-square rounded-lg overflow-hidden mb-4 relative shadow-lg">
+            ${coverBg}
+            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span class="material-symbols-outlined text-white text-5xl" style="font-variation-settings:'FILL' 1">play_circle</span>
+            </div>
+          </div>
+          <h4 class="font-bold text-sm truncate">${pl.name}</h4>
+          <p class="text-xs text-slate-400 truncate">${pl.desc || 'Playlist personalizada'}</p>
+          <button class="delete-pl-btn absolute top-3 right-3 w-7 h-7 rounded-full bg-black/50 items-center justify-center hidden group-hover:flex hover:bg-primary/80 transition-all" title="Excluir playlist" data-id="${pl.id}">
+            <span class="material-symbols-outlined text-xs">close</span>
+          </button>
+        `;
+                card.querySelector('.delete-pl-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deletePlaylist(pl.id);
+                });
+                grid.appendChild(card);
+            });
+        }
+
+        // ---- RENDER ARTISTS ----
+        function renderArtists() {
+            const grid = document.getElementById('artist-grid');
+            const empty = document.getElementById('empty-artist');
+            grid.querySelectorAll('.artist-card').forEach(c => c.remove());
+
+            const artists = [...new Set(favorites.map(f => f.artist))];
+            if (artists.length === 0) { empty.style.display = ''; return; }
+            empty.style.display = 'none';
+
+            artists.forEach(artist => {
+                const songs = favorites.filter(f => f.artist === artist);
+                const card = document.createElement('div');
+                card.className = 'artist-card group text-center cursor-pointer';
+                card.innerHTML = `
+          <div class="aspect-square rounded-full overflow-hidden mb-3 border-2 border-transparent group-hover:border-primary transition-all shadow-lg mx-auto w-full max-w-[140px]">
+            <img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src="${songs[0].img}" alt="${artist}" />
+          </div>
+          <p class="text-sm font-bold truncate group-hover:text-primary transition-colors">${artist}</p>
+          <p class="text-[10px] text-slate-500 uppercase tracking-widest">${songs.length} música${songs.length !== 1 ? 's' : ''}</p>
+        `;
+                grid.appendChild(card);
+            });
+        }
+
+        // ---- ADD / REMOVE FAVORITES ----
+        // Exposed globally so index.html / script.js can call it
+        window.addFavorite = function (song) {
+            // song = { id, title, artist, album, img, addedAt }
+            if (!favorites.find(f => f.id === song.id)) {
+                song.addedAt = new Date().toLocaleDateString('pt-BR');
+                favorites.unshift(song);
+                localStorage.setItem(FAVS_KEY, JSON.stringify(favorites));
+                showToast('♥ ' + song.title + ' adicionada!');
+                renderFavorites();
+            }
+        };
+
+        function removeFavorite(id) {
+            favorites = favorites.filter(f => f.id !== id);
+            localStorage.setItem(FAVS_KEY, JSON.stringify(favorites));
+            renderFavorites();
+        }
+
+        // ---- PLAYLISTS ----
+        function openCreateModal() {
+            document.getElementById('create-modal').classList.add('open');
+            document.getElementById('playlist-name-input').focus();
+        }
+        function closeCreateModal() {
+            document.getElementById('create-modal').classList.remove('open');
+            document.getElementById('playlist-name-input').value = '';
+            document.getElementById('playlist-desc-input').value = '';
+            document.getElementById('cover-preview').classList.add('hidden');
+            document.getElementById('cover-preview').src = '';
+        }
+        function createPlaylist() {
+            const name = document.getElementById('playlist-name-input').value.trim();
+            if (!name) {
+                document.getElementById('playlist-name-input').style.borderColor = '#ec1337';
+                setTimeout(() => document.getElementById('playlist-name-input').style.borderColor = '', 1200);
+                return;
+            }
+            const desc = document.getElementById('playlist-desc-input').value.trim();
+            const cover = document.getElementById('cover-preview').src || '';
+            playlists.push({ id: Date.now(), name, desc, cover });
+            localStorage.setItem(PLAYLISTS_KEY, JSON.stringify(playlists));
+            closeCreateModal();
+            renderPlaylists();
+            updateStats();
+            showToast('Playlist "' + name + '" criada!');
+            // switch to playlists tab
+            switchTab('playlists', document.querySelectorAll('.tab-btn')[1]);
+        }
+        function deletePlaylist(id) {
+            playlists = playlists.filter(p => p.id !== id);
+            localStorage.setItem(PLAYLISTS_KEY, JSON.stringify(playlists));
+            renderPlaylists();
+            updateStats();
+        }
+        function previewCover(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const preview = document.getElementById('cover-preview');
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // ---- UPDATE STATS ----
+        function updateStats() {
+            document.getElementById('library-stats').textContent =
+                favorites.length + ' música' + (favorites.length !== 1 ? 's' : '') + ' favorita' + (favorites.length !== 1 ? 's' : '') +
+                ' • ' + playlists.length + ' playlist' + (playlists.length !== 1 ? 's' : '');
+        }
+
+        // ---- PLAYER UPDATE ----
+        function updatePlayer(song) {
+            document.getElementById('player-title').textContent = song.title;
+            document.getElementById('player-artist').textContent = song.artist;
+            document.getElementById('player-img').src = song.img;
+        }
+
+        // ---- SHUFFLE ----
+        function shufflePlay() {
+            if (favorites.length === 0) return;
+            const rand = favorites[Math.floor(Math.random() * favorites.length)];
+            updatePlayer(rand);
+            showToast('🔀 ' + rand.title);
+        }
+
+        // ---- TOAST ----
+        function showToast(msg) {
+            const t = document.getElementById('fav-toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2500);
+        }
+
+        // ---- SEARCH ----
+        document.getElementById('search-input').addEventListener('input', renderFavorites);
+
+        // ---- INIT ----
+        renderFavorites();
+        renderPlaylists();
+        renderArtists();
+        updateStats();
+
+        // ---- DEMO: pré-popular com algumas músicas para visualizar ----
+        // Remove isso se preferir começar vazio
+        if (favorites.length === 0) {
+            const STORAGE = 'https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images';
+            const demo = [
+                { id: 0, title: 'MY EYES', artist: 'Travis Scott', album: 'UTOPIA', img: STORAGE + '/album-travisscot.jpg', addedAt: new Date().toLocaleDateString('pt-BR') },
+                { id: 1, title: 'Champagne Coast', artist: 'Blood Orange', album: 'Coastal', img: STORAGE + '/Champagnecoast.jpg', addedAt: new Date().toLocaleDateString('pt-BR') },
+                { id: 2, title: 'Iris', artist: 'Goo Goo Dolls', album: 'Dizzy Up the Girl', img: STORAGE + '/TheGooGooDolls.jpg', addedAt: new Date().toLocaleDateString('pt-BR') },
+                { id: 7, title: 'Sunflower', artist: 'Post Malone', album: 'Hollywood\'s Bleeding', img: STORAGE + '/sunflower.jpg', addedAt: new Date().toLocaleDateString('pt-BR') },
+            ];
+            favorites = demo;
+            localStorage.setItem(FAVS_KEY, JSON.stringify(favorites));
+            renderFavorites();
+            updateStats();
+        }
+    </script>
+
+</body>
+
+</html>
