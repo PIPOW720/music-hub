@@ -660,6 +660,9 @@
 
     <!-- ===== BIBLIOTECA LOGIC ===== -->
     <script>
+        // Store original tracks for backup (to recover src and other data)
+        const allTracks = typeof tracks !== 'undefined' ? [...tracks] : [];
+
         // ---- STORAGE KEYS ----
         const FAVS_KEY = 'davi_vibe_favorites';
         const PLAYLISTS_KEY = 'davi_vibe_playlists';
@@ -745,7 +748,11 @@
                         // Sync entire filtered list to tracks before playing
                         if (typeof tracks !== 'undefined') {
                             tracks.length = 0;
-                            filtered.forEach(s => tracks.push(s));
+                            filtered.forEach(s => {
+                                // Important: Recover full track data (including 'src') from allTracks
+                                const original = allTracks.find(t => t.title === s.title) || s;
+                                tracks.push({ ...original, ...s });
+                            });
                         }
                         playTrack(i);
                     }
@@ -955,12 +962,12 @@
         // ---- DEMO: pré-popular com algumas músicas para visualizar ----
         // Remove isso se preferir começar vazio
         if (favorites.length === 0) {
-            const STORAGE = 'https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images';
+            const DEMO_STORAGE = 'https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images';
             const demo = [
-                { id: 0, title: 'MY EYES', artist: 'Travis Scott', album: 'UTOPIA', img: STORAGE + '/album-travisscot.jpg', addedAt: new Date().toLocaleDateString('pt-BR') },
-                { id: 1, title: 'Champagne Coast', artist: 'Blood Orange', album: 'Coastal', img: STORAGE + '/Champagnecoast.jpg', addedAt: new Date().toLocaleDateString('pt-BR') },
-                { id: 2, title: 'Iris', artist: 'Goo Goo Dolls', album: 'Dizzy Up the Girl', img: STORAGE + '/TheGooGooDolls.jpg', addedAt: new Date().toLocaleDateString('pt-BR') },
-                { id: 7, title: 'Sunflower', artist: 'Post Malone', album: 'Hollywood\'s Bleeding', img: STORAGE + '/sunflower.jpg', addedAt: new Date().toLocaleDateString('pt-BR') },
+                { id: 0, title: 'MY EYES', artist: 'Travis Scott', album: 'UTOPIA', img: DEMO_STORAGE + '/album-travisscot.jpg', addedAt: new Date().toLocaleDateString('pt-BR') },
+                { id: 1, title: 'Champagne Coast', artist: 'Blood Orange', album: 'Coastal', img: DEMO_STORAGE + '/Champagnecoast.jpg', addedAt: new Date().toLocaleDateString('pt-BR') },
+                { id: 2, title: 'Iris', artist: 'Goo Goo Dolls', album: 'Dizzy Up the Girl', img: DEMO_STORAGE + '/TheGooGooDolls.jpg', addedAt: new Date().toLocaleDateString('pt-BR') },
+                { id: 7, title: 'Sunflower', artist: 'Post Malone', album: 'Hollywood\'s Bleeding', img: DEMO_STORAGE + '/sunflower.jpg', addedAt: new Date().toLocaleDateString('pt-BR') },
             ];
             favorites = demo;
             localStorage.setItem(FAVS_KEY, JSON.stringify(favorites));
