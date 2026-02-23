@@ -193,14 +193,20 @@
         gap: 0.5rem;
       }
 
-      .player-controls-extra,
-      .player-time-container {
+      .player-controls-extra {
         display: none !important;
       }
 
+      /* Progress bar VISIBLE on mobile */
+      .player-time-container {
+        display: flex !important;
+      }
+
       .player-info {
-        width: 55% !important;
+        width: auto !important;
         gap: 0.5rem !important;
+        flex-shrink: 0;
+        max-width: 45%;
       }
 
       .player-info .w-10 {
@@ -211,10 +217,22 @@
       .player-main-controls {
         flex: 1 !important;
         width: auto !important;
+        min-width: 0;
       }
 
       .player-main-controls .gap-4 {
-        gap: 0.75rem !important;
+        gap: 0.5rem !important;
+      }
+
+      /* Make progress bar touch-friendly on mobile */
+      #progress-bar {
+        height: 6px !important;
+      }
+
+      #progress-thumb {
+        transform: scale(1) translateX(-50%) translateY(-50%) !important;
+        width: 14px !important;
+        height: 14px !important;
       }
 
       #btn-play {
@@ -261,10 +279,10 @@
             <span class="material-symbols-outlined">explore</span>
             <span class="font-medium text-sm">Navegar</span>
           </a>
-          <a class="nav-link flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors cursor-pointer"
-            data-page="radio">
-            <span class="material-symbols-outlined">radio</span>
-            <span class="font-medium text-sm">Radio</span>
+          <a href="chat.html"
+            class="nav-link flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 transition-colors cursor-pointer">
+            <span class="material-symbols-outlined">chat</span>
+            <span class="font-medium text-sm">Chat</span>
           </a>
         </nav>
         <div class="pt-4">
@@ -300,7 +318,16 @@
         </div>
         <!-- suas playlists -->
         <div>
-          <h3 class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Suas Playlists</h3>
+          <div class="flex items-center justify-between px-3 mb-2">
+            <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Suas Playlists</h3>
+            <button onclick="openCreatePlaylist()"
+              class="w-6 h-6 rounded-full bg-white/5 hover:bg-primary/20 flex items-center justify-center transition-colors"
+              title="Nova Playlist">
+              <span class="material-symbols-outlined text-slate-400 hover:text-primary"
+                style="font-size:16px">add</span>
+            </button>
+          </div>
+          <div id="sidebar-playlists" class="space-y-1 max-h-48 overflow-y-auto no-scrollbar"></div>
         </div>
       </div>
       <div class="px-3">
@@ -349,29 +376,140 @@
               placeholder="Artistas, musicas, ou podcasts" type="text" />
           </div>
         </div>
-        <div class="flex items-center gap-4">
-          <div class="relative flex items-center">
+        <div class="flex items-center gap-3">
+          <!-- Notifications bell -->
+          <button
+            class="hidden md:flex w-9 h-9 items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors text-slate-400 hover:text-white">
+            <span class="material-symbols-outlined text-xl">notifications</span>
+          </button>
+
+          <!-- Profile Dropdown -->
+          <div class="relative" id="profile-dropdown-wrap">
+            <!-- Trigger -->
             <button id="avatar-btn"
-              class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary focus:outline-none">
-              <img id="user-avatar" class="w-full h-full object-cover"
-                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/avatar.jpg"
-                alt="User profile" />
-            </button>
-            <div id="avatar-menu"
-              class="hidden absolute right-0 top-12 w-44 bg-neutral-900 border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden">
-              <div class="px-4 py-3 border-b border-white/10">
-                <p id="user-name" class="text-sm font-bold text-white truncate">Usuário</p>
-                <p id="user-email" class="text-[11px] text-slate-400 truncate"></p>
+              class="flex items-center gap-2 pl-1 pr-3 py-1 bg-white/5 hover:bg-white/10 rounded-full border-2 border-transparent hover:border-primary transition-all duration-300 focus:outline-none">
+              <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border-2 border-primary">
+                <img id="user-avatar" class="w-full h-full object-cover"
+                  src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/avatar.jpg"
+                  alt="User profile" />
               </div>
-              <a href="library.html"
-                class="w-full flex items-center gap-2 px-4 py-3 text-sm text-slate-300 hover:bg-white/5 transition-colors">
-                <span class="material-symbols-outlined text-base">library_music</span>Biblioteca
-              </a>
-              <button id="btn-logout"
-                class="w-full flex items-center gap-2 px-4 py-3 text-sm text-red-400 hover:bg-white/5 transition-colors">
-                <span class="material-symbols-outlined text-base">logout</span>
-                Sair
-              </button>
+              <span id="user-name-short"
+                class="hidden sm:block text-sm font-semibold text-white max-w-[100px] truncate">Usuário</span>
+              <span class="material-symbols-outlined text-slate-400 transition-transform duration-300"
+                id="dropdown-chevron" style="font-size:18px">expand_more</span>
+            </button>
+
+            <!-- Dropdown Panel -->
+            <div id="avatar-menu"
+              class="hidden absolute right-0 top-14 w-80 bg-neutral-900/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden origin-top-right">
+
+              <!-- Profile Summary -->
+              <div class="p-5 border-b border-white/10">
+                <div class="flex items-center gap-4">
+                  <div class="relative flex-shrink-0">
+                    <div
+                      class="w-14 h-14 rounded-full overflow-hidden ring-2 ring-primary ring-offset-2 ring-offset-neutral-900">
+                      <img id="user-avatar-menu" class="w-full h-full object-cover"
+                        src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/avatar.jpg"
+                        alt="Profile" />
+                    </div>
+                    <div
+                      class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-neutral-900 rounded-full">
+                    </div>
+                  </div>
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-2 flex-wrap">
+                      <span id="user-name" class="font-bold text-lg text-white leading-tight truncate">Usuário</span>
+                      <span
+                        class="bg-primary text-white text-[9px] px-2 py-0.5 rounded-full uppercase font-black tracking-widest flex-shrink-0">Premium</span>
+                    </div>
+                    <p id="user-email" class="text-xs text-slate-400 truncate mt-0.5"></p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Menu Options -->
+              <nav class="p-2 space-y-0.5">
+                <a href="library.html"
+                  class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 group transition-all cursor-pointer">
+                  <span
+                    class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors text-xl">library_music</span>
+                  <div class="flex flex-col min-w-0">
+                    <span class="text-sm font-semibold text-white group-hover:text-primary transition-colors">Minha
+                      Biblioteca</span>
+                    <span class="text-[11px] text-slate-500">Favoritas e playlists</span>
+                  </div>
+                  <span
+                    class="material-symbols-outlined ml-auto text-slate-600 group-hover:text-primary transition-all translate-x-0 group-hover:translate-x-1"
+                    style="font-size:16px">chevron_right</span>
+                </a>
+                <a href="#"
+                  class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 group transition-all cursor-pointer">
+                  <span
+                    class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors text-xl">account_circle</span>
+                  <div class="flex flex-col min-w-0">
+                    <span
+                      class="text-sm font-semibold text-white group-hover:text-primary transition-colors">Conta</span>
+                    <span class="text-[11px] text-slate-500">Gerenciar plano e pagamentos</span>
+                  </div>
+                  <span
+                    class="material-symbols-outlined ml-auto text-slate-600 group-hover:text-primary transition-all translate-x-0 group-hover:translate-x-1"
+                    style="font-size:16px">chevron_right</span>
+                </a>
+                <a href="#"
+                  class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 group transition-all cursor-pointer">
+                  <span
+                    class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors text-xl">edit_note</span>
+                  <div class="flex flex-col min-w-0">
+                    <span class="text-sm font-semibold text-white group-hover:text-primary transition-colors">Editar
+                      perfil</span>
+                    <span class="text-[11px] text-slate-500">Nome, e-mail e foto</span>
+                  </div>
+                  <span
+                    class="material-symbols-outlined ml-auto text-slate-600 group-hover:text-primary transition-all translate-x-0 group-hover:translate-x-1"
+                    style="font-size:16px">chevron_right</span>
+                </a>
+                <a href="#"
+                  class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 group transition-all cursor-pointer">
+                  <span
+                    class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors text-xl">history</span>
+                  <div class="flex flex-col min-w-0">
+                    <span class="text-sm font-semibold text-white group-hover:text-primary transition-colors">Recuperar
+                      playlists</span>
+                    <span class="text-[11px] text-slate-500">Restaurar músicas deletadas</span>
+                  </div>
+                  <span
+                    class="material-symbols-outlined ml-auto text-slate-600 group-hover:text-primary transition-all translate-x-0 group-hover:translate-x-1"
+                    style="font-size:16px">chevron_right</span>
+                </a>
+                <a href="#"
+                  class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 group transition-all cursor-pointer">
+                  <span
+                    class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors text-xl">admin_panel_settings</span>
+                  <div class="flex flex-col min-w-0">
+                    <span class="text-sm font-semibold text-white group-hover:text-primary transition-colors">Segurança
+                      e privacidade</span>
+                    <span class="text-[11px] text-slate-500">Senha e conexões de terceiros</span>
+                  </div>
+                  <span
+                    class="material-symbols-outlined ml-auto text-slate-600 group-hover:text-primary transition-all translate-x-0 group-hover:translate-x-1"
+                    style="font-size:16px">chevron_right</span>
+                </a>
+              </nav>
+
+              <!-- Footer: Logout -->
+              <div class="p-2 border-t border-white/5 bg-white/3">
+                <button id="btn-logout"
+                  class="w-full flex items-center justify-between px-4 py-3 rounded-xl hover:bg-primary/10 text-slate-400 hover:text-primary transition-all font-semibold text-sm group">
+                  <div class="flex items-center gap-3">
+                    <span
+                      class="material-symbols-outlined text-xl group-hover:text-primary transition-colors">logout</span>
+                    Sair da conta
+                  </div>
+                  <span class="material-symbols-outlined text-slate-600 group-hover:text-primary transition-colors"
+                    style="font-size:16px">chevron_right</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1168,6 +1306,7 @@
       <a class="mobile-link" data-page="navegar"><span class="material-symbols-outlined"
           style="font-size:22px">explore</span>Navegar</a>
       <a href="library.html"><span class="material-symbols-outlined" style="font-size:22px">favorite</span>Favoritas</a>
+      <a href="chat.html"><span class="material-symbols-outlined" style="font-size:22px">chat</span>Chat</a>
       <a href="library.html"><span class="material-symbols-outlined"
           style="font-size:22px">library_music</span>Biblioteca</a>
     </nav>
@@ -1236,6 +1375,150 @@
   </div>
 
   <script src="script.js"></script>
+
+  <!-- PLAYLIST CREATION MODAL -->
+  <div id="create-playlist-modal"
+    class="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm hidden">
+    <div class="bg-neutral-900 border border-white/10 rounded-2xl shadow-2xl w-full max-w-md mx-4 p-8">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-bold">Nova Playlist</h2>
+        <button onclick="closeCreatePlaylist()"
+          class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+      <!-- Foto -->
+      <div class="flex flex-col items-center mb-6">
+        <div
+          class="relative w-32 h-32 rounded-xl overflow-hidden bg-white/5 border border-white/10 cursor-pointer group hover:border-primary/40 transition-colors flex items-center justify-center"
+          onclick="document.getElementById('playlist-img-input').click()">
+          <img id="playlist-img-preview" class="w-full h-full object-cover hidden" src="" alt="" />
+          <div id="playlist-img-placeholder" class="flex flex-col items-center gap-2 text-slate-500">
+            <span class="material-symbols-outlined text-3xl">add_photo_alternate</span>
+            <span class="text-xs font-bold uppercase tracking-wider">Add foto</span>
+          </div>
+          <div
+            class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-xl">
+            <span class="material-symbols-outlined text-white text-2xl">photo_camera</span>
+          </div>
+        </div>
+        <input id="playlist-img-input" type="file" accept="image/*" class="hidden"
+          onchange="previewPlaylistImg(event)" />
+        <p class="text-[11px] text-slate-500 mt-2">Clique para adicionar uma foto</p>
+      </div>
+      <!-- Nome -->
+      <div class="mb-4">
+        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Nome da Playlist</label>
+        <input id="playlist-name-input"
+          class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-primary/50 transition-all"
+          placeholder="Minha Playlist Favorita" type="text" />
+      </div>
+      <!-- Desc -->
+      <div class="mb-6">
+        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Descricao (opcional)</label>
+        <textarea id="playlist-desc-input"
+          class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-primary/50 transition-all resize-none"
+          placeholder="Sobre essa playlist..." rows="2"></textarea>
+      </div>
+      <div class="flex gap-3">
+        <button onclick="closeCreatePlaylist()"
+          class="flex-1 py-3 bg-white/5 border border-white/10 text-white text-sm font-bold rounded-xl hover:bg-white/10 transition-all">Cancelar</button>
+        <button onclick="savePlaylist()"
+          class="flex-1 py-3 bg-primary text-white text-sm font-bold rounded-xl hover:brightness-110 active:scale-[0.98] transition-all shadow-lg shadow-primary/20">Criar
+          Playlist</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PLAYLISTS_KEY = 'davi_vibe_playlists';
+    let _playlistImgBase64 = null;
+
+    function getPlaylists() { return JSON.parse(localStorage.getItem(PLAYLISTS_KEY) || '[]'); }
+    function savePlaylists(p) { localStorage.setItem(PLAYLISTS_KEY, JSON.stringify(p)); }
+
+    function openCreatePlaylist() {
+      _playlistImgBase64 = null;
+      document.getElementById('playlist-name-input').value = '';
+      document.getElementById('playlist-desc-input').value = '';
+      document.getElementById('playlist-img-preview').classList.add('hidden');
+      document.getElementById('playlist-img-placeholder').classList.remove('hidden');
+      document.getElementById('playlist-img-input').value = '';
+      document.getElementById('create-playlist-modal').classList.remove('hidden');
+    }
+
+    function closeCreatePlaylist() {
+      document.getElementById('create-playlist-modal').classList.add('hidden');
+    }
+
+    function previewPlaylistImg(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        _playlistImgBase64 = ev.target.result;
+        const preview = document.getElementById('playlist-img-preview');
+        preview.src = _playlistImgBase64;
+        preview.classList.remove('hidden');
+        document.getElementById('playlist-img-placeholder').classList.add('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function savePlaylist() {
+      const name = document.getElementById('playlist-name-input').value.trim();
+      if (!name) {
+        const inp = document.getElementById('playlist-name-input');
+        inp.focus();
+        inp.style.borderColor = 'rgba(236,19,55,0.6)';
+        setTimeout(() => { inp.style.borderColor = ''; }, 1500);
+        return;
+      }
+      const playlist = {
+        id: Date.now(),
+        name,
+        desc: document.getElementById('playlist-desc-input').value.trim(),
+        img: _playlistImgBase64 || null,
+        createdAt: new Date().toLocaleDateString('pt-BR'),
+        songs: []
+      };
+      const playlists = getPlaylists();
+      playlists.unshift(playlist);
+      savePlaylists(playlists);
+      closeCreatePlaylist();
+      renderSidebarPlaylists();
+      if (typeof showToast === 'function') showToast('Playlist criada!');
+    }
+
+    function renderSidebarPlaylists() {
+      const container = document.getElementById('sidebar-playlists');
+      if (!container) return;
+      const playlists = getPlaylists();
+      container.innerHTML = '';
+      if (playlists.length === 0) {
+        container.innerHTML = '<p class="px-3 text-[11px] text-slate-600 italic">Nenhuma playlist ainda</p>';
+        return;
+      }
+      playlists.forEach(pl => {
+        const item = document.createElement('a');
+        item.className = 'flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group';
+        const imgHtml = pl.img
+          ? '<img class="w-full h-full object-cover" src="' + pl.img + '" alt="' + pl.name + '"/>'
+          : '<span class="material-symbols-outlined text-slate-500" style="font-size:16px">queue_music</span>';
+        item.innerHTML = '<div class="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0 bg-white/5 flex items-center justify-center">' + imgHtml + '</div>' +
+          '<span class="text-sm font-medium text-slate-400 group-hover:text-white transition-colors truncate">' + pl.name + '</span>';
+        container.appendChild(item);
+      });
+    }
+
+    document.getElementById('create-playlist-modal').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) closeCreatePlaylist();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSidebarPlaylists();
+    });
+  </script>
 
   <!-- =============================================
        FAVORITES SYSTEM
@@ -1362,6 +1645,46 @@
     // GENRE TRACK LISTS WITH FAV HEARTS
     // =============================================
     const BASE = 'https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images';
+    const AUDIO_BASE = 'https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/musicas';
+
+    // Maps genre song titles to real audio src from tracks[] in script.js
+    const GENRE_SONG_SRCS = {
+      'MY EYES': AUDIO_BASE + '/My Eyes.mp3',
+      'Champagne Coast': AUDIO_BASE + '/Champagne%20Coast.mp3',
+      'Iris': AUDIO_BASE + '/GooGooDolls-Iris.mp3',
+      'O Vovô Não Ta Casado': AUDIO_BASE + '/AITODOMUNDO.mp3',
+      'Sunsets': AUDIO_BASE + '/sunsets.mp3',
+      'Sidewalks and Skeletons': AUDIO_BASE + '/sidewalks.mp3',
+      'PISOU NA MINHA CARA': AUDIO_BASE + '/AUTOMOTIVO%20VEM%20PREPARADA%20-%20PISOU%20NA%20MINHA%20CARA.mp3',
+      'Sunflower': AUDIO_BASE + '/Sunflower.mp3',
+    };
+
+    function playGenreSong(song) {
+      // Use the shared audio element created in script.js
+      if (typeof audio === 'undefined') return;
+      audio.pause();
+      audio.src = song.src || GENRE_SONG_SRCS[song.title] || '';
+      if (!audio.src || audio.src === window.location.href) {
+        // No src available — just show info without playing
+        document.getElementById('player-title').textContent = song.title;
+        document.getElementById('player-artist').textContent = song.artist;
+        document.getElementById('player-img').src = song.img;
+        return;
+      }
+      audio.load();
+      document.getElementById('player-img').src = song.img;
+      document.getElementById('player-title').textContent = song.title;
+      document.getElementById('player-artist').textContent = song.artist;
+      // Reset progress
+      document.getElementById('progress-fill').style.width = '0%';
+      document.getElementById('time-current').textContent = '0:00';
+      document.getElementById('time-total').textContent = '0:00';
+      audio.play().then(() => {
+        const icon = document.querySelector('#btn-play .material-symbols-outlined');
+        if (icon) icon.textContent = 'pause';
+      }).catch(e => console.warn('play error', e));
+    }
+
     const GENRE_TRACKS = {
       'trap': [
         { id: 10, title: 'MY EYES', artist: 'Travis Scott', duration: '3:42', img: BASE + '/album-travisscot.jpg' },
@@ -1457,6 +1780,11 @@
           row.querySelector('.genre-heart-btn').addEventListener('click', (e) => {
             toggleGenreFav(e.currentTarget, e, song);
           });
+          // row click → play
+          row.addEventListener('click', (e) => {
+            if (e.target.closest('.genre-heart-btn')) return;
+            playGenreSong(song);
+          });
           container.appendChild(row);
         });
       });
@@ -1549,11 +1877,31 @@
         avatarEl.src = canvas.toDataURL();
       }
       document.getElementById("user-name").textContent = user.displayName || "Usuário";
+      const shortName = document.getElementById("user-name-short");
+      if (shortName) shortName.textContent = user.displayName || "Usuário";
+      const menuAvatar = document.getElementById("user-avatar-menu");
+      if (menuAvatar) menuAvatar.src = avatarEl.src;
       document.getElementById("user-email").textContent = user.email || "";
     });
 
-    document.getElementById("avatar-btn").addEventListener("click", e => { e.stopPropagation(); document.getElementById("avatar-menu").classList.toggle("hidden"); });
-    document.addEventListener("click", () => document.getElementById("avatar-menu").classList.add("hidden"));
+    document.getElementById("avatar-btn").addEventListener("click", e => {
+      e.stopPropagation();
+      const menu = document.getElementById("avatar-menu");
+      const chevron = document.getElementById("dropdown-chevron");
+      const isHidden = menu.classList.toggle("hidden");
+      if (chevron) chevron.style.transform = isHidden ? "rotate(0deg)" : "rotate(180deg)";
+      // Sync large avatar in menu with current avatar
+      const mainAv = document.getElementById("user-avatar");
+      const menuAv = document.getElementById("user-avatar-menu");
+      if (mainAv && menuAv && mainAv.src) menuAv.src = mainAv.src;
+    });
+    document.addEventListener("click", (e) => {
+      if (!document.getElementById("profile-dropdown-wrap").contains(e.target)) {
+        document.getElementById("avatar-menu").classList.add("hidden");
+        const chevron = document.getElementById("dropdown-chevron");
+        if (chevron) chevron.style.transform = "rotate(0deg)";
+      }
+    });
     document.getElementById("btn-logout").addEventListener("click", async () => { await signOut(auth); window.location.href = "login.html"; });
   </script>
 

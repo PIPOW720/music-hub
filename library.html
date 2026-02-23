@@ -342,9 +342,16 @@
 
                 <!-- suas playlists -->
                 <div>
-                    <h3 class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Suas Playlists
-
-                        </nav>
+                    <div class="flex items-center justify-between px-3 mb-2">
+                        <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Suas Playlists</h3>
+                        <button onclick="openCreateModal()"
+                            class="w-6 h-6 rounded-full bg-white/5 hover:bg-primary/20 flex items-center justify-center transition-colors"
+                            title="Nova Playlist">
+                            <span class="material-symbols-outlined text-slate-400 hover:text-primary"
+                                style="font-size:16px">add</span>
+                        </button>
+                    </div>
+                    <div id="lib-sidebar-playlists" class="space-y-1 max-h-48 overflow-y-auto no-scrollbar"></div>
                 </div>
             </div>
 
@@ -392,28 +399,124 @@
                             placeholder="Buscar na biblioteca..." type="text" />
                     </div>
                 </div>
-                <div class="flex items-center gap-4">
-                    <div class="relative">
+                <div class="flex items-center gap-3">
+                    <button
+                        class="hidden md:flex w-9 h-9 items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors text-slate-400 hover:text-white">
+                        <span class="material-symbols-outlined text-xl">notifications</span>
+                    </button>
+                    <div class="relative" id="profile-dropdown-wrap">
                         <button id="avatar-btn"
-                            class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary focus:outline-none">
-                            <img id="user-avatar" class="w-full h-full object-cover"
-                                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/avatar.jpg"
-                                alt="User" />
+                            class="flex items-center gap-2 pl-1 pr-3 py-1 bg-white/5 hover:bg-white/10 rounded-full border-2 border-transparent hover:border-primary transition-all duration-300 focus:outline-none">
+                            <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border-2 border-primary">
+                                <img id="user-avatar" class="w-full h-full object-cover"
+                                    src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/avatar.jpg"
+                                    alt="User profile" />
+                            </div>
+                            <span id="user-name-short"
+                                class="hidden sm:block text-sm font-semibold text-white max-w-[100px] truncate">Usuário</span>
+                            <span class="material-symbols-outlined text-slate-400 transition-transform duration-300"
+                                id="dropdown-chevron" style="font-size:18px">expand_more</span>
                         </button>
                         <div id="avatar-menu"
-                            class="hidden absolute right-0 top-12 w-44 bg-neutral-900 border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden">
-                            <div class="px-4 py-3 border-b border-white/10">
-                                <p id="user-name" class="text-sm font-bold text-white truncate">Usuário</p>
-                                <p id="user-email" class="text-[11px] text-slate-400 truncate"></p>
+                            class="hidden absolute right-0 top-14 w-80 bg-neutral-900/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden origin-top-right">
+                            <div class="p-5 border-b border-white/10">
+                                <div class="flex items-center gap-4">
+                                    <div class="relative flex-shrink-0">
+                                        <div
+                                            class="w-14 h-14 rounded-full overflow-hidden ring-2 ring-primary ring-offset-2 ring-offset-neutral-900">
+                                            <img id="user-avatar-menu" class="w-full h-full object-cover"
+                                                src="https://uovdxuxkuomqjmwjhcvj.supabase.co/storage/v1/object/public/davi-vibe/images/avatar.jpg"
+                                                alt="Profile" />
+                                        </div>
+                                        <div
+                                            class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-neutral-900 rounded-full">
+                                        </div>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <span id="user-name"
+                                                class="font-bold text-lg text-white leading-tight truncate">Usuário</span>
+                                            <span
+                                                class="bg-primary text-white text-[9px] px-2 py-0.5 rounded-full uppercase font-black tracking-widest flex-shrink-0">Premium</span>
+                                        </div>
+                                        <p id="user-email" class="text-xs text-slate-400 truncate mt-0.5"></p>
+                                    </div>
+                                </div>
                             </div>
-                            <a href="index.html"
-                                class="w-full flex items-center gap-2 px-4 py-3 text-sm text-slate-300 hover:bg-white/5 transition-colors">
-                                <span class="material-symbols-outlined text-base">home</span>Home
-                            </a>
-                            <button id="btn-logout"
-                                class="w-full flex items-center gap-2 px-4 py-3 text-sm text-red-400 hover:bg-white/5 transition-colors">
-                                <span class="material-symbols-outlined text-base">logout</span>Sair
-                            </button>
+                            <nav class="p-2 space-y-0.5">
+                                <a href="#"
+                                    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 group transition-all cursor-pointer">
+                                    <span
+                                        class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors text-xl">library_music</span>
+                                    <div class="flex flex-col min-w-0"><span
+                                            class="text-sm font-semibold text-white group-hover:text-primary transition-colors">Minha
+                                            Biblioteca</span><span class="text-[11px] text-slate-500">Favoritas e
+                                            playlists</span></div>
+                                    <span
+                                        class="material-symbols-outlined ml-auto text-slate-600 group-hover:text-primary group-hover:translate-x-1 transition-all"
+                                        style="font-size:16px">chevron_right</span>
+                                </a>
+                                <a href="#"
+                                    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 group transition-all cursor-pointer">
+                                    <span
+                                        class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors text-xl">account_circle</span>
+                                    <div class="flex flex-col min-w-0"><span
+                                            class="text-sm font-semibold text-white group-hover:text-primary transition-colors">Conta</span><span
+                                            class="text-[11px] text-slate-500">Gerenciar plano e pagamentos</span></div>
+                                    <span
+                                        class="material-symbols-outlined ml-auto text-slate-600 group-hover:text-primary group-hover:translate-x-1 transition-all"
+                                        style="font-size:16px">chevron_right</span>
+                                </a>
+                                <a href="#"
+                                    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 group transition-all cursor-pointer">
+                                    <span
+                                        class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors text-xl">edit_note</span>
+                                    <div class="flex flex-col min-w-0"><span
+                                            class="text-sm font-semibold text-white group-hover:text-primary transition-colors">Editar
+                                            perfil</span><span class="text-[11px] text-slate-500">Nome, e-mail e
+                                            foto</span></div>
+                                    <span
+                                        class="material-symbols-outlined ml-auto text-slate-600 group-hover:text-primary group-hover:translate-x-1 transition-all"
+                                        style="font-size:16px">chevron_right</span>
+                                </a>
+                                <a href="#"
+                                    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 group transition-all cursor-pointer">
+                                    <span
+                                        class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors text-xl">history</span>
+                                    <div class="flex flex-col min-w-0"><span
+                                            class="text-sm font-semibold text-white group-hover:text-primary transition-colors">Recuperar
+                                            playlists</span><span class="text-[11px] text-slate-500">Restaurar músicas
+                                            deletadas</span></div>
+                                    <span
+                                        class="material-symbols-outlined ml-auto text-slate-600 group-hover:text-primary group-hover:translate-x-1 transition-all"
+                                        style="font-size:16px">chevron_right</span>
+                                </a>
+                                <a href="#"
+                                    class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 group transition-all cursor-pointer">
+                                    <span
+                                        class="material-symbols-outlined text-slate-500 group-hover:text-primary transition-colors text-xl">admin_panel_settings</span>
+                                    <div class="flex flex-col min-w-0"><span
+                                            class="text-sm font-semibold text-white group-hover:text-primary transition-colors">Segurança
+                                            e privacidade</span><span class="text-[11px] text-slate-500">Senha e
+                                            conexões de terceiros</span></div>
+                                    <span
+                                        class="material-symbols-outlined ml-auto text-slate-600 group-hover:text-primary group-hover:translate-x-1 transition-all"
+                                        style="font-size:16px">chevron_right</span>
+                                </a>
+                            </nav>
+                            <div class="p-2 border-t border-white/5">
+                                <button id="btn-logout"
+                                    class="w-full flex items-center justify-between px-4 py-3 rounded-xl hover:bg-primary/10 text-slate-400 hover:text-primary transition-all font-semibold text-sm group">
+                                    <div class="flex items-center gap-3">
+                                        <span
+                                            class="material-symbols-outlined text-xl group-hover:text-primary transition-colors">logout</span>
+                                        Sair da conta
+                                    </div>
+                                    <span
+                                        class="material-symbols-outlined text-slate-600 group-hover:text-primary transition-colors"
+                                        style="font-size:16px">chevron_right</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -502,11 +605,6 @@
                 <div class="flex items-center justify-between mb-6">
                     <p class="text-xs text-slate-500 font-bold uppercase tracking-widest" id="playlist-count">0
                         playlists</p>
-                    <button onclick="openCreateModal()"
-                        class="flex items-center gap-1 text-xs text-primary font-bold hover:underline">
-                        <span class="material-symbols-outlined text-sm">add</span>
-                        Nova Playlist
-                    </button>
                 </div>
                 <div id="playlist-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
                     <!-- empty -->
@@ -625,15 +723,21 @@
                 </button>
             </div>
 
-            <!-- cover picker placeholder -->
-            <div class="w-full aspect-square max-w-[180px] mx-auto mb-6 rounded-xl bg-white/5 border-2 border-dashed border-white/10 flex flex-col items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-all group"
+            <!-- cover picker -->
+            <div class="relative w-full aspect-square max-w-[180px] mx-auto mb-6 rounded-xl overflow-hidden bg-white/5 border-2 border-dashed border-white/10 flex flex-col items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-all group"
                 onclick="document.getElementById('cover-input').click()">
-                <span
-                    class="material-symbols-outlined text-slate-500 text-4xl group-hover:text-primary transition-colors mb-2">add_photo_alternate</span>
-                <p class="text-xs text-slate-500 group-hover:text-primary transition-colors">Escolher capa</p>
-                <input type="file" id="cover-input" accept="image/*" class="hidden" onchange="previewCover(this)" />
+                <div id="cover-placeholder" class="flex flex-col items-center justify-center pointer-events-none">
+                    <span
+                        class="material-symbols-outlined text-slate-500 text-4xl group-hover:text-primary transition-colors mb-2">add_photo_alternate</span>
+                    <p class="text-xs text-slate-500 group-hover:text-primary transition-colors">Escolher capa</p>
+                </div>
                 <img id="cover-preview" src="" alt=""
-                    class="hidden w-full h-full object-cover rounded-xl absolute inset-0" />
+                    class="hidden absolute inset-0 w-full h-full object-cover rounded-xl" />
+                <div id="cover-overlay"
+                    class="hidden absolute inset-0 bg-black/40 items-center justify-center rounded-xl">
+                    <span class="material-symbols-outlined text-white text-3xl">photo_camera</span>
+                </div>
+                <input type="file" id="cover-input" accept="image/*" class="hidden" onchange="previewCover(this)" />
             </div>
 
             <div class="space-y-4">
@@ -697,13 +801,30 @@
             }
             document.getElementById("user-name").textContent = user.displayName || "Usuário";
             document.getElementById("user-email").textContent = user.email || "";
+            const shortName = document.getElementById("user-name-short");
+            if (shortName) shortName.textContent = user.displayName || "Usuário";
+            const menuAv = document.getElementById("user-avatar-menu");
+            if (menuAv) menuAv.src = avatarEl.src;
         });
 
         document.getElementById("avatar-btn").addEventListener("click", e => {
             e.stopPropagation();
-            document.getElementById("avatar-menu").classList.toggle("hidden");
+            const menu = document.getElementById("avatar-menu");
+            const chevron = document.getElementById("dropdown-chevron");
+            const isHidden = menu.classList.toggle("hidden");
+            if (chevron) chevron.style.transform = isHidden ? "rotate(0deg)" : "rotate(180deg)";
+            const menuAv = document.getElementById("user-avatar-menu");
+            const mainAv = document.getElementById("user-avatar");
+            if (mainAv && menuAv) menuAv.src = mainAv.src;
         });
-        document.addEventListener("click", () => document.getElementById("avatar-menu").classList.add("hidden"));
+        document.addEventListener("click", (e) => {
+            const wrap = document.getElementById("profile-dropdown-wrap");
+            if (wrap && !wrap.contains(e.target)) {
+                document.getElementById("avatar-menu").classList.add("hidden");
+                const chevron = document.getElementById("dropdown-chevron");
+                if (chevron) chevron.style.transform = "rotate(0deg)";
+            }
+        });
         document.getElementById("btn-logout").addEventListener("click", async () => {
             await signOut(auth);
             window.location.href = "login.html";
@@ -881,6 +1002,28 @@
             });
         }
 
+        // ---- RENDER SIDEBAR PLAYLISTS ----
+        function renderSidebarPlaylists() {
+            const container = document.getElementById('lib-sidebar-playlists');
+            if (!container) return;
+            container.innerHTML = '';
+            if (playlists.length === 0) {
+                container.innerHTML = '<p class="px-3 text-[11px] text-slate-600 italic">Nenhuma playlist ainda</p>';
+                return;
+            }
+            playlists.forEach(pl => {
+                const item = document.createElement('a');
+                item.className = 'flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group';
+                const imgHtml = pl.cover
+                    ? '<img class="w-full h-full object-cover" src="' + pl.cover + '" alt="' + pl.name + '"/>'
+                    : '<span class="material-symbols-outlined text-slate-500" style="font-size:14px">queue_music</span>';
+                item.innerHTML = '<div class="w-7 h-7 rounded-md overflow-hidden flex-shrink-0 bg-white/5 flex items-center justify-center">' + imgHtml + '</div>' +
+                    '<span class="text-xs font-medium text-slate-400 group-hover:text-white transition-colors truncate">' + pl.name + '</span>';
+                item.onclick = () => switchTab('playlists', document.querySelectorAll('.tab-btn')[1]);
+                container.appendChild(item);
+            });
+        }
+
         // ---- RENDER ARTISTS ----
         function renderArtists() {
             const grid = document.getElementById('artist-grid');
@@ -936,6 +1079,11 @@
             document.getElementById('playlist-desc-input').value = '';
             document.getElementById('cover-preview').classList.add('hidden');
             document.getElementById('cover-preview').src = '';
+            const ph = document.getElementById('cover-placeholder');
+            const ov = document.getElementById('cover-overlay');
+            if (ph) ph.classList.remove('hidden');
+            if (ov) { ov.classList.add('hidden'); ov.classList.remove('flex'); }
+            document.getElementById('cover-input').value = '';
         }
         function createPlaylist() {
             const name = document.getElementById('playlist-name-input').value.trim();
@@ -950,15 +1098,16 @@
             localStorage.setItem(PLAYLISTS_KEY, JSON.stringify(playlists));
             closeCreateModal();
             renderPlaylists();
+            renderSidebarPlaylists();
             updateStats();
             showToast('Playlist "' + name + '" criada!');
-            // switch to playlists tab
             switchTab('playlists', document.querySelectorAll('.tab-btn')[1]);
         }
         function deletePlaylist(id) {
             playlists = playlists.filter(p => p.id !== id);
             localStorage.setItem(PLAYLISTS_KEY, JSON.stringify(playlists));
             renderPlaylists();
+            renderSidebarPlaylists();
             updateStats();
         }
         function previewCover(input) {
@@ -966,8 +1115,12 @@
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const preview = document.getElementById('cover-preview');
+                    const ph = document.getElementById('cover-placeholder');
+                    const ov = document.getElementById('cover-overlay');
                     preview.src = e.target.result;
                     preview.classList.remove('hidden');
+                    if (ph) ph.classList.add('hidden');
+                    if (ov) { ov.classList.remove('hidden'); ov.classList.add('flex'); }
                 };
                 reader.readAsDataURL(input.files[0]);
             }
@@ -1014,6 +1167,7 @@
         // ---- INIT ----
         renderFavorites();
         renderPlaylists();
+        renderSidebarPlaylists();
         renderArtists();
         updateStats();
 

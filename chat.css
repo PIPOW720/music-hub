@@ -1,0 +1,215 @@
+/* chat.css — Davi Vibe Chat */
+
+body {
+    font-family: 'Spline Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbar personalizada ─────────────────────────── */
+.chat-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.chat-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 10px;
+}
+
+.chat-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(236, 19, 55, 0.4);
+}
+
+/* ── Sidebar slim ────────────────────────────────────── */
+.sidebar-slim {
+    background: rgba(10, 10, 10, 0.6);
+}
+
+/* ── Painel de amigos ────────────────────────────────── */
+.friends-panel {
+    background: rgba(26, 26, 26, 0.5);
+}
+
+/* ── Friend item ativo ───────────────────────────────── */
+.friend-item.active {
+    background: rgba(236, 19, 55, 0.08) !important;
+    border-left: 2px solid #ec1337;
+}
+
+/* ── Chat header glassmorphism ───────────────────────── */
+.chat-header {
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+/* ── Chat footer glassmorphism ───────────────────────── */
+.chat-footer {
+    background: rgba(10, 10, 10, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+/* ── Bolhas de mensagem ──────────────────────────────── */
+.msg-bubble-in {
+    background: rgba(26, 26, 26, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.msg-bubble-out {
+    background: #ec1337;
+    box-shadow: 0 4px 20px rgba(236, 19, 55, 0.15);
+}
+
+/* ── Animação entrada das mensagens ─────────────────── */
+.msg-row {
+    animation: msgIn 0.25s ease-out both;
+}
+
+@keyframes msgIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Share music panel ───────────────────────────────── */
+.share-panel {
+    animation: slideUp 0.2s ease-out both;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Tab buttons ─────────────────────────────────────── */
+.tab-btn.active {
+    color: #ec1337;
+    border-bottom-color: #ec1337;
+}
+
+/* ── Now playing bars (equalizer animation) ──────────── */
+.now-playing-bars .bar {
+    animation: equalize 0.8s ease-in-out infinite alternate;
+}
+
+.now-playing-bars .bar:nth-child(1) {
+    height: 8px;
+    animation-delay: 0ms;
+}
+
+.now-playing-bars .bar:nth-child(2) {
+    height: 14px;
+    animation-delay: 150ms;
+}
+
+.now-playing-bars .bar:nth-child(3) {
+    height: 10px;
+    animation-delay: 80ms;
+}
+
+@keyframes equalize {
+    from {
+        transform: scaleY(0.4);
+    }
+
+    to {
+        transform: scaleY(1);
+    }
+}
+
+/* ── Textarea auto-resize ────────────────────────────── */
+#msg-input {
+    min-height: 44px;
+    max-height: 120px;
+    overflow-y: auto;
+    line-height: 1.5;
+}
+
+/* ── Right panel ─────────────────────────────────────── */
+.right-panel {
+    background: rgba(26, 26, 26, 0.15);
+}
+
+/* ── Mobile: esconder painéis laterais ───────────────── */
+@media (max-width: 768px) {
+    .sidebar-slim {
+        display: none !important;
+    }
+
+    .friends-panel {
+        display: none !important;
+    }
+}
+
+@media (max-width: 1024px) {
+    .friends-panel {
+        width: 80px;
+        padding: 0;
+    }
+
+    .friends-panel .p-6 {
+        display: none;
+    }
+
+    .friends-panel .flex-1 {
+        padding: 0.5rem;
+    }
+
+    .friends-panel .friend-item .flex-1 {
+        display: none;
+    }
+
+    .friends-panel .flex-col.gap-1 p {
+        display: none;
+    }
+}
+
+/* ── Typing indicator ────────────────────────────────── */
+.typing-indicator span {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: #94a3b8;
+    border-radius: 9999px;
+    animation: typingBounce 1.2s ease-in-out infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typingBounce {
+
+    0%,
+    60%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.5;
+    }
+
+    30% {
+        transform: translateY(-6px);
+        opacity: 1;
+    }
+}

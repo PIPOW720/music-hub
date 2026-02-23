@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Chat - Davi Vibe</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: { "primary": "#ec1337", "background-dark": "#0a0a0a", "neutral-dark": "#1a1a1a", "card-dark": "#121212" },
+                    fontFamily: { "display": ["Spline Sans", "sans-serif"] },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "2xl": "2rem", "full": "9999px" },
+                },
+            },
+        };
+    </script>
+    <link rel="stylesheet" href="chat.css" />
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Modal overlay */
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        /* Modal animation */
+        .modal-box {
+            animation: modalIn 0.2s ease-out both;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Friend request badge pulse */
+        .badge-pulse {
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(236, 19, 55, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 6px rgba(236, 19, 55, 0);
+            }
+        }
+
+        /* Empty state */
+        .empty-state {
+            animation: fadeIn 0.4s ease both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Input glass */
+        .input-glass {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            transition: all 0.25s;
+        }
+
+        .input-glass:focus {
+            outline: none;
+            border-color: rgba(236, 19, 55, 0.5);
+            box-shadow: 0 0 0 3px rgba(236, 19, 55, 0.1);
+        }
+
+        .input-glass::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Message bubble time tooltip */
+        .msg-time {
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .msg-row:hover .msg-time {
+            opacity: 1;
+        }
+
+        /* Online dot */
+        .online-dot {
+            background: #22c55e;
+        }
+
+        .offline-dot {
+            background: #475569;
+        }
+
+        /* Notification toast */
+        #toast {
+            transition: all 0.3s ease;
+            transform: translateX(120%);
+        }
+
+        #toast.show {
+            transform: translateX(0);
+        }
+
+        .friend-item-real.active {
+            background: rgba(236, 19, 55, 0.08) !important;
+            border-left: 2px solid #ec1337;
+        }
+    </style>
+</head>
+
+<body class="bg-background-dark text-slate-100 font-display flex h-screen overflow-hidden">
+
+    <!-- ── SIDEBAR ─────────────────────────────────────────────── -->
+    <aside class="w-64 flex-shrink-0 bg-neutral-dark border-r border-white/5 flex flex-col justify-between py-6 px-4">
+        <div class="space-y-8">
+            <div class="flex items-center gap-3 px-3">
+                <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-white">
+                    <span class="material-symbols-outlined text-2xl font-bold">graphic_eq</span>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold leading-none">Davi Vibe</h1>
+                    <span class="text-xs text-slate-400 font-medium">PREMIUM</span>
+                </div>
+            </div>
+            <nav class="space-y-1">
+                <a href="index.html"
+                    class="flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 transition-colors cursor-pointer">
+                    <span class="material-symbols-outlined">home</span>
+                    <span class="font-medium text-sm">Home</span>
+                </a>
+                <a href="index.html"
+                    class="flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 transition-colors cursor-pointer">
+                    <span class="material-symbols-outlined">explore</span>
+                    <span class="font-medium text-sm">Navegar</span>
+                </a>
+                <a href="chat.html" class="flex items-center gap-4 px-3 py-2.5 rounded-lg cursor-pointer"
+                    style="background:rgba(189,52,75,0.1);color:#aa263c;">
+                    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">chat</span>
+                    <span class="font-medium text-sm">Chat</span>
+                </a>
+            </nav>
+            <div class="pt-4">
+                <h3 class="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Biblioteca</h3>
+                <nav class="space-y-1">
+                    <a href="library.html"
+                        class="flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined">library_music</span>
+                        <span class="font-medium text-sm">Minha Biblioteca</span>
+                    </a>
+                    <a
+                        class="flex items-center gap-4 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-white/5 transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined">favorite</span>
+                        <span class="font-medium text-sm">Favoritas</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+        <div class="px-3">
+            <div class="p-4 bg-primary/5 rounded-xl border border-primary/20">
+                <p class="text-xs font-bold text-primary mb-1">ATIVE O PLANO PREMIUM</p>
+                <p class="text-[11px] text-slate-400 leading-relaxed mb-3">Tenha acesso a áudio sem perdas e lançamentos
+                    exclusivos.</p>
+                <button
+                    class="w-full py-2 bg-primary text-white text-xs font-bold rounded-lg hover:brightness-110 transition-all">Gerenciar
+                    conta</button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ── MAIN CONTENT ────────────────────────────────────────── -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+
+        <!-- HEADER -->
+        <header
+            class="flex-shrink-0 z-20 flex items-center justify-between px-4 md:px-8 py-4 bg-background-dark/80 backdrop-blur-md border-b border-white/5">
+            <div class="flex items-center gap-3">
+                <span class="text-base font-bold text-white">Mensagens</span>
+            </div>
+            <div class="flex-1 max-w-md mx-4 md:mx-8">
+                <div class="relative">
+                    <span
+                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                    <input id="global-search"
+                        class="w-full bg-white/5 border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/50 transition-all text-white placeholder:text-slate-500"
+                        placeholder="Artistas, musicas, ou podcasts" type="text" />
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <!-- Notifications button com badge de solicitações de amizade -->
+                <button id="notif-btn" onclick="openFriendRequests()"
+                    class="relative hidden md:flex w-9 h-9 items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors text-slate-400 hover:text-white">
+                    <span class="material-symbols-outlined text-xl">notifications</span>
+                    <span id="notif-badge"
+                        class="hidden absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary rounded-full text-[9px] font-black text-white flex items-center justify-center badge-pulse"></span>
+                </button>
+                <div class="relative" id="profile-dropdown-wrap">
+                    <button id="avatar-btn"
+                        class="flex items-center gap-2 pl-1 pr-3 py-1 bg-white/5 hover:bg-white/10 rounded-full border-2 border-transparent hover:border-primary transition-all duration-300 focus:outline-none">
+                        <div class="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border-2 border-primary">
+                            <img id="user-avatar" class="w-full h-full object-cover" src="" alt="" />
+                        </div>
+                        <span id="user-name-short"
+                            class="hidden sm:block text-sm font-semibold text-white max-w-[100px] truncate">Usuário</span>
+                        <span class="material-symbols-outlined text-slate-400 transition-transform duration-300"
+                            id="dropdown-chevron" style="font-size:18px">expand_more</span>
+                    </button>
+                    <div id="avatar-menu"
+                        class="hidden absolute right-0 top-14 w-72 bg-neutral-900/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                        <div class="p-5 border-b border-white/10">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-12 h-12 rounded-full overflow-hidden ring-2 ring-primary ring-offset-2 ring-offset-neutral-900">
+                                    <img id="user-avatar-menu" class="w-full h-full object-cover" src="" alt="" />
+                                </div>
+                                <div class="min-w-0">
+                                    <span id="user-name" class="font-bold text-white truncate block">Usuário</span>
+                                    <!-- Código único estilo Discord -->
+                                    <span id="user-tag" class="text-[11px] text-slate-500 font-mono"></span>
+                                    <p id="user-email" class="text-xs text-slate-400 truncate mt-0.5"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <nav class="p-2">
+                            <button id="btn-logout"
+                                class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 text-slate-400 hover:text-primary transition-all font-semibold text-sm group">
+                                <span class="material-symbols-outlined text-xl">logout</span> Sair da conta
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- CORPO: amigos + chat -->
+        <div class="flex flex-1 min-h-0 overflow-hidden">
+
+            <!-- LISTA DE AMIGOS -->
+            <section class="friends-panel w-80 flex-shrink-0 flex flex-col border-r border-white/5 bg-neutral-dark/20">
+                <div class="p-5 border-b border-white/5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-bold flex items-center gap-2">
+                            Mensagens
+                            <span id="unread-badge"
+                                class="hidden text-[10px] font-bold bg-primary/20 text-primary px-2 py-0.5 rounded-full">0</span>
+                        </h2>
+                        <!-- Botão adicionar amigo -->
+                        <button onclick="openAddFriend()"
+                            class="w-8 h-8 rounded-full bg-white/5 hover:bg-primary/20 hover:text-primary transition-all flex items-center justify-center text-slate-400"
+                            title="Adicionar amigo">
+                            <span class="material-symbols-outlined text-lg">person_add</span>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <span
+                            class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-lg">search</span>
+                        <input id="friend-search" oninput="filterFriends(this.value)"
+                            class="w-full bg-white/5 border border-white/10 rounded-full py-2.5 pl-10 pr-4 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:border-primary/40 transition-all"
+                            placeholder="Buscar amigos..." type="text" />
+                    </div>
+                </div>
+
+                <!-- Tabs -->
+                <div class="flex border-b border-white/5 px-4 pt-2">
+                    <button onclick="switchTab('friends')" id="tab-friends"
+                        class="flex-1 py-2.5 text-xs font-bold uppercase tracking-wider text-primary border-b-2 border-primary transition-all">Amigos</button>
+                    <button onclick="switchTab('requests')" id="tab-requests"
+                        class="flex-1 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-500 border-b-2 border-transparent hover:text-slate-300 transition-all flex items-center justify-center gap-1">
+                        Solicitações
+                        <span id="req-count-tab"
+                            class="hidden w-4 h-4 bg-primary rounded-full text-[9px] font-black text-white flex items-center justify-center"></span>
+                    </button>
+                </div>
+
+                <!-- Lista de amigos real -->
+                <div id="friends-list" class="flex-1 overflow-y-auto chat-scrollbar pt-2 pb-4">
+                    <div class="px-6 py-10 text-center empty-state" id="friends-empty">
+                        <span class="material-symbols-outlined text-4xl text-slate-700 block mb-2">group</span>
+                        <p class="text-sm text-slate-500">Nenhum amigo ainda</p>
+                        <p class="text-xs text-slate-600 mt-1">Clique em <strong class="text-slate-400">+</strong> para
+                            adicionar amigos</p>
+                    </div>
+                </div>
+
+                <!-- Lista de solicitações -->
+                <div id="requests-list" class="flex-1 overflow-y-auto chat-scrollbar pt-2 pb-4 hidden">
+                    <div class="px-6 py-10 text-center empty-state" id="requests-empty">
+                        <span
+                            class="material-symbols-outlined text-4xl text-slate-700 block mb-2">mark_email_unread</span>
+                        <p class="text-sm text-slate-500">Nenhuma solicitação</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ÁREA DE MENSAGENS -->
+            <main class="flex-1 flex flex-col bg-background-dark min-w-0 overflow-hidden">
+
+                <!-- Chat header -->
+                <header id="chat-header"
+                    class="chat-header flex-shrink-0 h-16 flex items-center justify-between px-6 border-b border-white/5">
+                    <!-- Estado: nenhuma conversa selecionada -->
+                    <div id="no-chat-header" class="flex items-center gap-3 w-full justify-center">
+                        <span class="material-symbols-outlined text-slate-700 text-2xl">forum</span>
+                        <p class="text-slate-600 text-sm">Selecione um amigo para conversar</p>
+                    </div>
+                    <!-- Estado: conversa ativa -->
+                    <div id="active-chat-header" class="hidden w-full flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="relative">
+                                <img id="chat-friend-avatar"
+                                    class="w-10 h-10 rounded-full object-cover border-2 border-primary/30" src=""
+                                    alt="" />
+                                <span id="chat-status-dot"
+                                    class="absolute bottom-0 right-0 w-3 h-3 bg-slate-600 border-2 border-background-dark rounded-full"></span>
+                            </div>
+                            <div>
+                                <h2 id="chat-friend-name" class="text-sm font-bold"></h2>
+                                <p id="chat-friend-status" class="text-xs text-slate-500"></p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="openAddFriend()"
+                                class="flex items-center gap-2 bg-primary text-white text-xs font-bold px-4 py-2 rounded-full hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-primary/20">
+                                <span class="material-symbols-outlined text-sm">person_add</span>
+                                Add Amigo
+                            </button>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Mensagens / empty state -->
+                <div id="no-chat-body" class="flex-1 flex flex-col items-center justify-center gap-4">
+                    <div class="w-20 h-20 rounded-2xl bg-white/5 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-4xl text-slate-700">chat_bubble</span>
+                    </div>
+                    <div class="text-center">
+                        <p class="font-bold text-slate-400">Suas mensagens</p>
+                        <p class="text-sm text-slate-600 mt-1">Adicione amigos e comece a conversar</p>
+                    </div>
+                    <button onclick="openAddFriend()"
+                        class="flex items-center gap-2 bg-primary text-white text-sm font-bold px-5 py-2.5 rounded-full hover:brightness-110 transition-all shadow-lg shadow-primary/20">
+                        <span class="material-symbols-outlined text-lg">person_add</span>
+                        Adicionar Amigo
+                    </button>
+                </div>
+
+                <div id="messages-feed" class="hidden flex-1 overflow-y-auto chat-scrollbar p-6 flex flex-col gap-4">
+                </div>
+
+                <!-- Footer do chat -->
+                <div id="chat-footer" class="hidden chat-footer flex-shrink-0 px-6 py-4 border-t border-white/5">
+                    <div class="flex items-end gap-3">
+                        <div class="flex-1 relative">
+                            <textarea id="msg-input" onkeydown="handleMsgKey(event)" oninput="autoResize(this)"
+                                class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 pr-12 text-sm text-white placeholder:text-slate-500 resize-none focus:outline-none focus:border-primary/40 transition-all"
+                                placeholder="Digite uma mensagem..." rows="1"></textarea>
+                            <button
+                                class="absolute right-3 bottom-3 text-slate-500 hover:text-primary transition-colors">
+                                <span class="material-symbols-outlined text-xl">emoji_emotions</span>
+                            </button>
+                        </div>
+                        <button onclick="sendMessage()"
+                            class="w-11 h-11 rounded-full bg-primary flex items-center justify-center text-white hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-primary/20 flex-shrink-0">
+                            <span class="material-symbols-outlined text-xl">send</span>
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+     MODAL: ADICIONAR AMIGO
+════════════════════════════════════════════════════ -->
+    <div id="modal-add-friend" class="fixed inset-0 z-50 hidden modal-overlay flex items-center justify-center p-4">
+        <div class="modal-box w-full max-w-md bg-neutral-900 border border-white/10 rounded-3xl shadow-2xl p-8">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h2 class="text-xl font-bold">Adicionar Amigo</h2>
+                    <p class="text-sm text-slate-400 mt-0.5">Use o código único do usuário</p>
+                </div>
+                <button onclick="closeModal('modal-add-friend')"
+                    class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-all">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <!-- Meu código -->
+            <div class="mb-6 p-4 bg-primary/5 border border-primary/20 rounded-2xl">
+                <p class="text-[10px] font-black uppercase tracking-widest text-primary mb-2">Seu código único</p>
+                <div class="flex items-center justify-between gap-3">
+                    <span id="my-user-tag" class="font-mono text-lg font-bold text-white"></span>
+                    <button onclick="copyTag()"
+                        class="flex items-center gap-1.5 text-xs font-bold text-primary hover:text-white transition-colors">
+                        <span class="material-symbols-outlined text-sm">content_copy</span>
+                        Copiar
+                    </button>
+                </div>
+                <p class="text-[10px] text-slate-500 mt-1">Compartilhe este código para que amigos te adicionem</p>
+            </div>
+
+            <!-- Input para adicionar -->
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Código do
+                        Amigo</label>
+                    <input id="add-friend-input" class="w-full input-glass rounded-xl px-4 py-3.5 text-sm font-mono"
+                        placeholder="usuario#1234" type="text" oninput="this.value = this.value.toUpperCase()" />
+                    <p id="add-friend-error" class="text-red-400 text-xs mt-2 hidden"></p>
+                    <p id="add-friend-success" class="text-green-400 text-xs mt-2 hidden"></p>
+                </div>
+                <button onclick="sendFriendRequest()"
+                    class="w-full py-3.5 bg-primary text-white text-sm font-bold rounded-xl hover:brightness-110 active:scale-[0.98] transition-all shadow-lg shadow-primary/25">
+                    Enviar Solicitação
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+     MODAL: SOLICITAÇÕES DE AMIZADE
+════════════════════════════════════════════════════ -->
+    <div id="modal-friend-requests"
+        class="fixed inset-0 z-50 hidden modal-overlay flex items-center justify-center p-4">
+        <div class="modal-box w-full max-w-md bg-neutral-900 border border-white/10 rounded-3xl shadow-2xl p-8">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold">Solicitações de Amizade</h2>
+                <button onclick="closeModal('modal-friend-requests')"
+                    class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-all">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div id="requests-modal-list" class="space-y-3 max-h-80 overflow-y-auto chat-scrollbar">
+                <p class="text-center text-slate-500 text-sm py-8">Nenhuma solicitação pendente</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── TOAST NOTIFICATION ──────────────────────────────── -->
+    <div id="toast"
+        class="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-neutral-800 border border-white/10 rounded-2xl px-4 py-3 shadow-2xl">
+        <span id="toast-icon" class="material-symbols-outlined text-green-400">check_circle</span>
+        <span id="toast-msg" class="text-sm font-medium text-white"></span>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════
+     FIREBASE + LÓGICA PRINCIPAL
+════════════════════════════════════════════════════ -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut }
+            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+        import { getDatabase, ref, set, get, push, onValue, update, remove, query, orderByChild, equalTo, serverTimestamp }
+            from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+        // ── Firebase config ───────────────────────────────────────
+        const app = initializeApp({
+            apiKey: "AIzaSyDpkeu4920YRA4pc5HOAaEuP7-KMevUNno",
+            authDomain: "davi-vibes.firebaseapp.com",
+            projectId: "davi-vibes",
+            storageBucket: "davi-vibes.firebasestorage.app",
+            messagingSenderId: "198203679502",
+            appId: "1:198203679502:web:cfc71ee1dcd2a537412d5f",
+            databaseURL: "https://davi-vibes-default-rtdb.firebaseio.com"
+        });
+
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        // ── Estado global ─────────────────────────────────────────
+        let currentUser = null;
+        let currentUserData = null;
+        let activeFriendId = null;
+        let activeFriendData = null;
+        let messagesUnsubscribe = null;
+        let friendsData = {};
+        let requestsData = {};
+
+        // ── Gera código de 4 dígitos ──────────────────────────────
+        function generateCode() {
+            return Math.floor(1000 + Math.random() * 9000).toString();
+        }
+
+        // ── Cria/verifica perfil do usuário no Realtime DB ────────
+        async function ensureUserProfile(user) {
+            const userRef = ref(db, `users/${user.uid}`);
+            const snap = await get(userRef);
+
+            if (!snap.exists()) {
+                // Novo usuário: gera código único
+                const displayName = user.displayName || user.email.split('@')[0];
+                const code = generateCode();
+                const tag = `${displayName}#${code}`;
+
+                await set(userRef, {
+                    uid: user.uid,
+                    displayName: displayName,
+                    email: user.email,
+                    photoURL: user.photoURL || '',
+                    tag: tag,
+                    code: code,
+                    createdAt: Date.now()
+                });
+                return { uid: user.uid, displayName, email: user.email, photoURL: user.photoURL || '', tag, code };
+            }
+
+            // Usuário existente: atualiza foto/nome se mudou
+            const data = snap.val();
+            const updates = {};
+            if (user.photoURL && user.photoURL !== data.photoURL) updates.photoURL = user.photoURL;
+            if (user.displayName && user.displayName !== data.displayName) {
+                // Mantém o mesmo código mas atualiza nome
+                updates.displayName = user.displayName;
+                updates.tag = `${user.displayName}#${data.code}`;
+            }
+            if (Object.keys(updates).length > 0) {
+                await update(userRef, updates);
+                return { ...data, ...updates };
+            }
+            return data;
+        }
+
+        // ── Gera avatar canvas (fallback) ────────────────────────
+        function makeAvatarCanvas(name) {
+            const c = document.createElement('canvas'); c.width = c.height = 80;
+            const ctx = c.getContext('2d');
+            ctx.fillStyle = '#ec1337'; ctx.fillRect(0, 0, 80, 80);
+            ctx.fillStyle = '#fff'; ctx.font = 'bold 36px sans-serif';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText((name || 'U').charAt(0).toUpperCase(), 40, 40);
+            return c.toDataURL();
+        }
+
+        // ── Auth state ────────────────────────────────────────────
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) { window.location.href = 'login.html'; return; }
+
+            currentUser = user;
+            currentUserData = await ensureUserProfile(user);
+
+            // Atualiza UI do header
+            const avatar = user.photoURL || makeAvatarCanvas(user.displayName || user.email);
+            document.getElementById('user-avatar').src = avatar;
+            document.getElementById('user-avatar-menu').src = avatar;
+            document.getElementById('user-name').textContent = currentUserData.displayName;
+            document.getElementById('user-name-short').textContent = currentUserData.displayName;
+            document.getElementById('user-email').textContent = user.email;
+            document.getElementById('user-tag').textContent = currentUserData.tag;
+            document.getElementById('my-user-tag').textContent = currentUserData.tag;
+
+            // Carrega amigos e solicitações
+            listenFriends();
+            listenRequests();
+        });
+
+        // ── Logout ────────────────────────────────────────────────
+        document.getElementById('btn-logout').addEventListener('click', async () => {
+            await signOut(auth);
+            window.location.href = 'login.html';
+        });
+
+        // ── Dropdown avatar ───────────────────────────────────────
+        document.getElementById('avatar-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            const menu = document.getElementById('avatar-menu');
+            const ch = document.getElementById('dropdown-chevron');
+            const h = menu.classList.toggle('hidden');
+            ch.style.transform = h ? 'rotate(0deg)' : 'rotate(180deg)';
+        });
+        document.addEventListener('click', (e) => {
+            if (!document.getElementById('profile-dropdown-wrap').contains(e.target)) {
+                document.getElementById('avatar-menu').classList.add('hidden');
+                document.getElementById('dropdown-chevron').style.transform = 'rotate(0deg)';
+            }
+        });
+
+        // ═══════════════════════════════════════════════════════
+        // SISTEMA DE AMIZADE
+        // ═══════════════════════════════════════════════════════
+
+        // ── Escuta amigos em tempo real ───────────────────────────
+        function listenFriends() {
+            const friendsRef = ref(db, `friends/${currentUser.uid}`);
+            onValue(friendsRef, async (snap) => {
+                friendsData = {};
+                if (snap.exists()) {
+                    const raw = snap.val();
+                    // Busca dados de cada amigo
+                    const promises = Object.keys(raw).map(async (friendUid) => {
+                        const fSnap = await get(ref(db, `users/${friendUid}`));
+                        if (fSnap.exists()) {
+                            friendsData[friendUid] = { ...fSnap.val(), ...raw[friendUid] };
+                        }
+                    });
+                    await Promise.all(promises);
+                }
+                renderFriendsList();
+            });
+        }
+
+        // ── Escuta solicitações em tempo real ─────────────────────
+        function listenRequests() {
+            const reqRef = ref(db, `friendRequests/${currentUser.uid}`);
+            onValue(reqRef, async (snap) => {
+                requestsData = {};
+                if (snap.exists()) {
+                    const raw = snap.val();
+                    const promises = Object.keys(raw).map(async (fromUid) => {
+                        const fSnap = await get(ref(db, `users/${fromUid}`));
+                        if (fSnap.exists()) {
+                            requestsData[fromUid] = { ...fSnap.val(), ...raw[fromUid] };
+                        }
+                    });
+                    await Promise.all(promises);
+                }
+                renderRequestsList();
+                updateRequestBadge();
+            });
+        }
+
+        // ── Renderiza lista de amigos ─────────────────────────────
+        function renderFriendsList() {
+            const list = document.getElementById('friends-list');
+            const empty = document.getElementById('friends-empty');
+            const ids = Object.keys(friendsData);
+
+            // Remove itens antigos (mantém o empty state)
+            list.querySelectorAll('.friend-item-real').forEach(el => el.remove());
+
+            if (ids.length === 0) {
+                empty.classList.remove('hidden');
+                return;
+            }
+            empty.classList.add('hidden');
+
+            ids.forEach(uid => {
+                const f = friendsData[uid];
+                const div = document.createElement('div');
+                div.className = 'friend-item-real flex items-center gap-3 p-3 hover:bg-white/5 rounded-xl cursor-pointer mb-1 transition-colors px-4';
+                div.dataset.uid = uid;
+                if (uid === activeFriendId) div.classList.add('active');
+
+                const avatar = f.photoURL || makeAvatarCanvas(f.displayName);
+                const isOnline = false; // Poderíamos implementar presença, por ora offline
+
+                div.innerHTML = `
+      <div class="relative flex-shrink-0">
+        <img class="w-12 h-12 rounded-full object-cover" src="${avatar}" alt="${f.displayName}" onerror="this.src='${makeAvatarCanvas(f.displayName)}'"/>
+        <span class="absolute bottom-0 right-0 w-3 h-3 ${isOnline ? 'bg-green-500' : 'bg-slate-600'} border-2 border-neutral-dark rounded-full"></span>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex justify-between items-center">
+          <p class="font-medium text-sm text-slate-200 truncate">${escapeHtml(f.displayName)}</p>
+        </div>
+        <p class="text-[10px] text-slate-500 truncate font-mono">${escapeHtml(f.tag || '')}</p>
+      </div>
+    `;
+
+                div.addEventListener('click', () => openChat(uid, f));
+                list.appendChild(div);
+            });
+        }
+
+        // ── Renderiza solicitações ────────────────────────────────
+        function renderRequestsList() {
+            const list = document.getElementById('requests-list');
+            const empty = document.getElementById('requests-empty');
+            const ids = Object.keys(requestsData);
+
+            list.querySelectorAll('.request-item-real').forEach(el => el.remove());
+
+            if (ids.length === 0) {
+                empty.classList.remove('hidden');
+                // também atualiza o modal
+                document.getElementById('requests-modal-list').innerHTML = '<p class="text-center text-slate-500 text-sm py-8">Nenhuma solicitação pendente</p>';
+                return;
+            }
+            empty.classList.add('hidden');
+            document.getElementById('requests-modal-list').innerHTML = '';
+
+            ids.forEach(uid => {
+                const f = requestsData[uid];
+                const avatar = f.photoURL || makeAvatarCanvas(f.displayName);
+
+                // Na lista da sidebar
+                const div = document.createElement('div');
+                div.className = 'request-item-real flex items-center gap-3 p-3 hover:bg-white/5 rounded-xl mb-1 transition-colors px-4';
+                div.innerHTML = `
+      <img class="w-10 h-10 rounded-full object-cover flex-shrink-0" src="${avatar}" alt="" onerror="this.src='${makeAvatarCanvas(f.displayName)}'"/>
+      <div class="flex-1 min-w-0">
+        <p class="font-medium text-sm text-slate-200 truncate">${escapeHtml(f.displayName)}</p>
+        <p class="text-[10px] text-slate-500 font-mono">${escapeHtml(f.tag || '')}</p>
+      </div>
+      <div class="flex gap-1">
+        <button onclick="acceptRequest('${uid}')" class="w-7 h-7 rounded-full bg-green-500/20 hover:bg-green-500/40 text-green-400 flex items-center justify-center transition-all" title="Aceitar">
+          <span class="material-symbols-outlined" style="font-size:16px">check</span>
+        </button>
+        <button onclick="rejectRequest('${uid}')" class="w-7 h-7 rounded-full bg-red-500/20 hover:bg-red-500/40 text-red-400 flex items-center justify-center transition-all" title="Recusar">
+          <span class="material-symbols-outlined" style="font-size:16px">close</span>
+        </button>
+      </div>
+    `;
+                list.appendChild(div);
+
+                // No modal
+                const mdiv = document.createElement('div');
+                mdiv.className = 'flex items-center gap-4 p-4 bg-white/5 border border-white/8 rounded-2xl';
+                mdiv.innerHTML = `
+      <img class="w-12 h-12 rounded-full object-cover flex-shrink-0" src="${avatar}" alt="" onerror="this.src='${makeAvatarCanvas(f.displayName)}'"/>
+      <div class="flex-1 min-w-0">
+        <p class="font-semibold text-white">${escapeHtml(f.displayName)}</p>
+        <p class="text-xs text-slate-400 font-mono">${escapeHtml(f.tag || '')}</p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="acceptRequest('${uid}')" class="px-3 py-1.5 bg-green-500/20 hover:bg-green-500 text-green-400 hover:text-white text-xs font-bold rounded-full transition-all">Aceitar</button>
+        <button onclick="rejectRequest('${uid}')" class="px-3 py-1.5 bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white text-xs font-bold rounded-full transition-all">Recusar</button>
+      </div>
+    `;
+                document.getElementById('requests-modal-list').appendChild(mdiv);
+            });
+        }
+
+        // ── Badge de solicitações ──────────────────────────────────
+        function updateRequestBadge() {
+            const count = Object.keys(requestsData).length;
+            const badge = document.getElementById('notif-badge');
+            const tabBadge = document.getElementById('req-count-tab');
+
+            if (count > 0) {
+                badge.textContent = count > 9 ? '9+' : count;
+                badge.classList.remove('hidden');
+                badge.classList.add('flex');
+                document.getElementById('notif-btn').classList.remove('hidden');
+                document.getElementById('notif-btn').classList.add('flex');
+                tabBadge.textContent = count;
+                tabBadge.classList.remove('hidden');
+                tabBadge.classList.add('flex');
+            } else {
+                badge.classList.add('hidden');
+                tabBadge.classList.add('hidden');
+            }
+        }
+
+        // ── Enviar solicitação de amizade ─────────────────────────
+        window.sendFriendRequest = async function () {
+            const input = document.getElementById('add-friend-input');
+            const errEl = document.getElementById('add-friend-error');
+            const sucEl = document.getElementById('add-friend-success');
+            const tag = input.value.trim().toUpperCase();
+
+            errEl.classList.add('hidden');
+            sucEl.classList.add('hidden');
+
+            if (!tag) { showErr('Digite o código do usuário'); return; }
+            if (!tag.includes('#')) { showErr('Formato inválido. Use: usuario#1234'); return; }
+
+            // Busca o usuário pelo tag
+            // Como Realtime DB não tem query de valor string facilmente sem index,
+            // buscamos todos e filtramos (funciona bem para poucos usuários)
+            try {
+                const usersSnap = await get(ref(db, 'users'));
+                if (!usersSnap.exists()) { showErr('Usuário não encontrado.'); return; }
+
+                let targetUid = null;
+                let targetData = null;
+                usersSnap.forEach(child => {
+                    const u = child.val();
+                    if (u.tag && u.tag.toUpperCase() === tag) {
+                        targetUid = child.key;
+                        targetData = u;
+                    }
+                });
+
+                if (!targetUid) { showErr('Usuário não encontrado. Verifique o código.'); return; }
+                if (targetUid === currentUser.uid) { showErr('Você não pode se adicionar.'); return; }
+
+                // Verifica se já são amigos
+                const alreadyFriend = await get(ref(db, `friends/${currentUser.uid}/${targetUid}`));
+                if (alreadyFriend.exists()) { showErr('Vocês já são amigos!'); return; }
+
+                // Verifica se já enviou
+                const alreadySent = await get(ref(db, `friendRequests/${targetUid}/${currentUser.uid}`));
+                if (alreadySent.exists()) { showErr('Solicitação já enviada!'); return; }
+
+                // Envia solicitação
+                await set(ref(db, `friendRequests/${targetUid}/${currentUser.uid}`), {
+                    fromUid: currentUser.uid,
+                    displayName: currentUserData.displayName,
+                    tag: currentUserData.tag,
+                    photoURL: currentUser.photoURL || '',
+                    sentAt: Date.now()
+                });
+
+                sucEl.textContent = `Solicitação enviada para ${targetData.displayName}!`;
+                sucEl.classList.remove('hidden');
+                input.value = '';
+                showToast(`Solicitação enviada para ${targetData.displayName}!`, 'person_add');
+            } catch (e) {
+                showErr('Erro ao enviar. Tente novamente.');
+                console.error(e);
+            }
+
+            function showErr(msg) {
+                errEl.textContent = msg;
+                errEl.classList.remove('hidden');
+            }
+        };
+
+        // ── Aceitar solicitação ───────────────────────────────────
+        window.acceptRequest = async function (fromUid) {
+            if (!currentUser) return;
+            const f = requestsData[fromUid];
+            if (!f) return;
+
+            // Adiciona nos dois lados
+            await set(ref(db, `friends/${currentUser.uid}/${fromUid}`), {
+                addedAt: Date.now()
+            });
+            await set(ref(db, `friends/${fromUid}/${currentUser.uid}`), {
+                addedAt: Date.now()
+            });
+
+            // Remove solicitação
+            await remove(ref(db, `friendRequests/${currentUser.uid}/${fromUid}`));
+
+            showToast(`Agora você e ${f.displayName} são amigos!`, 'favorite');
+        };
+
+        // ── Recusar solicitação ───────────────────────────────────
+        window.rejectRequest = async function (fromUid) {
+            await remove(ref(db, `friendRequests/${currentUser.uid}/${fromUid}`));
+            showToast('Solicitação recusada.', 'person_remove', 'text-red-400');
+        };
+
+        // ═══════════════════════════════════════════════════════
+        // CHAT EM TEMPO REAL
+        // ═══════════════════════════════════════════════════════
+
+        // ── Gera ID de conversa (ordenado por uid) ────────────────
+        function chatId(uid1, uid2) {
+            return [uid1, uid2].sort().join('_');
+        }
+
+        // ── Abre conversa com amigo ───────────────────────────────
+        window.openChat = function (friendUid, friendData) {
+            activeFriendId = friendUid;
+            activeFriendData = friendData;
+
+            // Atualiza seleção visual
+            document.querySelectorAll('.friend-item-real').forEach(el => {
+                el.classList.remove('active');
+                if (el.dataset.uid === friendUid) el.classList.add('active');
+            });
+
+            // Mostra header e footer
+            document.getElementById('no-chat-header').classList.add('hidden');
+            document.getElementById('active-chat-header').classList.remove('hidden');
+            document.getElementById('no-chat-body').classList.add('hidden');
+            document.getElementById('messages-feed').classList.remove('hidden');
+            document.getElementById('messages-feed').classList.add('flex');
+            document.getElementById('chat-footer').classList.remove('hidden');
+
+            // Preenche header
+            const avatar = friendData.photoURL || makeAvatarCanvas(friendData.displayName);
+            document.getElementById('chat-friend-avatar').src = avatar;
+            document.getElementById('chat-friend-name').textContent = friendData.displayName;
+            document.getElementById('chat-friend-status').textContent = friendData.tag || '';
+
+            // Limpa feed e escuta mensagens
+            const feed = document.getElementById('messages-feed');
+            feed.innerHTML = '';
+
+            if (messagesUnsubscribe) messagesUnsubscribe();
+
+            const cid = chatId(currentUser.uid, friendUid);
+            const msgsRef = ref(db, `chats/${cid}/messages`);
+
+            messagesUnsubscribe = onValue(msgsRef, (snap) => {
+                feed.innerHTML = '';
+                if (!snap.exists()) {
+                    // Estado vazio da conversa
+                    const div = document.createElement('div');
+                    div.className = 'flex flex-col items-center justify-center py-12 gap-3 empty-state';
+                    const avatar2 = friendData.photoURL || makeAvatarCanvas(friendData.displayName);
+                    div.innerHTML = `
+        <img class="w-16 h-16 rounded-full object-cover border-2 border-primary/30" src="${avatar2}" alt="" onerror="this.src='${makeAvatarCanvas(friendData.displayName)}'"/>
+        <div class="text-center">
+          <p class="font-bold text-white">${escapeHtml(friendData.displayName)}</p>
+          <p class="text-xs text-slate-500 mt-1">${escapeHtml(friendData.tag || '')}</p>
+          <p class="text-xs text-slate-600 mt-3">Este é o início da sua conversa com <strong class="text-slate-400">${escapeHtml(friendData.displayName)}</strong></p>
+        </div>
+      `;
+                    feed.appendChild(div);
+                    return;
+                }
+
+                let lastDate = null;
+                snap.forEach(child => {
+                    const msg = child.val();
+                    const msgDate = new Date(msg.createdAt).toLocaleDateString('pt-BR');
+
+                    if (msgDate !== lastDate) {
+                        const sep = document.createElement('div');
+                        sep.className = 'flex justify-center my-2';
+                        sep.innerHTML = `<span class="text-[9px] uppercase tracking-widest text-slate-600 bg-white/5 px-3 py-1 rounded-full border border-white/5">${msgDate === new Date().toLocaleDateString('pt-BR') ? 'Hoje' : msgDate}</span>`;
+                        feed.appendChild(sep);
+                        lastDate = msgDate;
+                    }
+
+                    renderMessage(msg, child.key);
+                });
+
+                scrollToBottom();
+            });
+        };
+
+        // ── Renderiza mensagem ────────────────────────────────────
+        function renderMessage(msg, key) {
+            const feed = document.getElementById('messages-feed');
+            const isOwn = msg.senderId === currentUser.uid;
+            const time = new Date(msg.createdAt).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            const div = document.createElement('div');
+
+            if (isOwn) {
+                div.className = 'msg-row flex flex-col gap-1 items-end self-end max-w-[70%] ml-auto';
+                div.innerHTML = `
+      <div class="msg-bubble-out bg-primary px-4 py-3 rounded-2xl rounded-br-sm text-white text-sm leading-relaxed shadow-lg shadow-primary/15">
+        ${escapeHtml(msg.text).replace(/\n/g, '<br>')}
+      </div>
+      <div class="flex items-center gap-1.5 mr-1">
+        <span class="msg-time text-[9px] text-slate-600">${time}</span>
+        <span class="material-symbols-outlined text-primary" style="font-size:12px">done_all</span>
+      </div>
+    `;
+            } else {
+                const avatar = activeFriendData?.photoURL || makeAvatarCanvas(activeFriendData?.displayName || '?');
+                div.className = 'msg-row flex gap-3 max-w-[70%]';
+                div.innerHTML = `
+      <img class="w-8 h-8 rounded-full object-cover flex-shrink-0 self-end" src="${avatar}" alt="" onerror="this.src='${makeAvatarCanvas(activeFriendData?.displayName || '?')}'"/>
+      <div class="flex flex-col gap-1">
+        <div class="msg-bubble-in bg-neutral-dark border border-white/5 px-4 py-3 rounded-2xl rounded-bl-sm text-slate-200 text-sm leading-relaxed">
+          ${escapeHtml(msg.text).replace(/\n/g, '<br>')}
+        </div>
+        <span class="msg-time text-[9px] text-slate-600 ml-1">${time}</span>
+      </div>
+    `;
+            }
+
+            feed.appendChild(div);
+        }
+
+        // ── Enviar mensagem ───────────────────────────────────────
+        window.sendMessage = async function () {
+            if (!currentUser || !activeFriendId) return;
+            const input = document.getElementById('msg-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            input.value = '';
+            input.style.height = 'auto';
+
+            const cid = chatId(currentUser.uid, activeFriendId);
+            const msgsRef = ref(db, `chats/${cid}/messages`);
+
+            await push(msgsRef, {
+                senderId: currentUser.uid,
+                senderName: currentUserData.displayName,
+                text: text,
+                createdAt: Date.now()
+            });
+
+            // Atualiza último preview na lista de amigos (opcional, futuro)
+        };
+
+        // ── Scroll para o fim ─────────────────────────────────────
+        function scrollToBottom() {
+            const feed = document.getElementById('messages-feed');
+            requestAnimationFrame(() => { feed.scrollTop = feed.scrollHeight; });
+        }
+
+        // ── Tecla Enter ───────────────────────────────────────────
+        window.handleMsgKey = function (e) {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+        };
+
+        // ── Auto-resize textarea ──────────────────────────────────
+        window.autoResize = function (el) {
+            el.style.height = 'auto';
+            el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+        };
+
+        // ── Escape HTML ───────────────────────────────────────────
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        // ═══════════════════════════════════════════════════════
+        // UI HELPERS
+        // ═══════════════════════════════════════════════════════
+
+        // ── Tabs ──────────────────────────────────────────────────
+        window.switchTab = function (tab) {
+            const isFriends = tab === 'friends';
+            document.getElementById('friends-list').classList.toggle('hidden', !isFriends);
+            document.getElementById('requests-list').classList.toggle('hidden', isFriends);
+            document.getElementById('tab-friends').className = `flex-1 py-2.5 text-xs font-bold uppercase tracking-wider border-b-2 transition-all ${isFriends ? 'text-primary border-primary' : 'text-slate-500 border-transparent hover:text-slate-300'}`;
+            document.getElementById('tab-requests').className = `flex-1 py-2.5 text-xs font-bold uppercase tracking-wider border-b-2 transition-all flex items-center justify-center gap-1 ${!isFriends ? 'text-primary border-primary' : 'text-slate-500 border-transparent hover:text-slate-300'}`;
+        };
+
+        // ── Filtrar amigos ────────────────────────────────────────
+        window.filterFriends = function (q) {
+            document.querySelectorAll('.friend-item-real').forEach(el => {
+                const name = el.querySelector('p').textContent.toLowerCase();
+                el.style.display = name.includes(q.toLowerCase()) ? '' : 'none';
+            });
+        };
+
+        // ── Modals ────────────────────────────────────────────────
+        window.openAddFriend = function () {
+            document.getElementById('add-friend-error').classList.add('hidden');
+            document.getElementById('add-friend-success').classList.add('hidden');
+            document.getElementById('add-friend-input').value = '';
+            document.getElementById('modal-add-friend').classList.remove('hidden');
+        };
+
+        window.openFriendRequests = function () {
+            document.getElementById('modal-friend-requests').classList.remove('hidden');
+        };
+
+        window.closeModal = function (id) {
+            document.getElementById(id).classList.add('hidden');
+        };
+
+        // Fechar modal ao clicar fora
+        ['modal-add-friend', 'modal-friend-requests'].forEach(id => {
+            document.getElementById(id).addEventListener('click', (e) => {
+                if (e.target.id === id) closeModal(id);
+            });
+        });
+
+        // ── Copiar tag ────────────────────────────────────────────
+        window.copyTag = function () {
+            const tag = document.getElementById('my-user-tag').textContent;
+            navigator.clipboard.writeText(tag).then(() => {
+                showToast('Código copiado!', 'content_copy');
+            });
+        };
+
+        // ── Toast ─────────────────────────────────────────────────
+        function showToast(msg, icon = 'check_circle', iconClass = 'text-green-400') {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = msg;
+            document.getElementById('toast-icon').textContent = icon;
+            document.getElementById('toast-icon').className = `material-symbols-outlined ${iconClass}`;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+        window.showToast = showToast;
+    </script>
+
+</body>
+
+</html>

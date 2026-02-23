@@ -59,6 +59,19 @@ var tracks = [
 const audio = new Audio();
 audio.volume = 0.66;
 
+// Prevent browser from pausing audio when tab is hidden/switched
+document.addEventListener('visibilitychange', () => {
+  // If audio was playing before tab switch, resume it
+  if (!document.hidden && audio._wasPlaying) {
+    audio.play().catch(() => { });
+  }
+  if (document.hidden && !audio.paused) {
+    audio._wasPlaying = true;
+  } else if (!document.hidden) {
+    audio._wasPlaying = false;
+  }
+});
+
 // ===== ELEMENTOS =====
 const btnPlay = document.getElementById('btn-play');
 const btnPlayIcon = btnPlay.querySelector('.material-symbols-outlined');
