@@ -1,120 +1,153 @@
-import { initializeApp }   from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-import { getAnalytics }    from "https://www.gstatic.com/firebasejs/10.0.0/firebase-analytics.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-analytics.js";
 import { getAuth, createUserWithEmailAndPassword, updateProfile }
   from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
-import { getStorage, ref, uploadBytes, getDownloadURL }
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL }
   from "https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js";
+import { getDatabase, ref as dbRef, set, get }
+  from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
 
-// ── Firebase ──────────────────────────────────────────────────
+// ── Firebase config ────────────────────────────────────────────
 const app = initializeApp({
-  apiKey:            "AIzaSyDpkeu4920YRA4pc5HOAaEuP7-KMevUNno",
-  authDomain:        "davi-vibes.firebaseapp.com",
-  projectId:         "davi-vibes",
-  storageBucket:     "davi-vibes.firebasestorage.app",
+  apiKey: "AIzaSyDpkeu4920YRA4pc5HOAaEuP7-KMevUNno",
+  authDomain: "davi-vibes.firebaseapp.com",
+  projectId: "davi-vibes",
+  storageBucket: "davi-vibes.firebasestorage.app",
   messagingSenderId: "198203679502",
-  appId:             "1:198203679502:web:cfc71ee1dcd2a537412d5f",
-  measurementId:     "G-YHNRLPCH08"
+  appId: "1:198203679502:web:cfc71ee1dcd2a537412d5f",
+  measurementId: "G-YHNRLPCH08",
+  databaseURL: "https://davi-vibes-default-rtdb.firebaseio.com"
 });
-getAnalytics(app);
-const auth    = getAuth(app);
-const storage = getStorage(app);
 
-// ── Avatar preview (local, instantâneo) ──────────────────────
+getAnalytics(app);
+const auth = getAuth(app);
+const storage = getStorage(app);
+const db = getDatabase(app);
+
+// ── Gera código único de 4 dígitos (mesmo do chat.html) ────────
+function generateCode() {
+  return Math.floor(1000 + Math.random() * 9000).toString();
+}
+
+// ── Avatar preview ─────────────────────────────────────────────
 window.previewAvatar = function (event) {
   const file = event.target.files[0];
   if (!file) return;
   const preview = document.getElementById("avatarPreview");
-  const icon    = document.getElementById("avatarIcon");
-  const url     = URL.createObjectURL(file);
-  preview.src   = url;
+  const icon = document.getElementById("avatarIcon");
+  preview.src = URL.createObjectURL(file);
   preview.classList.remove("hidden");
   icon.classList.add("hidden");
 };
 
-// ── Toggle senha ──────────────────────────────────────────────
+// ── Toggle senha ───────────────────────────────────────────────
 window.togglePass = function (inputId, iconId) {
-  const input  = document.getElementById(inputId);
-  const icon   = document.getElementById(iconId);
+  const input = document.getElementById(inputId);
+  const icon = document.getElementById(iconId);
   const hidden = input.type === "password";
-  input.type       = hidden ? "text" : "password";
+  input.type = hidden ? "text" : "password";
   icon.textContent = hidden ? "visibility_off" : "visibility";
 };
 
-// ── Helpers ───────────────────────────────────────────────────
+// ── Helpers ────────────────────────────────────────────────────
 function showError(msg) {
   const el = document.getElementById("register-error");
   el.textContent = msg;
   el.classList.remove("hidden");
 }
-
 function hideError() {
   document.getElementById("register-error").classList.add("hidden");
 }
 
-// ── Submissão do formulário ───────────────────────────────────
+// ── Submissão ──────────────────────────────────────────────────
 document.getElementById("registerForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   hideError();
 
-  const username  = document.getElementById("username").value.trim();
-  const email     = document.getElementById("email").value.trim();
-  const password  = document.getElementById("password").value;
-  const confirm   = document.getElementById("confirmPassword").value;
-  const terms     = document.getElementById("terms").checked;
+  const username = document.getElementById("username").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const confirm = document.getElementById("confirmPassword").value;
+  const terms = document.getElementById("terms").checked;
   const avatarFile = document.getElementById("avatarInput").files[0];
 
   // Validações
-  if (!username)               return showError("Informe um nome de usuário.");
-  if (!email)                  return showError("Informe seu e-mail.");
-  if (password.length < 6)    return showError("A senha deve ter no mínimo 6 caracteres.");
-  if (password !== confirm)    return showError("As senhas não coincidem.");
-  if (!terms)                  return showError("Aceite os termos para continuar.");
+  if (!username) return showError("Informe um nome de usuário.");
+  if (!email) return showError("Informe seu e-mail.");
+  if (password.length < 6) return showError("A senha deve ter no mínimo 6 caracteres.");
+  if (password !== confirm) return showError("As senhas não coincidem.");
+  if (!terms) return showError("Aceite os termos para continuar.");
 
-  const btn = e.submitter;
-  btn.disabled    = true;
+  // FIX: referência direta ao botão (e.submitter pode ser null no mobile)
+  const btn = document.querySelector("#registerForm button[type='submit']");
+  btn.disabled = true;
   btn.textContent = "Criando conta...";
 
   try {
-    // 1. Cria usuário
+    // 1. Cria usuário no Firebase Auth
     const { user } = await createUserWithEmailAndPassword(auth, email, password);
 
-    // 2. Upload da foto (se houver)
+    // 2. Upload da foto de perfil (se escolheu uma)
     let photoURL = "";
     if (avatarFile) {
-      const storageRef = ref(storage, `avatars/${user.uid}`);
-      await uploadBytes(storageRef, avatarFile);
-      photoURL = await getDownloadURL(storageRef);
+      try {
+        const sRef = storageRef(storage, `avatars/${user.uid}`);
+        await uploadBytes(sRef, avatarFile);
+        photoURL = await getDownloadURL(sRef);
+      } catch (uploadErr) {
+        // Se o Storage bloquear, continua sem foto (não trava o cadastro)
+        console.warn("Foto não pôde ser salva:", uploadErr.message);
+      }
     }
 
-    // 3. Atualiza perfil com nome e foto
+    // 3. Atualiza perfil no Auth (displayName + photo)
     await updateProfile(user, {
       displayName: username,
       ...(photoURL && { photoURL }),
     });
 
-    // 4. Redireciona
-    window.location.href = "/index.html"; // ajuste para sua rota
+    // 4. Gera código único e salva perfil completo no Realtime Database
+    //    Isso garante que o chat.html leia o nome correto desde o início
+    const code = generateCode();
+    const tag = `${username}#${code}`;
+
+    await set(dbRef(db, `users/${user.uid}`), {
+      uid: user.uid,
+      displayName: username,
+      email: user.email,
+      photoURL: photoURL || "",
+      tag: tag,
+      code: code,
+      createdAt: Date.now()
+    });
+
+    // 5. Redireciona para o site
+    window.location.href = "/index.html";
+
   } catch (err) {
+    console.error("Erro no registro:", err);
     const msgs = {
       "auth/email-already-in-use": "Este e-mail já está cadastrado.",
-      "auth/invalid-email":        "E-mail inválido.",
-      "auth/weak-password":        "Senha muito fraca.",
+      "auth/invalid-email": "E-mail inválido.",
+      "auth/weak-password": "Senha muito fraca (mínimo 6 caracteres).",
+      "auth/network-request-failed": "Sem conexão. Verifique sua internet.",
     };
-    showError(msgs[err.code] || "Erro ao criar conta. Tente novamente.");
-    btn.disabled    = false;
-    btn.textContent = "Create My Account";
+    showError(msgs[err.code] || `Erro ao criar conta: ${err.message}`);
+    btn.disabled = false;
+    btn.textContent = "Criar Conta";
   }
 });
 
-// ── Fix autofill background ───────────────────────────────────
+// ── Fix autofill background no Chrome/Android ──────────────────
 document.querySelectorAll(".input-glass").forEach(input => {
   setInterval(() => {
     try {
-      if (window.getComputedStyle(input).backgroundColor !== "rgba(0, 0, 0, 0)") {
+      const bg = window.getComputedStyle(input).backgroundColor;
+      if (bg !== "rgba(0, 0, 0, 0)" && bg !== "transparent") {
         input.style.setProperty("background", "transparent", "important");
         input.style.setProperty("color", "#ffffff", "important");
         input.style.setProperty("-webkit-text-fill-color", "#ffffff", "important");
       }
-    } catch {}
+    } catch { }
   }, 500);
 });
