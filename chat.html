@@ -147,12 +147,13 @@
             border-left: 2px solid #ec1337;
         }
 
-        /* FIX: Input de mensagem sempre legivel */
+        /* FIX: Input de mensagem - fundo escuro igual ao placeholder */
         #msg-input {
-            background: rgba(255, 255, 255, 0.08) !important;
+            background: #1c1c1e !important;
             color: #ffffff !important;
             caret-color: #ffffff;
             -webkit-text-fill-color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
         }
 
         #msg-input::placeholder {
@@ -161,8 +162,8 @@
         }
 
         #msg-input:focus {
-            background: rgba(255, 255, 255, 0.11) !important;
-            border-color: rgba(236, 19, 55, 0.5) !important;
+            background: #222224 !important;
+            border-color: rgba(236, 19, 55, 0.45) !important;
             outline: none !important;
         }
 
@@ -419,7 +420,7 @@
             <div class="flex items-center gap-3">
                 <!-- Notifications button com badge de solicitações de amizade -->
                 <button id="notif-btn" onclick="openFriendRequests()"
-                    class="relative hidden md:flex w-9 h-9 items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors text-slate-400 hover:text-white">
+                    class="relative flex w-9 h-9 items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors text-slate-400 hover:text-white">
                     <span class="material-symbols-outlined text-xl">notifications</span>
                     <span id="notif-badge"
                         class="hidden absolute -top-0.5 -right-0.5 w-4 h-4 bg-primary rounded-full text-[9px] font-black text-white flex items-center justify-center badge-pulse"></span>
@@ -588,7 +589,7 @@
                         <div class="flex-1 relative">
                             <textarea id="msg-input" onkeydown="handleMsgKey(event)" oninput="autoResize(this)"
                                 class="w-full rounded-2xl px-4 py-3 pr-11 text-sm resize-none focus:outline-none transition-all"
-                                style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#fff;caret-color:#fff;min-height:44px;max-height:120px;line-height:1.5;"
+                                style="background:#1c1c1e;border:1px solid rgba(255,255,255,0.1);color:#fff;caret-color:#fff;min-height:44px;max-height:120px;line-height:1.5;"
                                 placeholder="Digite uma mensagem..." rows="1"></textarea>
                             <!-- Emoji button -->
                             <div class="relative" style="display:inline-block;">
