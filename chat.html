@@ -142,6 +142,191 @@
             background: rgba(236, 19, 55, 0.08) !important;
             border-left: 2px solid #ec1337;
         }
+
+        /* FIX: Input de mensagem sempre legivel */
+        #msg-input {
+            background: rgba(255, 255, 255, 0.08) !important;
+            color: #ffffff !important;
+            caret-color: #ffffff;
+            -webkit-text-fill-color: #ffffff !important;
+        }
+
+        #msg-input::placeholder {
+            color: rgba(255, 255, 255, 0.35) !important;
+            -webkit-text-fill-color: rgba(255, 255, 255, 0.35) !important;
+        }
+
+        #msg-input:focus {
+            background: rgba(255, 255, 255, 0.11) !important;
+            border-color: rgba(236, 19, 55, 0.5) !important;
+            outline: none !important;
+        }
+
+        /* FIX: Input de adicionar amigo */
+        #add-friend-input {
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
+            caret-color: #ffffff;
+        }
+
+        /* Emoji picker */
+        #emoji-picker {
+            display: none;
+            position: absolute;
+            bottom: 58px;
+            right: 0;
+            width: 288px;
+            background: #1c1c1c;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 12px;
+            z-index: 100;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+        }
+
+        #emoji-picker.open {
+            display: block;
+        }
+
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 2px;
+            max-height: 180px;
+            overflow-y: auto;
+        }
+
+        .emoji-grid button {
+            font-size: 20px;
+            padding: 5px 3px;
+            border-radius: 8px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+
+        .emoji-grid button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .emoji-cats {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .emoji-cats button {
+            font-size: 16px;
+            padding: 3px 6px;
+            border-radius: 6px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            opacity: 0.45;
+            transition: all 0.15s;
+        }
+
+        .emoji-cats button.active,
+        .emoji-cats button:hover {
+            opacity: 1;
+            background: rgba(236, 19, 55, 0.15);
+        }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            aside {
+                display: none !important;
+            }
+
+            #mobile-home-btn {
+                display: flex !important;
+            }
+
+            #btn-back-mobile {
+                display: flex !important;
+            }
+
+            .flex.flex-1.min-h-0.overflow-hidden {
+                position: relative;
+                overflow: hidden;
+            }
+
+            .friends-panel {
+                position: absolute !important;
+                inset: 0 !important;
+                width: 100% !important;
+                z-index: 10;
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .friends-panel.slide-out {
+                transform: translateX(-100%);
+                pointer-events: none;
+            }
+
+            main.flex-1 {
+                position: absolute !important;
+                inset: 0 !important;
+                width: 100% !important;
+                z-index: 20;
+                transform: translateX(100%);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex !important;
+                flex-direction: column !important;
+                overflow: hidden;
+            }
+
+            main.flex-1.slide-in {
+                transform: translateX(0);
+            }
+
+            #messages-feed {
+                flex: 1 1 0% !important;
+                overflow-y: auto !important;
+                min-height: 0 !important;
+            }
+
+            #chat-footer {
+                flex-shrink: 0 !important;
+                position: sticky !important;
+                bottom: 0 !important;
+                background: rgba(10, 10, 10, 0.97) !important;
+                backdrop-filter: blur(20px) !important;
+                -webkit-backdrop-filter: blur(20px) !important;
+                padding: 10px 14px !important;
+                z-index: 30;
+                display: flex !important;
+            }
+
+            #chat-footer>div {
+                width: 100%;
+            }
+
+            .hidden-on-mobile {
+                display: none !important;
+            }
+
+            #emoji-picker {
+                right: 0;
+                bottom: 56px;
+                width: 260px;
+            }
+
+            .msg-time {
+                opacity: 1 !important;
+            }
+        }
+
+        #btn-back-mobile {
+            display: none;
+        }
+
+        #mobile-home-btn {
+            display: none;
+        }
     </style>
 </head>
 
@@ -211,6 +396,10 @@
         <header
             class="flex-shrink-0 z-20 flex items-center justify-between px-4 md:px-8 py-4 bg-background-dark/80 backdrop-blur-md border-b border-white/5">
             <div class="flex items-center gap-3">
+                <a id="mobile-home-btn" href="index.html"
+                    class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-all mr-1">
+                    <span class="material-symbols-outlined text-xl">arrow_back</span>
+                </a>
                 <span class="text-base font-bold text-white">Mensagens</span>
             </div>
             <div class="flex-1 max-w-md mx-4 md:mx-8">
@@ -359,7 +548,7 @@
                                 <p id="chat-friend-status" class="text-xs text-slate-500"></p>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-2 hidden-on-mobile">
                             <button onclick="openAddFriend()"
                                 class="flex items-center gap-2 bg-primary text-white text-xs font-bold px-4 py-2 rounded-full hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-primary/20">
                                 <span class="material-symbols-outlined text-sm">person_add</span>
@@ -389,19 +578,28 @@
                 </div>
 
                 <!-- Footer do chat -->
-                <div id="chat-footer" class="hidden chat-footer flex-shrink-0 px-6 py-4 border-t border-white/5">
-                    <div class="flex items-end gap-3">
+                <div id="chat-footer" class="hidden chat-footer flex-shrink-0 px-4 py-3 border-t border-white/5">
+                    <div class="flex items-end gap-2 w-full">
                         <div class="flex-1 relative">
                             <textarea id="msg-input" onkeydown="handleMsgKey(event)" oninput="autoResize(this)"
-                                class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 pr-12 text-sm text-white placeholder:text-slate-500 resize-none focus:outline-none focus:border-primary/40 transition-all"
+                                class="w-full rounded-2xl px-4 py-3 pr-11 text-sm resize-none focus:outline-none transition-all"
+                                style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:#fff;caret-color:#fff;min-height:44px;max-height:120px;line-height:1.5;"
                                 placeholder="Digite uma mensagem..." rows="1"></textarea>
-                            <button
-                                class="absolute right-3 bottom-3 text-slate-500 hover:text-primary transition-colors">
-                                <span class="material-symbols-outlined text-xl">emoji_emotions</span>
-                            </button>
+                            <!-- Emoji button -->
+                            <div class="relative" style="display:inline-block;">
+                                <button id="emoji-btn" onclick="toggleEmojiPicker(event)"
+                                    class="absolute right-3 bottom-2.5 text-slate-500 hover:text-primary transition-colors">
+                                    <span class="material-symbols-outlined text-xl">emoji_emotions</span>
+                                </button>
+                                <!-- Emoji Picker -->
+                                <div id="emoji-picker">
+                                    <div class="emoji-cats" id="emoji-cats"></div>
+                                    <div class="emoji-grid" id="emoji-grid"></div>
+                                </div>
+                            </div>
                         </div>
                         <button onclick="sendMessage()"
-                            class="w-11 h-11 rounded-full bg-primary flex items-center justify-center text-white hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-primary/20 flex-shrink-0">
+                            class="w-11 h-11 rounded-full bg-primary flex items-center justify-center text-white hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-primary/20 flex-shrink-0 mb-0.5">
                             <span class="material-symbols-outlined text-xl">send</span>
                         </button>
                     </div>
@@ -1108,6 +1306,81 @@
             setTimeout(() => toast.classList.remove('show'), 3000);
         }
         window.showToast = showToast;
+
+        // ═══════════════════════════════════════════════════════
+        // EMOJI PICKER
+        // ═══════════════════════════════════════════════════════
+        const EMOJI_CATS = {
+            '😀': ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁', '☹️', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '🤯', '😳', '🥵', '🥶', '😱', '😨', '😰', '😥', '😓'],
+            '👍': ['👍', '👎', '👌', '🤌', '🤏', '✌️', '🤞', '🤟', '🤘', '🤙', '👈', '👉', '👆', '🖕', '👇', '☝️', '👋', '🤚', '🖐️', '✋', '🖖', '🤝', '🙌', '👐', '🤲', '🤜', '🤛', '💪', '🦾', '🦿', '🦵', '🦶', '👂', '🦻', '👃', '🧠', '🦷', '🦴', '👀', '👁️', '👅', '👄'],
+            '❤️': ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💕', '💞', '💓', '💗', '💖', '💘', '💝', '💟', '☮️', '✝️', '☯️', '🔥', '✨', '⭐', '🌟', '💫', '⚡', '🎵', '🎶', '🎤', '🎧', '🎸', '🎹', '🎺', '🎻'],
+            '😂': ['😂', '🤣', '😹', '😸', '😻', '😼', '😽', '🙀', '😿', '😾', '🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🙈', '🙉', '🙊', '🐔', '🐧', '🐦', '🐤', '🦆', '🦅', '🦉', '🦇', '🐺', '🐗', '🐴', '🦄'],
+            '🎉': ['🎉', '🎊', '🎈', '🎁', '🎀', '🎗️', '🎟️', '🎫', '🏆', '🥇', '🥈', '🥉', '🏅', '🎖️', '🎪', '🤹', '🎭', '🎨', '🎬', '🎤', '🎧', '🎼', '🎵', '🎶', '🎷', '🎸', '🎹', '🎺', '🎻', '🥁', '🎲', '🎯', '🎳', '🎮', '🕹️', '🎰', '🧩'],
+        };
+
+        const catKeys = Object.keys(EMOJI_CATS);
+        let activeCat = catKeys[0];
+
+        function buildEmojiPicker() {
+            const catsEl = document.getElementById('emoji-cats');
+            const gridEl = document.getElementById('emoji-grid');
+            if (!catsEl || !gridEl) return;
+
+            // Build category buttons
+            catsEl.innerHTML = '';
+            catKeys.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.textContent = cat;
+                btn.title = cat;
+                if (cat === activeCat) btn.classList.add('active');
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    activeCat = cat;
+                    catsEl.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderEmojiGrid();
+                };
+                catsEl.appendChild(btn);
+            });
+            renderEmojiGrid();
+        }
+
+        function renderEmojiGrid() {
+            const gridEl = document.getElementById('emoji-grid');
+            if (!gridEl) return;
+            gridEl.innerHTML = '';
+            EMOJI_CATS[activeCat].forEach(em => {
+                const btn = document.createElement('button');
+                btn.textContent = em;
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    const input = document.getElementById('msg-input');
+                    const start = input.selectionStart;
+                    const end = input.selectionEnd;
+                    input.value = input.value.slice(0, start) + em + input.value.slice(end);
+                    input.selectionStart = input.selectionEnd = start + em.length;
+                    input.focus();
+                    autoResize(input);
+                };
+                gridEl.appendChild(btn);
+            });
+        }
+
+        window.toggleEmojiPicker = function (e) {
+            e.stopPropagation();
+            const picker = document.getElementById('emoji-picker');
+            const isOpen = picker.classList.contains('open');
+            if (!isOpen) buildEmojiPicker();
+            picker.classList.toggle('open');
+        };
+
+        // Fecha picker ao clicar fora
+        document.addEventListener('click', (e) => {
+            const picker = document.getElementById('emoji-picker');
+            if (picker && !picker.contains(e.target) && e.target.id !== 'emoji-btn') {
+                picker.classList.remove('open');
+            }
+        });
     </script>
 
 </body>
