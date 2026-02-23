@@ -311,6 +311,16 @@
                 width: 100%;
             }
 
+            /* Esconde botão enviar no mobile - usa Enter */
+            .send-btn-desktop {
+                display: none !important;
+            }
+
+            /* Input ocupa largura toda no mobile */
+            #msg-input {
+                padding-right: 44px !important;
+            }
+
             .hidden-on-mobile {
                 display: none !important;
             }
@@ -592,20 +602,19 @@
                                 style="background:#1c1c1e;border:1px solid rgba(255,255,255,0.1);color:#fff;caret-color:#fff;min-height:44px;max-height:120px;line-height:1.5;"
                                 placeholder="Digite uma mensagem..." rows="1"></textarea>
                             <!-- Emoji button -->
-                            <div class="relative" style="display:inline-block;">
-                                <button id="emoji-btn" onclick="toggleEmojiPicker(event)"
-                                    class="absolute right-3 bottom-2.5 text-slate-500 hover:text-primary transition-colors">
-                                    <span class="material-symbols-outlined text-xl">emoji_emotions</span>
-                                </button>
-                                <!-- Emoji Picker -->
-                                <div id="emoji-picker">
-                                    <div class="emoji-cats" id="emoji-cats"></div>
-                                    <div class="emoji-grid" id="emoji-grid"></div>
-                                </div>
+                            <button id="emoji-btn" onclick="toggleEmojiPicker(event)"
+                                class="absolute right-3 bottom-2.5 text-slate-500 hover:text-primary transition-colors">
+                                <span class="material-symbols-outlined text-xl">emoji_emotions</span>
+                            </button>
+                            <!-- Emoji Picker -->
+                            <div id="emoji-picker">
+                                <div class="emoji-cats" id="emoji-cats"></div>
+                                <div class="emoji-grid" id="emoji-grid"></div>
                             </div>
                         </div>
-                        <button onclick="sendMessage()"
-                            class="w-11 h-11 rounded-full bg-primary flex items-center justify-center text-white hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-primary/20 flex-shrink-0 mb-0.5">
+                        <!-- Botão enviar: escondido no mobile, visível no desktop -->
+                        <button id="send-btn" onclick="sendMessage()"
+                            class="send-btn-desktop w-11 h-11 rounded-full bg-primary flex items-center justify-center text-white hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-primary/20 flex-shrink-0 mb-0.5">
                             <span class="material-symbols-outlined text-xl">send</span>
                         </button>
                     </div>
@@ -1087,6 +1096,31 @@
             return [uid1, uid2].sort().join('_');
         }
 
+        // ── Marca mensagens como lidas ───────────────────────────
+        async function markMessagesRead(cid, friendUid) {
+            // Grava que o usuário atual leu até agora
+            await set(ref(db, `chats/${cid}/read/${currentUser.uid}`), Date.now());
+        }
+
+        // ── Escuta leitura do amigo e atualiza checks ─────────────
+        function listenReadStatus(cid, friendUid) {
+            const readRef = ref(db, `chats/${cid}/read/${friendUid}`);
+            onValue(readRef, (snap) => {
+                if (!snap.exists()) return;
+                const readAt = snap.val();
+                // Pinta de azul todos os checks de mensagens enviadas antes de readAt
+                document.querySelectorAll('.msg-check').forEach(el => {
+                    const msgKey = el.dataset.key;
+                    // Pega o timestamp da mensagem pelo key (Firebase push key tem timestamp embutido)
+                    // Usamos o createdAt que salvamos no data-ts
+                    const ts = parseInt(el.dataset.ts || '0');
+                    if (ts && ts <= readAt) {
+                        el.style.color = '#3b82f6'; // azul
+                    }
+                });
+            });
+        }
+
         // ── Fecha chat no mobile (volta para lista) ───────────────
         window.closeChat = function () {
             document.querySelector('.friends-panel').classList.remove('slide-out');
@@ -1167,7 +1201,11 @@
                 });
 
                 scrollToBottom();
+                markMessagesRead(cid, friendUid);
             });
+
+            // Escuta status de leitura do amigo
+            listenReadStatus(cid, friendUid);
         };
 
         // ── Renderiza mensagem ────────────────────────────────────
@@ -1185,7 +1223,7 @@
       </div>
       <div class="flex items-center gap-1.5 mr-1">
         <span class="msg-time text-[9px] text-slate-600">${time}</span>
-        <span class="material-symbols-outlined text-primary" style="font-size:12px">done_all</span>
+        <span class="msg-check material-symbols-outlined text-slate-600" data-key="${key}" data-ts="${msg.createdAt}" style="font-size:12px">done_all</span>
       </div>
     `;
             } else {
@@ -1236,7 +1274,11 @@
 
         // ── Tecla Enter ───────────────────────────────────────────
         window.handleMsgKey = function (e) {
-            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+            // Enter envia (sem shift). No mobile, sempre envia com Enter.
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
         };
 
         // ── Auto-resize textarea ──────────────────────────────────
