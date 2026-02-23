@@ -147,40 +147,6 @@ body {
     background: rgba(26, 26, 26, 0.15);
 }
 
-/* ── Mobile: esconder painéis laterais ───────────────── */
-@media (max-width: 768px) {
-    .sidebar-slim {
-        display: none !important;
-    }
-
-    .friends-panel {
-        display: none !important;
-    }
-}
-
-@media (max-width: 1024px) {
-    .friends-panel {
-        width: 80px;
-        padding: 0;
-    }
-
-    .friends-panel .p-6 {
-        display: none;
-    }
-
-    .friends-panel .flex-1 {
-        padding: 0.5rem;
-    }
-
-    .friends-panel .friend-item .flex-1 {
-        display: none;
-    }
-
-    .friends-panel .flex-col.gap-1 p {
-        display: none;
-    }
-}
-
 /* ── Typing indicator ────────────────────────────────── */
 .typing-indicator span {
     display: inline-block;
@@ -212,4 +178,70 @@ body {
         transform: translateY(-6px);
         opacity: 1;
     }
+}
+
+/* ════════════════════════════════════════
+   MOBILE — navegação em tela cheia
+════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+    /* Esconde sidebar de navegação */
+    aside {
+        display: none !important;
+    }
+
+    /* O header principal fica mais compacto */
+    header.flex-shrink-0.z-20 {
+        padding: 0.75rem 1rem !important;
+    }
+
+    /* Container principal ocupa tela toda */
+    .flex.flex-1.min-h-0.overflow-hidden {
+        position: relative;
+    }
+
+    /* ── Painel de amigos: tela cheia no mobile ── */
+    .friends-panel {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        z-index: 10;
+        transition: transform 0.3s ease;
+    }
+
+    /* Quando chat está aberto, lista some para a esquerda */
+    .friends-panel.slide-out {
+        transform: translateX(-100%);
+    }
+
+    /* ── Área de chat: tela cheia no mobile ── */
+    main.flex-1 {
+        position: absolute !important;
+        inset: 0 !important;
+        width: 100% !important;
+        z-index: 20;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+    }
+
+    /* Quando chat está aberto, desliza para dentro */
+    main.flex-1.slide-in {
+        transform: translateX(0);
+    }
+
+    /* ── Botão voltar: só aparece no mobile ── */
+    #btn-back-mobile {
+        display: flex !important;
+    }
+
+    /* ── Esconde o "Add Amigo" do header do chat no mobile
+       para não poluir com o botão voltar ── */
+    #active-chat-header .flex.items-center.gap-2 button:not(#btn-back-mobile) {
+        display: none;
+    }
+}
+
+/* Desktop: esconde o botão voltar */
+#btn-back-mobile {
+    display: none;
 }
