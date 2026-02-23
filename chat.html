@@ -169,9 +169,22 @@
 
         /* FIX: Input de adicionar amigo */
         #add-friend-input {
+            background: #1c1c1e !important;
             color: #ffffff !important;
             -webkit-text-fill-color: #ffffff !important;
             caret-color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        }
+
+        #add-friend-input::placeholder {
+            color: rgba(255, 255, 255, 0.35) !important;
+            -webkit-text-fill-color: rgba(255, 255, 255, 0.35) !important;
+        }
+
+        #add-friend-input:focus {
+            background: #222224 !important;
+            border-color: rgba(236, 19, 55, 0.45) !important;
+            outline: none !important;
         }
 
         /* Emoji picker */
