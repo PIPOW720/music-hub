@@ -897,6 +897,13 @@
                     createdAt: Date.now()
                 });
                 return { uid: user.uid, displayName, email: user.email, photoURL: user.photoURL || '', tag, code };
+                if (!data.tag && data.code) {
+                    const tag = `${data.displayName}#${data.code}`;
+                    await update(userRef, { tag });
+                    return { ...data, tag };
+                }
+                return data;
+
             }
 
             // Usuário existente: atualiza foto/nome se mudou
