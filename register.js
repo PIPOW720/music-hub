@@ -1,9 +1,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-analytics.js";
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
-import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js";
 import { getDatabase, ref as dbRef, set } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
 
+// ── Firebase config ────────────────────────────────────────────
 const app = initializeApp({
   apiKey: "AIzaSyDpkeu4920YRA4pc5HOAaEuP7-KMevUNno",
   authDomain: "davi-vibes.firebaseapp.com",
@@ -17,13 +17,43 @@ const app = initializeApp({
 
 getAnalytics(app);
 const auth = getAuth(app);
-const storage = getStorage(app);
 const db = getDatabase(app);
+
+// ── Supabase config ────────────────────────────────────────────
+const SUPABASE_URL = "https://uovdxuxkuomqjmwjhcvj.supabase.co";
+const SUPABASE_ANON = "sb_publishable_BXmfG4esmV8yPxDpB3Xugw_Z2l_W6XJ";
+const SUPABASE_BUCKET = "davi-vibe";          // nome do bucket que já usa
+
+// Faz upload para o Supabase Storage e retorna a URL pública
+async function uploadToSupabase(file, userId) {
+  const ext = file.name.split(".").pop();
+  const path = `avatars/${userId}.${ext}`;
+  const endpoint = `${SUPABASE_URL}/storage/v1/object/${SUPABASE_BUCKET}/${path}`;
+
+  const res = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "apikey": SUPABASE_ANON,
+      "Authorization": `Bearer ${SUPABASE_ANON}`,
+      "Content-Type": file.type,
+      "x-upsert": "true"   // sobrescreve se já existir
+    },
+    body: file
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Supabase upload falhou: ${err}`);
+  }
+
+  // Retorna a URL pública
+  return `${SUPABASE_URL}/storage/v1/object/public/${SUPABASE_BUCKET}/${path}`;
+}
 
 // ── Gera código único ──────────────────────────────────────────
 function generateCode() {
   return Math.floor(1000 + Math.random() * 9000).toString();
-} // ← chave que estava faltando
+}
 
 // ── Preview do avatar ──────────────────────────────────────────
 window.previewAvatar = function (event) {
@@ -50,11 +80,11 @@ function showError(msg) {
   const el = document.getElementById("register-error");
   el.textContent = msg;
   el.classList.remove("hidden");
-} // ← chave que estava faltando
+}
 
 function hideError() {
   document.getElementById("register-error").classList.add("hidden");
-} // ← chave que estava faltando
+}
 
 // ── Submissão ──────────────────────────────────────────────────
 document.getElementById("registerForm").addEventListener("submit", async (e) => {
@@ -79,23 +109,24 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
   btn.textContent = "Criando conta...";
 
   try {
-    // 1. Cria usuário
+    // 1. Cria usuário no Firebase Auth
     const { user } = await createUserWithEmailAndPassword(auth, email, password);
 
-    // 2. Upload da foto (se escolheu uma)
+    // 2. Upload da foto para o Supabase (se escolheu uma)
     let photoURL = "";
     if (avatarFile) {
       try {
         btn.textContent = "Enviando foto...";
-        const sRef = storageRef(storage, `avatars/${user.uid}`);
-        await uploadBytes(sRef, avatarFile);
-        photoURL = await getDownloadURL(sRef);
+        photoURL = await uploadToSupabase(avatarFile, user.uid);
       } catch (uploadErr) {
         console.warn("Foto não pôde ser salva:", uploadErr.message);
+        // Continua o cadastro mesmo sem foto
       }
     }
 
-    // 3. Atualiza perfil no Auth
+    btn.textContent = "Finalizando...";
+
+    // 3. Atualiza perfil no Firebase Auth
     await updateProfile(user, {
       displayName: username,
       ...(photoURL && { photoURL }),
@@ -125,7 +156,7 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
       "auth/weak-password": "Senha muito fraca (mínimo 6 caracteres).",
       "auth/network-request-failed": "Sem conexão. Verifique sua internet.",
     };
-    showError(msgs[err.code] || `Erro ao criar conta: ${err.message}`);
+    showError(msgs[err.code] || `Erro: ${err.message}`);
     btn.disabled = false;
     btn.textContent = "Criar Conta";
   }
