@@ -10,7 +10,10 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -33,10 +36,10 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 40;
+  z-index: 60;
   background: rgba(26, 26, 26, 0.95);
   backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding: 8px 0 env(safe-area-inset-bottom);
   justify-content: space-around;
 }
@@ -48,7 +51,7 @@ body {
   gap: 2px;
   font-size: 10px;
   font-weight: 600;
-  color: rgba(255,255,255,0.4);
+  color: rgba(255, 255, 255, 0.4);
   text-decoration: none;
   padding: 6px 16px;
   text-transform: uppercase;
@@ -60,6 +63,11 @@ body {
 }
 
 @media (max-width: 768px) {
-  .mobile-nav { display: flex; }
-  aside { display: none; }
+  .mobile-nav {
+    display: flex;
+  }
+
+  aside {
+    display: none;
+  }
 }
