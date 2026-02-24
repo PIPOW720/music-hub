@@ -1863,8 +1863,13 @@
     onAuthStateChanged(auth, user => {
       if (!user) { window.location.href = "login.html"; return; }
       const avatarEl = document.getElementById("user-avatar");
+      const menuAvatar = document.getElementById("user-avatar-menu");
+      function setAvatar(src) {
+        if (avatarEl) avatarEl.src = src;
+        if (menuAvatar) menuAvatar.src = src;
+      }
       if (user.photoURL) {
-        avatarEl.src = user.photoURL;
+        setAvatar(user.photoURL);
       } else {
         const initials = (user.displayName || user.email || "U").charAt(0).toUpperCase();
         const canvas = document.createElement("canvas");
@@ -1874,13 +1879,11 @@
         ctx.fillStyle = "#ffffff"; ctx.font = "bold 36px sans-serif";
         ctx.textAlign = "center"; ctx.textBaseline = "middle";
         ctx.fillText(initials, 40, 40);
-        avatarEl.src = canvas.toDataURL();
+        setAvatar(canvas.toDataURL());
       }
       document.getElementById("user-name").textContent = user.displayName || "Usuário";
       const shortName = document.getElementById("user-name-short");
       if (shortName) shortName.textContent = user.displayName || "Usuário";
-      const menuAvatar = document.getElementById("user-avatar-menu");
-      if (menuAvatar) menuAvatar.src = avatarEl.src;
       document.getElementById("user-email").textContent = user.email || "";
     });
 
