@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content"
+        name="viewport" />
     <title>Chat - Davi Vibe</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
@@ -271,25 +272,36 @@
                 display: none !important;
             }
 
-            .send-btn-desktop {
-                display: none !important;
-            }
-
             .msg-time {
                 opacity: 1 !important;
             }
 
-            /* Container principal */
-            .flex.flex-1.min-h-0.overflow-hidden {
-                position: relative;
-                overflow: hidden;
+            /* ── dvh: desconta barra de endereço do Chrome ── */
+            html,
+            body {
+                height: 100dvh !important;
+                overflow: hidden !important;
             }
 
-            /* Painel de amigos - tela cheia */
+            /* O body já é flex-col no Tailwind; garante altura total */
+            body {
+                height: 100dvh !important;
+            }
+
+            /* Wrapper do conteúdo principal (tudo abaixo do global header) */
+            .flex.flex-1.min-h-0.overflow-hidden {
+                position: relative !important;
+                overflow: hidden !important;
+                /* flex-1 faz flex-grow, mas limitamos com min-height:0 */
+                min-height: 0 !important;
+            }
+
+            /* Painel de amigos — tela cheia */
             .friends-panel {
                 position: absolute !important;
                 inset: 0 !important;
                 width: 100% !important;
+                height: 100% !important;
                 z-index: 10;
                 transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             }
@@ -299,7 +311,7 @@
                 pointer-events: none;
             }
 
-            /* Chat principal - tela cheia, layout fixo */
+            /* Chat principal — coluna flex: header + feed (flex-1) + footer */
             main.flex-1 {
                 position: absolute !important;
                 inset: 0 !important;
@@ -308,7 +320,8 @@
                 z-index: 20;
                 transform: translateX(100%);
                 transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                display: block !important;
+                display: flex !important;
+                flex-direction: column !important;
                 overflow: hidden !important;
             }
 
@@ -316,56 +329,52 @@
                 transform: translateX(0);
             }
 
-            /* Header do chat fixo no topo */
+            /* Header do chat — altura fixa, não encolhe */
             main.flex-1>header#chat-header {
-                position: absolute !important;
-                top: 0 !important;
-                left: 0 !important;
-                right: 0 !important;
-                z-index: 5;
+                flex-shrink: 0 !important;
+                position: static !important;
                 height: 64px !important;
             }
 
-            /* Footer fixo na parte inferior - SEMPRE VISÍVEL */
-            #chat-footer {
-                position: absolute !important;
-                bottom: 0 !important;
-                left: 0 !important;
-                right: 0 !important;
-                z-index: 5;
-                background: #0a0a0a !important;
-                border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-                padding: 10px 14px 16px !important;
-                display: flex !important;
-            }
-
-            #chat-footer>div {
-                width: 100%;
-            }
-
-            /* Empty state - entre header e footer */
+            /* Empty state — ocupa espaço restante */
             #no-chat-body {
-                position: absolute !important;
-                top: 64px !important;
-                left: 0 !important;
-                right: 0 !important;
-                bottom: 0 !important;
-                overflow-y: auto;
+                flex: 1 !important;
+                position: static !important;
+                overflow-y: auto !important;
+                min-height: 0 !important;
             }
 
-            /* Feed de mensagens - entre header (64px) e footer (72px) */
+            /* Feed — cresce entre header e footer; teclado empurra o footer
+               e o feed encolhe automaticamente pois é flex-1 */
             #messages-feed {
-                position: absolute !important;
-                top: 64px !important;
-                left: 0 !important;
-                right: 0 !important;
-                bottom: 72px !important;
+                flex: 1 !important;
+                position: static !important;
+                min-height: 0 !important;
                 overflow-y: auto !important;
                 -webkit-overflow-scrolling: touch !important;
                 padding: 16px !important;
                 display: flex !important;
                 flex-direction: column !important;
                 gap: 16px !important;
+            }
+
+            /* Footer — sempre visível; sobe junto com o teclado virtual
+               graças ao interactive-widget=resizes-content no viewport */
+            #chat-footer {
+                flex-shrink: 0 !important;
+                position: static !important;
+                background: #0a0a0a !important;
+                border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+                padding: 10px 14px !important;
+                /* Respeita home indicator (iPhone e Android) */
+                padding-bottom: max(14px, env(safe-area-inset-bottom)) !important;
+                display: flex !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            #chat-footer>div {
+                width: 100%;
             }
 
             #emoji-picker {
