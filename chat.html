@@ -766,7 +766,8 @@
     <!-- ════════════════════════════════════════════════════
      MODAL: ADICIONAR AMIGO
 ════════════════════════════════════════════════════ -->
-    <div id="modal-add-friend" class="fixed inset-0 z-50 hidden modal-overlay flex items-center justify-center p-4">
+    <div id="modal-add-friend" class="fixed inset-0 z-50 modal-overlay items-center justify-center p-4"
+        style="display:none;">
         <div class="modal-box w-full max-w-md bg-neutral-900 border border-white/10 rounded-3xl shadow-2xl p-8">
             <div class="flex items-center justify-between mb-6">
                 <div>
@@ -783,7 +784,7 @@
             <div class="mb-6 p-4 bg-primary/5 border border-primary/20 rounded-2xl">
                 <p class="text-[10px] font-black uppercase tracking-widest text-primary mb-2">Seu código único</p>
                 <div class="flex items-center justify-between gap-3">
-                    <span id="my-user-tag" class="font-mono text-lg font-bold text-white"></span>
+                    <span id="my-user-tag" class="font-mono text-lg font-bold text-white">Carregando...</span>
                     <button onclick="copyTag()"
                         class="flex items-center gap-1.5 text-xs font-bold text-primary hover:text-white transition-colors">
                         <span class="material-symbols-outlined text-sm">content_copy</span>
@@ -814,8 +815,8 @@
     <!-- ════════════════════════════════════════════════════
      MODAL: SOLICITAÇÕES DE AMIZADE
 ════════════════════════════════════════════════════ -->
-    <div id="modal-friend-requests"
-        class="fixed inset-0 z-50 hidden modal-overlay flex items-center justify-center p-4">
+    <div id="modal-friend-requests" class="fixed inset-0 z-50 modal-overlay items-center justify-center p-4"
+        style="display:none;">
         <div class="modal-box w-full max-w-md bg-neutral-900 border border-white/10 rounded-3xl shadow-2xl p-8">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-xl font-bold">Solicitações de Amizade</h2>
@@ -1461,21 +1462,22 @@
             document.getElementById('add-friend-error').classList.add('hidden');
             document.getElementById('add-friend-success').classList.add('hidden');
             document.getElementById('add-friend-input').value = '';
-            document.getElementById('modal-add-friend').classList.remove('hidden');
+            const modal = document.getElementById('modal-add-friend');
+            modal.style.display = 'flex';
         };
 
         window.openFriendRequests = function () {
-            document.getElementById('modal-friend-requests').classList.remove('hidden');
+            document.getElementById('modal-friend-requests').style.display = 'flex';
         };
 
         window.closeModal = function (id) {
-            document.getElementById(id).classList.add('hidden');
+            document.getElementById(id).style.display = 'none';
         };
 
         // Fechar modal ao clicar fora
         ['modal-add-friend', 'modal-friend-requests'].forEach(id => {
             document.getElementById(id).addEventListener('click', (e) => {
-                if (e.target.id === id) closeModal(id);
+                if (e.target.id === id) document.getElementById(id).style.display = 'none';
             });
         });
 
