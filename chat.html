@@ -897,13 +897,15 @@
                     createdAt: Date.now()
                 });
                 return { uid: user.uid, displayName, email: user.email, photoURL: user.photoURL || '', tag, code };
+
             }
 
-            // ← FORA do if, aqui embaixo:
+            // Usuário existente: atualiza foto/nome se mudou
             const data = snap.val();
             const updates = {};
             if (user.photoURL && user.photoURL !== data.photoURL) updates.photoURL = user.photoURL;
             if (user.displayName && user.displayName !== data.displayName) {
+                // Mantém o mesmo código mas atualiza nome
                 updates.displayName = user.displayName;
                 updates.tag = `${user.displayName}#${data.code}`;
             }
@@ -911,32 +913,7 @@
                 await update(userRef, updates);
                 return { ...data, ...updates };
             }
-
-            // ← Fix do tag faltando:
-            if (!data.tag && data.code) {
-                const tag = `${data.displayName}#${data.code}`;
-                await update(userRef, { tag });
-                return { ...data, tag };
-            }
-
             return data;
-        }
-
-
-        // Usuário existente: atualiza foto/nome se mudou
-        const data = snap.val();
-        const updates = {};
-        if (user.photoURL && user.photoURL !== data.photoURL) updates.photoURL = user.photoURL;
-        if (user.displayName && user.displayName !== data.displayName) {
-            // Mantém o mesmo código mas atualiza nome
-            updates.displayName = user.displayName;
-            updates.tag = `${user.displayName}#${data.code}`;
-        }
-        if (Object.keys(updates).length > 0) {
-            await update(userRef, updates);
-            return { ...data, ...updates };
-        }
-        return data;
         }
 
         // ── Gera avatar canvas (fallback) ────────────────────────
