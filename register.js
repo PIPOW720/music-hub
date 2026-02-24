@@ -21,7 +21,7 @@ const db = getDatabase(app);
 
 // ── Supabase config ────────────────────────────────────────────
 const SUPABASE_URL = "https://uovdxuxkuomqjmwjhcvj.supabase.co";
-const SUPABASE_ANON = "sb_publishable_BXmfG4esmV8yPxDpB3Xugw_Z2l_W6XJ";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVvdmR4dXhrdW9tcWptd2poY3ZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MzU1OTUsImV4cCI6MjA4NzIxMTU5NX0.m40quyC3WnUyuMoW97yBBB83J8iKGr8U3q6mZbVcJI0";
 const SUPABASE_BUCKET = "davi-vibe";          // nome do bucket que já usa
 
 // Faz upload para o Supabase Storage e retorna a URL pública
