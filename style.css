@@ -10,7 +10,7 @@ body {
 
 aside {
   background-color: #1a1a1a !important;
-  border-right: 1px solid rgba(255,255,255,0.05);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 main {
@@ -18,14 +18,15 @@ main {
 }
 
 header {
-  background-color: rgba(10,10,10,0.85) !important;
+  background-color: rgba(10, 10, 10, 0.85) !important;
 }
 
 /* ===== SEARCH INPUT ===== */
 header input {
-  background-color: rgba(255,255,255,0.07) !important;
+  background-color: rgba(255, 255, 255, 0.07) !important;
   color: #f1f5f9;
 }
+
 header input::placeholder {
   color: #94a3b8;
 }
@@ -42,6 +43,7 @@ header input::placeholder {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -69,8 +71,8 @@ aside a {
 
 /* ===== PRO PLAN ===== */
 aside .p-4 {
-  background-color: rgba(236,19,55,0.07) !important;
-  border-color: rgba(236,19,55,0.2) !important;
+  background-color: rgba(236, 19, 55, 0.07) !important;
+  border-color: rgba(236, 19, 55, 0.2) !important;
 }
 
 /* ===== RESPONSIVO MOBILE ===== */
@@ -143,7 +145,8 @@ aside .p-4 {
   }
 
   /* Cards menores */
-  .track-card, .flex-shrink-0.w-48 {
+  .track-card,
+  .flex-shrink-0.w-48 {
     width: 8rem !important;
   }
 
@@ -152,16 +155,16 @@ aside .p-4 {
     grid-template-columns: 1fr !important;
   }
 
-  /* Player fixo adaptado para mobile */
-  .fixed.bottom-6 {
-    bottom: 0 !important;
+  /* Player fixo adaptado para mobile — fica ACIMA do mobile-nav (64px) */
+  .fixed.bottom-20 {
+    bottom: 64px !important;
     left: 0 !important;
     right: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
     transform: none !important;
     border-radius: 1rem 1rem 0 0 !important;
-    padding: 0.75rem 1rem !important;
+    padding: 0 !important;
   }
 
   .glass-player {
@@ -172,17 +175,17 @@ aside .p-4 {
   }
 
   /* Player - info da música ocupa largura toda */
-  .glass-player > div:first-child {
+  .glass-player>div:first-child {
     width: 100% !important;
   }
 
   /* Player - controles centralizados */
-  .glass-player > div:nth-child(2) {
+  .glass-player>div:nth-child(2) {
     width: 100% !important;
   }
 
   /* Esconde volume e extras no mobile */
-  .glass-player > div:last-child {
+  .glass-player>div:last-child {
     display: none !important;
   }
 
@@ -196,9 +199,9 @@ aside .p-4 {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 40;
+  z-index: 60;
   background: #1a1a1a;
-  border-top: 1px solid rgba(255,255,255,0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
   padding: 0.5rem 0;
   justify-content: space-around;
 }
