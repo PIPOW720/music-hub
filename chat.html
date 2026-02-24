@@ -932,6 +932,7 @@
 
             currentUser = user;
             currentUserData = await ensureUserProfile(user);
+            window._debug = currentUserData;
 
             // Atualiza UI do header
             const avatar = user.photoURL || makeAvatarCanvas(user.displayName || user.email);
