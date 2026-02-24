@@ -1,13 +1,9 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-analytics.js";
-import { getAuth, createUserWithEmailAndPassword, updateProfile }
-  from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
-import { getStorage, ref as storageRef, uploadBytes, getDownloadURL }
-  from "https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js";
-import { getDatabase, ref as dbRef, set, get }
-  from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js";
+import { getDatabase, ref as dbRef, set } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
 
-// ── Firebase config ────────────────────────────────────────────
 const app = initializeApp({
   apiKey: "AIzaSyDpkeu4920YRA4pc5HOAaEuP7-KMevUNno",
   authDomain: "davi-vibes.firebaseapp.com",
@@ -24,12 +20,12 @@ const auth = getAuth(app);
 const storage = getStorage(app);
 const db = getDatabase(app);
 
-// ── Gera código único de 4 dígitos (mesmo do chat.html) ────────
+// ── Gera código único ──────────────────────────────────────────
 function generateCode() {
   return Math.floor(1000 + Math.random() * 9000).toString();
-}
+} // ← chave que estava faltando
 
-// ── Avatar preview ─────────────────────────────────────────────
+// ── Preview do avatar ──────────────────────────────────────────
 window.previewAvatar = function (event) {
   const file = event.target.files[0];
   if (!file) return;
@@ -49,15 +45,16 @@ window.togglePass = function (inputId, iconId) {
   icon.textContent = hidden ? "visibility_off" : "visibility";
 };
 
-// ── Helpers ────────────────────────────────────────────────────
+// ── Helpers de erro ────────────────────────────────────────────
 function showError(msg) {
   const el = document.getElementById("register-error");
   el.textContent = msg;
   el.classList.remove("hidden");
-}
+} // ← chave que estava faltando
+
 function hideError() {
   document.getElementById("register-error").classList.add("hidden");
-}
+} // ← chave que estava faltando
 
 // ── Submissão ──────────────────────────────────────────────────
 document.getElementById("registerForm").addEventListener("submit", async (e) => {
@@ -71,46 +68,42 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
   const terms = document.getElementById("terms").checked;
   const avatarFile = document.getElementById("avatarInput").files[0];
 
-  // Validações
   if (!username) return showError("Informe um nome de usuário.");
   if (!email) return showError("Informe seu e-mail.");
   if (password.length < 6) return showError("A senha deve ter no mínimo 6 caracteres.");
   if (password !== confirm) return showError("As senhas não coincidem.");
   if (!terms) return showError("Aceite os termos para continuar.");
 
-  // FIX: referência direta ao botão (e.submitter pode ser null no mobile)
   const btn = document.querySelector("#registerForm button[type='submit']");
   btn.disabled = true;
   btn.textContent = "Criando conta...";
 
   try {
-    // 1. Cria usuário no Firebase Auth
+    // 1. Cria usuário
     const { user } = await createUserWithEmailAndPassword(auth, email, password);
 
-    // 2. Upload da foto de perfil (se escolheu uma)
+    // 2. Upload da foto (se escolheu uma)
     let photoURL = "";
     if (avatarFile) {
       try {
+        btn.textContent = "Enviando foto...";
         const sRef = storageRef(storage, `avatars/${user.uid}`);
         await uploadBytes(sRef, avatarFile);
         photoURL = await getDownloadURL(sRef);
       } catch (uploadErr) {
-        // Se o Storage bloquear, continua sem foto (não trava o cadastro)
         console.warn("Foto não pôde ser salva:", uploadErr.message);
       }
     }
 
-    // 3. Atualiza perfil no Auth (displayName + photo)
+    // 3. Atualiza perfil no Auth
     await updateProfile(user, {
       displayName: username,
       ...(photoURL && { photoURL }),
     });
 
-    // 4. Gera código único e salva perfil completo no Realtime Database
-    //    Isso garante que o chat.html leia o nome correto desde o início
+    // 4. Salva perfil no Realtime Database (necessário pro chat)
     const code = generateCode();
     const tag = `${username}#${code}`;
-
     await set(dbRef(db, `users/${user.uid}`), {
       uid: user.uid,
       displayName: username,
@@ -121,7 +114,7 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
       createdAt: Date.now()
     });
 
-    // 5. Redireciona para o site
+    // 5. Redireciona
     window.location.href = "/index.html";
 
   } catch (err) {
@@ -138,7 +131,7 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
   }
 });
 
-// ── Fix autofill background no Chrome/Android ──────────────────
+// ── Fix autofill Chrome/Android ────────────────────────────────
 document.querySelectorAll(".input-glass").forEach(input => {
   setInterval(() => {
     try {

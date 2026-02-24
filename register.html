@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html class="dark" lang="pt-BR">
 
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title>Create Account - Music Hub</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criar Conta - Davi Vibe</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+    rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet" />
+    rel="stylesheet">
   <script>
     tailwind.config = {
       darkMode: "class",
@@ -21,105 +23,99 @@
       },
     };
   </script>
-  <link rel="stylesheet" href="register.css" />
+  <link rel="stylesheet" href="login.css">
+  <style>
+    .photo-ring {
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .photo-ring:hover {
+      border-color: #ec1337;
+      box-shadow: 0 0 0 3px rgba(236, 19, 55, 0.2);
+    }
+  </style>
 </head>
 
 <body
-  class="bg-background-dark text-slate-100 font-display min-h-screen flex items-start justify-center relative overflow-x-hidden">
+  class="bg-background-dark text-slate-100 font-display min-h-screen flex items-center justify-center relative overflow-hidden py-8">
+
   <!-- Background -->
   <div class="fixed inset-0 z-0"
-    style="background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 30%, #2d0a0a 55%, #1a0505 75%, #0a0a0a 100%);">
-    <div class="absolute inset-0"
-      style="background: radial-gradient(ellipse at 20% 50%, rgba(236,19,55,0.18) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(180,10,40,0.12) 0%, transparent 50%), radial-gradient(ellipse at 60% 80%, rgba(100,5,20,0.15) 0%, transparent 55%);">
-    </div>
-    <div class="absolute inset-0"
-      style="background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 40%, rgba(0,0,0,0.6) 100%);"></div>
+    style="background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 30%, #2d0a0a 55%, #1a0505 75%, #0a0a0a 100%)"></div>
+  <div class="absolute inset-0"
+    style="background: radial-gradient(ellipse at 20% 50%, rgba(236,19,55,0.18) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(180,10,40,0.12) 0%, transparent 50%)">
   </div>
 
   <!-- Main -->
-  <main class="relative z-10 w-full max-w-[480px] px-6 py-8 min-h-screen flex flex-col justify-center">
-    <div class="glass-container p-8 md:p-10 rounded-3xl shadow-2xl">
+  <main class="relative z-10 w-full max-w-440px px-6">
+    <div class="glass-container p-10 rounded-2xl shadow-2xl">
 
-      <!-- Header -->
-      <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold tracking-tight mb-2">Crie sua conta</h1>
-        <p class="text-slate-400 text-sm max-w-[280px] mx-auto leading-relaxed">Personalize seu perfil e comece a
-          construir sua jornada musical única hoje mesmo.</p>
+      <!-- Logo -->
+      <div class="flex flex-col items-center mb-8">
+        <div
+          class="w-14 h-14 bg-primary rounded-xl flex items-center justify-center text-white mb-4 shadow-lg shadow-primary/20">
+          <span class="material-symbols-outlined text-3xl font-bold">graphic_eq</span>
+        </div>
+        <h1 class="text-2xl font-bold tracking-tight">Criar Conta</h1>
+        <p class="text-slate-400 text-sm mt-1">Junte-se ao Davi Vibe</p>
       </div>
 
-      <!-- Avatar Upload -->
-      <div class="flex flex-col items-center mb-8">
-        <div class="profile-upload group cursor-pointer" onclick="document.getElementById('avatarInput').click()">
-          <div class="avatar-ring w-28 h-28 rounded-full flex items-center justify-center overflow-hidden relative">
-            <img id="avatarPreview" class="w-full h-full object-cover hidden rounded-full" />
-            <span id="avatarIcon"
-              class="material-symbols-outlined text-4xl text-slate-500 group-hover:scale-110 transition-transform">person_add</span>
-            <div
-              class="upload-overlay absolute inset-0 bg-black/50 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-              <span class="material-symbols-outlined text-white text-2xl">photo_camera</span>
-            </div>
+      <!-- Foto de Perfil -->
+      <div class="flex flex-col items-center mb-6">
+        <div class="relative cursor-pointer" onclick="document.getElementById('photo-input').click()">
+          <div id="photo-placeholder"
+            class="w-20 h-20 rounded-full bg-white/5 border-2 border-dashed border-white/20 photo-ring flex items-center justify-center">
+            <span class="material-symbols-outlined text-slate-500 text-3xl">add_a_photo</span>
           </div>
-          <label
-            class="block mt-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest text-center cursor-pointer">Add
-            foto de perfil</label>
-          <input id="avatarInput" type="file" accept="image/*" class="hidden" onchange="previewAvatar(event)" />
+          <img id="photo-preview" src="" alt="Preview"
+            class="hidden w-20 h-20 rounded-full object-cover border-2 border-primary photo-ring absolute inset-0" />
+          <div
+            class="absolute -bottom-1 -right-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center shadow-lg">
+            <span class="material-symbols-outlined text-white" style="font-size:14px">edit</span>
+          </div>
         </div>
+        <p class="text-xs text-slate-500 mt-2">Foto de perfil (opcional)</p>
+        <input type="file" id="photo-input" accept="image/*" class="hidden" />
       </div>
 
       <!-- Form -->
-      <form id="registerForm" class="space-y-4">
+      <form id="register-form" class="space-y-4">
+
+        <!-- Nome -->
         <div>
-          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-1">Nome do
-            Usuário</label>
-          <input id="username" class="w-full input-glass rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-0"
-            placeholder="@seunome" type="text" />
+          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-1">Nome</label>
+          <input id="nameInput" type="text" placeholder="Seu nome"
+            class="w-full input-glass rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-0 text-white placeholder:text-slate-600"
+            required />
         </div>
+
+        <!-- Email -->
         <div>
           <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-1">Email</label>
-          <input id="email" class="w-full input-glass rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-0"
-            placeholder="name@example.com" type="email" />
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-1">Senha</label>
-            <div class="relative">
-              <input id="password"
-                class="w-full input-glass rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-0 pr-11"
-                placeholder="••••••••" type="password" />
-              <button type="button" onclick="togglePass('password','eye1')"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors">
-                <span id="eye1" class="material-symbols-outlined text-xl">visibility</span>
-              </button>
-            </div>
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-1">Confirmar
-              Senha</label>
-            <div class="relative">
-              <input id="confirmPassword"
-                class="w-full input-glass rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-0 pr-11"
-                placeholder="••••••••" type="password" />
-              <button type="button" onclick="togglePass('confirmPassword','eye2')"
-                class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors">
-                <span id="eye2" class="material-symbols-outlined text-xl">visibility</span>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="flex items-start gap-2 px-1 pt-2">
-          <input
-            class="mt-0.5 w-4 h-4 rounded border-white/10 bg-white/5 text-primary focus:ring-offset-0 focus:ring-1 focus:ring-primary"
-            id="terms" type="checkbox" />
-          <label class="text-[11px] text-slate-400 leading-tight cursor-pointer" for="terms">
-            Concordo com os <a class="text-slate-200 hover:text-primary underline" href="#">Termos de Serviço</a> e <a
-              class="text-slate-200 hover:text-primary underline" href="#">Política de Privacidade</a>.
-          </label>
+          <input id="emailInput" type="email" placeholder="nome@exemplo.com"
+            class="w-full input-glass rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-0 text-white placeholder:text-slate-600"
+            required />
         </div>
 
-        <!-- Error message -->
-        <p id="register-error" class="text-red-400 text-xs text-center hidden"></p>
+        <!-- Senha -->
+        <div>
+          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 px-1">Senha</label>
+          <div class="relative">
+            <input id="passwordInput" type="password" placeholder="Mínimo 6 caracteres"
+              class="w-full input-glass rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:ring-0 text-white placeholder:text-slate-600"
+              required />
+            <button type="button" onclick="togglePassword()"
+              class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors">
+              <span id="eyeIcon" class="material-symbols-outlined text-xl">visibility</span>
+            </button>
+          </div>
+        </div>
 
-        <button type="submit"
+        <!-- Erro -->
+        <p id="register-error" class="hidden text-red-400 text-xs text-center mt-1"></p>
+
+        <!-- Botão -->
+        <button id="submit-btn" type="submit"
           class="w-full py-4 bg-primary text-white text-sm font-bold rounded-xl hover:brightness-110 active:scale-[0.98] transition-all shadow-lg shadow-primary/25 mt-2">
           Criar Conta
         </button>
@@ -127,19 +123,100 @@
 
       <p class="text-center text-sm text-slate-400 mt-8">
         Já tem uma conta?
-        <a class="text-white font-bold hover:text-primary transition-colors" href="login.html">Entrar</a>
+        <a href="login.html" class="text-white font-bold hover:text-primary transition-colors">Entrar</a>
       </p>
-    </div>
-
-    <!-- Footer -->
-    <div class="mt-8 flex justify-center gap-6 text-[11px] font-bold text-white/40 uppercase tracking-widest">
-      <a class="hover:text-white transition-colors" href="#">Suporte</a>
-      <a class="hover:text-white transition-colors" href="#">Privacidade</a>
-      <a class="hover:text-white transition-colors" href="#">Termos</a>
     </div>
   </main>
 
-  <script type="module" src="register.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+
+    const app = initializeApp({
+      apiKey: "AIzaSyDpkeu4920YRA4pc5HOAaEuP7-KMevUNno",
+      authDomain: "davi-vibes.firebaseapp.com",
+      projectId: "davi-vibes",
+      storageBucket: "davi-vibes.firebasestorage.app",
+      messagingSenderId: "198203679502",
+      appId: "1:198203679502:web:cfc71ee1dcd2a537412d5f"
+    });
+
+    const auth = getAuth(app);
+    const storage = getStorage(app);
+    let selectedPhotoFile = null;
+
+    // Preview da foto
+    document.getElementById('photo-input').addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      selectedPhotoFile = file;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const preview = document.getElementById('photo-preview');
+        const placeholder = document.getElementById('photo-placeholder');
+        preview.src = ev.target.result;
+        preview.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Cadastro
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      const errEl = document.getElementById('register-error');
+      errEl.classList.add('hidden');
+      btn.disabled = true;
+      btn.textContent = 'Criando conta...';
+
+      const name = document.getElementById('nameInput').value.trim();
+      const email = document.getElementById('emailInput').value.trim();
+      const pass = document.getElementById('passwordInput').value;
+
+      try {
+        // 1. Cria o usuário
+        const { user } = await createUserWithEmailAndPassword(auth, email, pass);
+
+        let photoURL = null;
+
+        // 2. Upload da foto se selecionou uma
+        if (selectedPhotoFile) {
+          btn.textContent = 'Enviando foto...';
+          const storageRef = ref(storage, `avatars/${user.uid}`);
+          await uploadBytes(storageRef, selectedPhotoFile);
+          photoURL = await getDownloadURL(storageRef);
+        }
+
+        // 3. Atualiza nome e foto no perfil
+        await updateProfile(user, { displayName: name, photoURL });
+
+        // 4. Redireciona
+        window.location.href = 'index.html';
+
+      } catch (err) {
+        const msgs = {
+          'auth/email-already-in-use': 'Este e-mail já está em uso.',
+          'auth/invalid-email': 'E-mail inválido.',
+          'auth/weak-password': 'Senha muito fraca. Use pelo menos 6 caracteres.',
+        };
+        errEl.textContent = msgs[err.code] || 'Erro ao criar conta. Tente novamente.';
+        errEl.classList.remove('hidden');
+        btn.disabled = false;
+        btn.textContent = 'Criar Conta';
+      }
+    });
+
+    // Toggle senha
+    window.togglePassword = function () {
+      const input = document.getElementById('passwordInput');
+      const icon = document.getElementById('eyeIcon');
+      const hidden = input.type === 'password';
+      input.type = hidden ? 'text' : 'password';
+      icon.textContent = hidden ? 'visibility_off' : 'visibility';
+    };
+  </script>
 </body>
 
 </html>
